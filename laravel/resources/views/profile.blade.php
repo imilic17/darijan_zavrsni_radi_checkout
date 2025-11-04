@@ -193,7 +193,47 @@
 
                                 <!-- Section: Orders -->
                                 <div id="section-orders" class="profile-section d-none">
-                                    <p class="text-muted">Trenutno nemate narudžbi.</p>
+                                    @php
+                                        $orders = \App\Models\Narudzba::where('Kupac_ID', auth()->id())
+                                            ->with(['detalji.proizvod', 'nacinPlacanja'])
+                                            ->orderBy('created_at', 'desc')
+                                            ->get();
+                                    @endphp
+
+                                    @if($orders->isEmpty())
+                                        <p class="text-muted">Trenutno nemate narudžbi.</p>
+                                    @else
+                                        <div class="table-responsive shadow-sm rounded-4 bg-white p-3">
+                                            <table class="table align-middle mb-0">
+                                                <thead class="bg-primary text-white">
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>Datum</th>
+                                                        <th>Ukupna cijena</th>
+                                                        <th>Status</th>
+                                                        <th>Način plaćanja</th>
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+                                                <tbody>
+                                                    @foreach($orders as $order)
+                                                        <tr>
+                                                            <td>{{ $order->id }}</td>
+                                                            <td>{{ optional($order->created_at)->format('d.m.Y H:i') ?? '-' }}</td>
+                                                            <td>{{ number_format($order->ukupna_cijena, 2) }} €</td>
+                                                            <td><span class="badge bg-info">{{ $order->status }}</span></td>
+                                                            <td>{{ optional($order->nacinPlacanja)->naziv ?? 'N/A' }}</td>
+                                                            <td class="text-end">
+                                                                <a href="{{ route('orders.show', $order->id) }}" class="btn btn-outline-primary btn-sm rounded-pill">
+                                                                    <i class="bi bi-eye"></i> Detalji
+                                                                </a>
+                                                            </td>
+                                                        </tr>
+                                                    @endforeach
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    @endif
                                 </div>
 
                                 <!-- Section: Promos -->

@@ -91,7 +91,6 @@ class CheckoutController extends Controller
                 'Kupac_ID' => $user->id,
                 'NacinPlacanja_ID' => $validated['nacin_placanja_id'],
                 'Datum_narudzbe' => now()->toDateString(),
-                'Adresa_dostave' => $validated['adresa_dostave'],
                 'Ukupni_iznos' => $total,
             ]);
 

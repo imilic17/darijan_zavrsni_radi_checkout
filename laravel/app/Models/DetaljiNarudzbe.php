@@ -30,5 +30,24 @@ class DetaljiNarudzbe extends Model
         return $this->belongsTo(Proizvod::class, 'Proizvod_ID');
     }
 
-    
+    /**
+     
+     */
+    public function getKolicinaAttribute()
+    {
+        return $this->attributes['Kolicina'] ?? null;
+    }
+
+    /**
+     * Return the quantity for this detail.
+     */
+    public function getCijenaAttribute()
+    {
+        // If the detail row stores a Cijena column (e.g. future migrations), prefer it
+        if (array_key_exists('Cijena', $this->attributes)) {
+            return $this->attributes['Cijena'];
+        }
+
+        return optional($this->proizvod)->Cijena ?? 0;
+    }
 }
