@@ -17,7 +17,6 @@ class Narudzba extends Model
         'Kupac_ID',
         'NacinPlacanja_ID',
         'Datum_narudzbe',
-        'Adresa_dostave',
         'Ukupni_iznos',
     ];
 
@@ -61,14 +60,5 @@ class Narudzba extends Model
     {
         // migration does not include Status column; return default if missing
         return $this->attributes['Status'] ?? ($this->attributes['Status'] ?? 'U obradi');
-    }
-
-    /**
-     * Compatibility accessor for delivery address. DB column is `Adresa_dostave`.
-     * Allows using $order->adresa_dostave in views.
-     */
-    public function getAdresaDostaveAttribute()
-    {
-        return $this->attributes['Adresa_dostave'] ?? null;
     }
 }
