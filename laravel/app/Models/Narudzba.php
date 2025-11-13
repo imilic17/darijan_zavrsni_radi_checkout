@@ -18,9 +18,13 @@ class Narudzba extends Model
         'NacinPlacanja_ID',
         'Datum_narudzbe',
         'Ukupni_iznos',
+        'Status',   // ⬅️ IMPORTANT: allow updating status
     ];
 
-    /** 🔗 Relations */
+    /** ---------------------------
+     *  🔗 Relations
+     *  --------------------------- */
+
     public function kupac()
     {
         return $this->belongsTo(Kupac::class, 'Kupac_ID');
@@ -36,29 +40,37 @@ class Narudzba extends Model
         return $this->belongsTo(NacinPlacanja::class, 'NacinPlacanja_ID');
     }
 
-    // -----------------------------
-    // Attribute accessors (compatibility helpers)
-    // Allows views/controllers that expect standard Laravel names
-    // (id, user_id, ukupna_cijena, status) to keep working.
-    // -----------------------------
+    /** ---------------------------
+     *  🧩 Attribute Accessors
+     *  --------------------------- */
+
+    // Standardized ID alias: $order->id works
     public function getIdAttribute()
     {
         return $this->attributes['Narudzba_ID'] ?? null;
     }
 
+    // For compatibility with "user_id"
     public function getUserIdAttribute()
     {
         return $this->attributes['Kupac_ID'] ?? null;
     }
 
+    // Total price compatibility
     public function getUkupnaCijenaAttribute()
     {
         return $this->attributes['Ukupni_iznos'] ?? null;
     }
 
+    // STATUS (value + default)
     public function getStatusAttribute()
     {
-        // migration does not include Status column; return default if missing
-        return $this->attributes['Status'] ?? ($this->attributes['Status'] ?? 'U obradi');
+        return $this->attributes['Status'] ?? 'U obradi';
+    }
+
+    public function setStatusAttribute($value)
+    {
+        // protect from invalid values if needed
+        $this->attributes['Status'] = $value ?: 'U obradi';
     }
 }

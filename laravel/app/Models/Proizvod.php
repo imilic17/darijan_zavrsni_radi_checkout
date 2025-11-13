@@ -37,4 +37,6 @@ class Proizvod extends Model
     {
         return $this->hasMany(DetaljiNarudzbe::class, 'Proizvod_ID', 'Proizvod_ID');
     }
+
+    
 }
