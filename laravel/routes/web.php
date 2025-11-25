@@ -39,7 +39,12 @@ Route::middleware(['auth', 'admin'])
         Route::resource('products', AdminProductController::class)->except(['show']);
         Route::resource('users', AdminUserController::class)->only(['index', 'show']);
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
+        Route::resource('users', AdminUserController::class)->only(['index', 'show']);
+        Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
+
     });
+
+
 
 
 /*

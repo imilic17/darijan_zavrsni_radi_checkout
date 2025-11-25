@@ -11,19 +11,42 @@ use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
 {
-    public function index()
-    {
-        $products = Proizvod::with(['kategorija', 'tip'])
-            ->orderBy('id', 'desc')
-            ->paginate(20);
+    
+ public function index(Request $request)
+{
+    $query = Proizvod::with('kategorija');
 
-        return view('admin.products.index', compact('products'));
+    // 🔍 SEARCH by any part of name or code (supports multiple words)
+    if ($search = trim($request->input('q'))) {
+        $terms = preg_split('/\s+/', $search); // split on spaces
+
+        $query->where(function ($q) use ($terms) {
+            foreach ($terms as $term) {
+                $q->where(function ($sub) use ($term) {
+                    $sub->where('Naziv', 'like', "%{$term}%")
+                        ->orWhere('sifra', 'like', "%{$term}%");
+                });
+            }
+        });
     }
+
+    // 🏷 FILTER by category
+    if ($categoryId = $request->input('category')) {
+        $query->where('kategorija', $categoryId);
+    }
+
+    // endless list (no pagination)
+    $products = $query->orderByDesc('Proizvod_ID')->get();
+    $categories = Kategorija::orderBy('ImeKategorija')->get();
+
+    return view('admin.products.index', compact('products', 'categories'));
+}
+
 
     public function create()
     {
-        $categories = Kategorija::orderBy('Naziv')->get();
-        $types = TipProizvoda::orderBy('naziv')->get();
+        $categories = Kategorija::orderBy('ImeKategorija')->get();
+        $types = TipProizvoda::orderBy('Naziv')->get(); // <-- FIX: column is "Naziv"
 
         return view('admin.products.create', compact('categories', 'types'));
     }
@@ -31,21 +54,27 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $data = $request->validate([
-            'sifra'               => ['required', 'string', 'max:100', 'unique:proizvodi,sifra'],
+            // FIXED TABLE NAME
+            'sifra'               => ['required', 'string', 'max:100', 'unique:proizvod,sifra'],
+
             'Naziv'               => ['required', 'string', 'max:255'],
             'Opis'                => ['nullable', 'string'],
             'KratkiOpis'          => ['nullable', 'string', 'max:500'],
             'Cijena'              => ['required', 'numeric', 'min:0'],
-            'kategorija'          => ['required', 'exists:kategorije,id'],
-            'tip_id'              => ['nullable', 'exists:tipovi,id'],
+
+            // FIXED: table = kategorija, PK = id_kategorija
+            'kategorija'          => ['required', 'exists:kategorija,id_kategorija'],
+
+            // FIXED: table = tipproizvoda, PK = id_tip
+            'tip_id'              => ['nullable', 'exists:tipproizvoda,id_tip'],
+
             'StanjeNaSkladistu'   => ['required', 'integer', 'min:0'],
             'Slika'               => ['nullable', 'image'],
         ]);
 
-        // handle image upload
+        // handle image
         if ($request->hasFile('Slika')) {
-            $path = $request->file('Slika')->store('products', 'public');
-            $data['Slika'] = $path;
+            $data['Slika'] = $request->file('Slika')->store('products', 'public');
         }
 
         Proizvod::create($data);
@@ -58,7 +87,7 @@ class ProductController extends Controller
     public function edit(Proizvod $product)
     {
         $categories = Kategorija::orderBy('Naziv')->get();
-        $types = TipProizvoda::orderBy('naziv')->get();
+        $types = TipProizvoda::orderBy('Naziv')->get();
 
         return view('admin.products.edit', compact('product', 'categories', 'types'));
     }
@@ -66,24 +95,27 @@ class ProductController extends Controller
     public function update(Request $request, Proizvod $product)
     {
         $data = $request->validate([
-            'sifra'               => ['required', 'string', 'max:100', 'unique:proizvodi,sifra,' . $product->id],
+            'sifra'               => ['required', 'string', 'max:100', 'unique:proizvod,sifra,' . $product->Proizvod_ID . ',Proizvod_ID'],
+
             'Naziv'               => ['required', 'string', 'max:255'],
             'Opis'                => ['nullable', 'string'],
             'KratkiOpis'          => ['nullable', 'string', 'max:500'],
             'Cijena'              => ['required', 'numeric', 'min:0'],
-            'kategorija'          => ['required', 'exists:kategorije,id'],
-            'tip_id'              => ['nullable', 'exists:tipovi,id'],
+
+            'kategorija'          => ['required', 'exists:kategorija,id_kategorija'],
+            'tip_id'              => ['nullable', 'exists:tipproizvoda,id_tip'],
+
             'StanjeNaSkladistu'   => ['required', 'integer', 'min:0'],
             'Slika'               => ['nullable', 'image'],
         ]);
 
         if ($request->hasFile('Slika')) {
+
             if ($product->Slika) {
                 Storage::disk('public')->delete($product->Slika);
             }
 
-            $path = $request->file('Slika')->store('products', 'public');
-            $data['Slika'] = $path;
+            $data['Slika'] = $request->file('Slika')->store('products', 'public');
         }
 
         $product->update($data);

@@ -1,74 +1,109 @@
+{{-- resources/views/layouts/admin.blade.php --}}
 <!DOCTYPE html>
 <html lang="hr">
 <head>
     <meta charset="utf-8">
-    <title>TechShop Admin</title>
+    <title>@yield('title', 'Admin — TechShop')</title>
+
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
-    {{-- Bootstrap --}}
+    {{-- Bootstrap CSS --}}
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    {{-- Bootstrap Icons --}}
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+    {{-- Optional custom CSS (commented out if you don’t use it) --}}
+    {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 </head>
+
 <body class="bg-light">
 
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-4">
-    <div class="container">
-        <a class="navbar-brand fw-bold" href="{{ route('admin.dashboard') }}">
-            TechShop Admin
-        </a>
+    {{-- ADMIN NAVBAR --}}
+    <nav class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container d-flex justify-content-between">
+            
+            <a class="navbar-brand fw-bold" href="{{ route('admin.dashboard') }}">
+                <i class="bi bi-speedometer2 me-2"></i>TechShop Admin
+            </a>
 
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#adminNav">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-
-        <div class="collapse navbar-collapse" id="adminNav">
-            <ul class="navbar-nav me-auto">
-                <li class="nav-item">
-                    <a href="{{ route('admin.products.index') }}" class="nav-link">Proizvodi</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.orders.index') }}" class="nav-link">Narudžbe</a>
-                </li>
-                <li class="nav-item">
-                    <a href="{{ route('admin.users.index') }}" class="nav-link">Korisnici</a>
-                </li>
-            </ul>
-
-            <ul class="navbar-nav ms-auto">
-                <li class="nav-item">
-                    <a href="{{ route('index.index') }}" class="nav-link">
-                        ← Natrag na trgovinu
+            <ul class="navbar-nav flex-row">
+                {{-- Dashboard --}}
+                <li class="nav-item me-3">
+                    <a href="{{ route('admin.dashboard') }}" class="nav-link text-white">
+                        <i class="bi bi-grid-fill me-1"></i> Dashboard
                     </a>
                 </li>
 
-                @auth
-                    <li class="nav-item">
-                        <span class="navbar-text me-2">
-                            {{ auth()->user()->full_name ?? auth()->user()->email }}
-                        </span>
-                    </li>
-                    <li class="nav-item">
-                        <form action="{{ route('admin.logout') }}" method="POST" class="d-inline">
-                            @csrf
-                            <button class="btn btn-sm btn-outline-light">Odjava</button>
-                        </form>
-                    </li>
-                @endauth
+                {{-- Products --}}
+                <li class="nav-item me-3">
+                    <a href="{{ route('admin.products.index') }}" class="nav-link text-white">
+                        <i class="bi bi-box-seam me-1"></i> Proizvodi
+                    </a>
+                </li>
+
+                {{-- Orders --}}
+                <li class="nav-item me-3">
+                    <a href="{{ route('admin.orders.index') }}" class="nav-link text-white">
+                        <i class="bi bi-receipt me-1"></i> Narudžbe
+                    </a>
+                </li>
+
+                {{-- Users --}}
+                <li class="nav-item me-3">
+                    <a href="{{ route('admin.users.index') }}" class="nav-link text-white">
+                        <i class="bi bi-people me-1"></i> Korisnici
+                    </a>
+                </li>
+
+                {{-- Logout --}}
+                <li class="nav-item">
+                    <form action="{{ route('admin.logout') }}" method="POST">
+                        @csrf
+                        <button class="btn btn-sm btn-danger">
+                            <i class="bi bi-box-arrow-right me-1"></i> Odjava
+                        </button>
+                    </form>
+                </li>
             </ul>
+
         </div>
-    </div>
-</nav>
+    </nav>
 
-<div class="container mb-5">
-    @if(session('success'))
-        <div class="alert alert-success">
-            {{ session('success') }}
-        </div>
-    @endif
+    {{-- PAGE CONTENT --}}
+    <main class="container py-4">
+        @yield('content')
+    </main>
 
-    @yield('content')
-</div>
+    {{-- Bootstrap JS --}}
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-@stack('scripts')
+    <script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    const searchInput = document.querySelector('input[name="q"]');
+    const categorySelect = document.querySelector('select[name="category"]');
+    const form = searchInput?.closest('form');
+
+    let timer;
+
+    function autoSearch() {
+        clearTimeout(timer);
+        timer = setTimeout(() => {
+            form?.submit();
+        }, 350);  // delay in ms
+    }
+
+    if (searchInput) {
+        searchInput.addEventListener('keyup', autoSearch);
+    }
+
+    if (categorySelect) {
+        categorySelect.addEventListener('change', () => form.submit());
+    }
+
+});
+</script>
+
 </body>
 </html>
