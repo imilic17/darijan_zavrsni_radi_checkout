@@ -1,0 +1,5 @@
+Ostalo je:
+
+1. dovršit admin slučelje (narudžbe i korisnici)
+2. e-mail - računi
+3. ono testno plačanje
