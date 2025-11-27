@@ -182,8 +182,8 @@
                     <div class="mb-3">
                         <label class="form-label">Šifra</label>
                         <input type="text" name="sifra"
-                               class="form-control @error('sifra') is-invalid @enderror"
-                               value="{{ old('sifra') }}" required>
+       class="form-control @error('sifra') is-invalid @enderror"
+       value="{{ old('sifra', $defaultSifra ?? '') }}" required>
                         @error('sifra')
                         <div class="invalid-feedback">{{ $message }}</div>
                         @enderror
@@ -251,16 +251,18 @@
                         <div class="col-md-4">
                             <label class="form-label">Kategorija</label>
                             <select name="kategorija"
-                                    class="form-select @error('kategorija') is-invalid @enderror"
-                                    required>
-                                <option value="">Odaberi kategoriju...</option>
-                                @foreach($categories as $cat)
-                                    <option value="{{ $cat->id_kategorija }}"
-                                        @selected(old('kategorija') == $cat->id_kategorija)>
-                                        {{ $cat->ImeKategorija }}
-                                    </option>
-                                @endforeach
-                            </select>
+        id="productCategorySelect"
+        class="form-select @error('kategorija') is-invalid @enderror"
+        required>
+    <option value="">Odaberi kategoriju...</option>
+    @foreach($categories as $cat)
+        <option value="{{ $cat->id_kategorija }}"
+            @selected(old('kategorija') == $cat->id_kategorija)>
+            {{ $cat->ImeKategorija ?? $cat->Naziv }}
+        </option>
+    @endforeach
+</select>
+
                             @error('kategorija')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -272,15 +274,18 @@
                         <div class="col-md-6">
                             <label class="form-label">Tip proizvoda</label>
                             <select name="tip_id"
-                                    class="form-select @error('tip_id') is-invalid @enderror">
-                                <option value="">Bez tipa</option>
-                                @foreach($types as $type)
-                                    <option value="{{ $type->id_tip }}"
-                                        @selected(old('tip_id') == $type->id_tip)>
-                                        {{ $type->naziv_tip }}
-                                    </option>
-                                @endforeach
-                            </select>
+        id="productTypeSelect"
+        class="form-select @error('tip_id') is-invalid @enderror">
+    <option value="">Bez tipa</option>
+    @foreach($types as $type)
+        <option value="{{ $type->id_tip }}"
+                data-category-id="{{ $type->kategorija_id }}"
+                @selected(old('tip_id') == $type->id_tip)>
+            {{ $type->naziv_tip }}
+        </option>
+    @endforeach
+</select>
+
                             @error('tip_id')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror

@@ -80,30 +80,53 @@
 @stack('scripts')
     <script>
 document.addEventListener('DOMContentLoaded', function () {
+    const categorySelect = document.getElementById('productCategorySelect');
+    const typeSelect     = document.getElementById('productTypeSelect');
 
-    const searchInput = document.querySelector('input[name="q"]');
-    const categorySelect = document.querySelector('select[name="category"]');
-    const form = searchInput?.closest('form');
+    if (!categorySelect || !typeSelect) return;
 
-    let timer;
+    const allTypeOptions = Array.from(typeSelect.options);
 
-    function autoSearch() {
-        clearTimeout(timer);
-        timer = setTimeout(() => {
-            form?.submit();
-        }, 350);  // delay in ms
+    function filterTypesByCategory() {
+        const selectedCatId = categorySelect.value;
+
+        // sačuvaj odabrani tip (ako postoji)
+        const currentValue = typeSelect.value;
+
+        typeSelect.innerHTML = '';
+
+        // placeholder "Bez tipa"
+        const placeholder = allTypeOptions.find(opt => opt.value === '');
+        if (placeholder) {
+            typeSelect.appendChild(placeholder);
+        }
+
+        allTypeOptions.forEach(opt => {
+            if (!opt.value) return; // preskoči placeholder
+
+            const optCatId = opt.dataset.categoryId || '';
+
+            if (!selectedCatId || optCatId === selectedCatId) {
+                typeSelect.appendChild(opt);
+            }
+        });
+
+        // ako je prethodno odabrani tip još uvijek vidljiv, vrati ga
+        const optionStillExists = Array.from(typeSelect.options)
+            .some(opt => opt.value === currentValue);
+
+        if (optionStillExists) {
+            typeSelect.value = currentValue;
+        } else {
+            typeSelect.value = '';
+        }
     }
 
-    if (searchInput) {
-        searchInput.addEventListener('keyup', autoSearch);
-    }
+    categorySelect.addEventListener('change', filterTypesByCategory);
 
-    if (categorySelect) {
-        categorySelect.addEventListener('change', () => form.submit());
-    }
-
+    // pokreni jednom na load (old() vrijednosti)
+    filterTypesByCategory();
 });
 </script>
-
 </body>
 </html>
