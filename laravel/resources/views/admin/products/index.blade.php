@@ -81,7 +81,7 @@
                             {{-- Thumbnail --}}
                             <td>
                                 @if($product->Slika)
-                                    <img src="{{ asset('storage/'.$product->Slika) }}"
+                                    <img src="{{ $product->slika_url }}"
                                         alt="{{ $product->Naziv }}"
                                         class="rounded"
                                         style="width: 56px; height: 56px; object-fit: cover;">
@@ -420,7 +420,7 @@
                         <label class="form-label">Nova slika</label>
                         <input type="file" name="Slika" class="form-control">
                         <div class="mt-2">
-                            <img id="edit_preview" src="" class="border rounded"
+                            <img id="edit_preview" src="{{ $product->slika_url }}" class="border rounded"
                                  style="width: 120px; height: 120px; object-fit: cover;">
                         </div>
                     </div>

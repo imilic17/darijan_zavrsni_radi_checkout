@@ -3,7 +3,7 @@
         <div class="card border-0 shadow-sm h-100" style="cursor:pointer;"
              onclick="window.location='{{ route('proizvod.show', $proizvod->Proizvod_ID) }}'">
             <div class="position-relative" style="height: 220px; overflow: hidden; border-radius: 1rem 1rem 0 0;">
-                <img src="{{ asset($proizvod->Slika) }}" alt="{{ $proizvod->Naziv }}"
+                <img src="{{ $product->slika_url }}" alt="{{ $proizvod->Naziv }}"
                      class="w-100 h-100 object-fit-cover" style="transition: transform .3s ease;"
                      onmouseover="this.style.transform='scale(1.05)'"
                      onmouseout="this.style.transform='scale(1)'">

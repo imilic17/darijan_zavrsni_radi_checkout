@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 04, 2025 at 10:55 PM
+-- Generation Time: Nov 27, 2025 at 06:02 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,6 +32,14 @@ CREATE TABLE `cache` (
   `value` mediumtext NOT NULL,
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `cache`
+--
+
+INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
+('laravel-cache-darijanko112@gmail.com|127.0.0.1', 'i:3;', 1761406149),
+('laravel-cache-darijanko112@gmail.com|127.0.0.1:timer', 'i:1761406149;', 1761406149);
 
 -- --------------------------------------------------------
 
@@ -29137,21 +29145,13 @@ INSERT INTO `detalji_narudzbe` (`DetaljiNarudzbe_ID`, `Narudzba_ID`, `Proizvod_I
 (26, 1, 1, 1, NULL, NULL),
 (27, 1, 2, 1, NULL, NULL),
 (28, 2, 2, 1, NULL, NULL),
-(29, 39, 566, 1, '2025-11-04 09:33:11', '2025-11-04 09:33:11'),
-(30, 39, 589, 2, '2025-11-04 09:33:11', '2025-11-04 09:33:11'),
-(31, 40, 589, 1, '2025-11-04 09:43:00', '2025-11-04 09:43:00'),
-(32, 41, 585, 1, '2025-11-04 10:12:44', '2025-11-04 10:12:44'),
-(33, 42, 583, 1, '2025-11-04 10:18:29', '2025-11-04 10:18:29'),
-(34, 43, 565, 2, '2025-11-04 11:13:54', '2025-11-04 11:13:54'),
-(35, 44, 566, 1, '2025-11-04 11:50:29', '2025-11-04 11:50:29'),
-(36, 44, 588, 1, '2025-11-04 11:50:29', '2025-11-04 11:50:29'),
-(37, 45, 561, 1, '2025-11-04 12:52:02', '2025-11-04 12:52:02'),
-(38, 45, 589, 1, '2025-11-04 12:52:02', '2025-11-04 12:52:02'),
-(39, 46, 583, 1, '2025-11-04 12:53:04', '2025-11-04 12:53:04'),
-(40, 46, 588, 1, '2025-11-04 12:53:04', '2025-11-04 12:53:04'),
-(41, 46, 589, 1, '2025-11-04 12:53:04', '2025-11-04 12:53:04'),
-(42, 47, 572, 1, '2025-11-04 20:04:34', '2025-11-04 20:04:34'),
-(43, 48, 589, 1, '2025-11-04 20:43:59', '2025-11-04 20:43:59');
+(29, 38, 588, 1, '2025-11-12 07:05:37', '2025-11-12 07:05:37'),
+(30, 38, 589, 1, '2025-11-12 07:05:38', '2025-11-12 07:05:38'),
+(31, 38, 591, 1, '2025-11-12 07:05:38', '2025-11-12 07:05:38'),
+(32, 39, 589, 1, '2025-11-12 07:07:39', '2025-11-12 07:07:39'),
+(33, 40, 588, 1, '2025-11-27 15:59:27', '2025-11-27 15:59:27'),
+(34, 40, 589, 1, '2025-11-27 15:59:27', '2025-11-27 15:59:27'),
+(35, 40, 591, 1, '2025-11-27 15:59:27', '2025-11-27 15:59:27');
 
 --
 -- Triggers `detalji_narudzbe`
@@ -29256,7 +29256,8 @@ INSERT INTO `kategorija` (`id_kategorija`, `ImeKategorija`) VALUES
 (7, 'Tableti'),
 (8, 'TV'),
 (9, 'Audi i Video'),
-(10, 'Gaming');
+(10, 'Gaming'),
+(11, 'Mreža');
 
 -- --------------------------------------------------------
 
@@ -29286,10 +29287,7 @@ INSERT INTO `kosarica` (`id`, `korisnik_id`, `proizvod_id`, `kolicina`, `datum_d
 (49, 1, 587, 1, '2025-10-23 16:59:38'),
 (50, 1, 585, 1, '2025-10-23 16:59:38'),
 (51, 1, 589, 2, '2025-10-23 16:59:38'),
-(52, 1, 393, 1, '2025-10-23 16:59:38'),
-(53, 5, 591, 1, '2025-10-25 15:29:02'),
-(54, 5, 589, 1, '2025-10-25 15:29:03'),
-(55, 5, 588, 1, '2025-10-25 15:29:04');
+(52, 1, 393, 1, '2025-10-23 16:59:38');
 
 -- --------------------------------------------------------
 
@@ -29391,7 +29389,10 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (25, '2025_10_25_181403_create_countries_table', 7),
 (26, '2025_10_25_190129_create_country_town_table', 8),
 (27, '2025_11_02_000000_add_updated_at_to_narudzba_table', 9),
-(28, '2025_11_04_000000_add_timestamps_to_detalji_narudzbe_table', 10);
+(28, '2025_11_04_000000_add_timestamps_to_detalji_narudzbe_table', 9),
+(29, '2025_11_04_010000_add_adresa_dostave_to_narudzba_table', 9),
+(30, '2025_11_13_193407_add_is_admin_to_users_table', 10),
+(31, '2025_11_13_202024_add_status_to_narudzba_table', 11);
 
 -- --------------------------------------------------------
 
@@ -29432,61 +29433,56 @@ CREATE TABLE `narudzba` (
   `Datum_narudzbe` date NOT NULL,
   `Ukupni_iznos` decimal(10,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
-  `updated_at` timestamp NULL DEFAULT NULL
+  `updated_at` timestamp NULL DEFAULT NULL,
+  `Adresa_dostave` varchar(500) DEFAULT NULL,
+  `Status` varchar(255) NOT NULL DEFAULT 'U obradi'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `narudzba`
 --
 
-INSERT INTO `narudzba` (`Narudzba_ID`, `Kupac_ID`, `NacinPlacanja_ID`, `Datum_narudzbe`, `Ukupni_iznos`, `created_at`, `updated_at`) VALUES
-(1, 1, 2, '2024-06-17', 995.00, NULL, NULL),
-(2, 2, 1, '2024-06-18', 238.00, NULL, NULL),
-(3, 3, 3, '2024-06-19', 33.00, NULL, NULL),
-(4, 4, 2, '2024-06-20', 120.00, NULL, NULL),
-(5, 5, 1, '2024-06-21', 179.99, NULL, NULL),
-(6, 6, 3, '2024-06-22', 75.99, NULL, NULL),
-(7, 7, 2, '2024-06-23', 89.99, NULL, NULL),
-(8, 8, 1, '2024-06-24', 105.99, NULL, NULL),
-(9, 9, 3, '2024-06-25', 119.50, NULL, NULL),
-(10, 10, 2, '2024-06-26', 210.00, NULL, NULL),
-(11, 11, 1, '2024-06-27', 155.00, NULL, NULL),
-(12, 12, 3, '2024-06-28', 45.50, NULL, NULL),
-(13, 13, 2, '2024-06-29', 215.00, NULL, NULL),
-(14, 14, 1, '2024-06-30', 59.50, NULL, NULL),
-(15, 15, 3, '2024-07-01', 12.00, NULL, NULL),
-(16, 16, 2, '2024-07-02', 25.00, NULL, NULL),
-(17, 17, 1, '2024-07-03', 89.99, NULL, NULL),
-(18, 18, 3, '2024-07-04', 144.50, NULL, NULL),
-(19, 19, 2, '2024-07-05', 210.00, NULL, NULL),
-(20, 20, 1, '2024-07-06', 238.00, NULL, NULL),
-(21, 21, 3, '2024-07-07', 155.00, NULL, NULL),
-(22, 22, 2, '2024-07-08', 75.99, NULL, NULL),
-(23, 23, 1, '2024-07-09', 105.99, NULL, NULL),
-(24, 24, 3, '2024-07-10', 59.50, NULL, NULL),
-(25, 25, 2, '2024-07-11', 119.50, NULL, NULL),
-(26, 1, 2, '2024-12-01', 1354.99, NULL, NULL),
-(27, 2, 1, '2024-12-02', 518.99, NULL, NULL),
-(28, 3, 2, '2024-12-03', 1086.98, NULL, NULL),
-(29, 4, 3, '2024-12-04', 188.50, NULL, NULL),
-(30, 5, 1, '2024-12-05', 400.00, NULL, NULL),
-(31, 6, 2, '2024-12-06', 406.98, NULL, NULL),
-(32, 7, 3, '2024-12-07', 175.49, NULL, NULL),
-(33, 8, 2, '2024-12-08', 311.99, NULL, NULL),
-(34, 9, 1, '2024-12-09', 310.49, NULL, NULL),
-(35, 10, 2, '2024-12-10', 167.49, NULL, NULL),
-(36, 1, 1, '2025-03-01', 7649.98, NULL, NULL),
-(37, 2, 2, '2025-03-02', 149.99, NULL, NULL),
-(39, 3, 9, '2025-11-04', 4323.36, '2025-11-04 09:33:11', '2025-11-04 09:33:11'),
-(40, 3, 12, '2025-11-04', 1842.36, '2025-11-04 09:42:59', '2025-11-04 09:42:59'),
-(41, 3, 4, '2025-11-04', 710.71, '2025-11-04 10:12:44', '2025-11-04 10:12:44'),
-(42, 3, 2, '2025-11-04', 1334.00, '2025-11-04 10:18:29', '2025-11-04 10:18:29'),
-(43, 3, 9, '2025-11-04', 306.94, '2025-11-04 11:13:54', '2025-11-04 11:13:54'),
-(44, 3, 12, '2025-11-04', 649.58, '2025-11-04 11:50:29', '2025-11-04 11:50:29'),
-(45, 3, 12, '2025-11-04', 2768.96, '2025-11-04 12:52:02', '2025-11-04 12:52:02'),
-(46, 3, 9, '2025-11-04', 3187.30, '2025-11-04 12:53:04', '2025-11-04 12:53:04'),
-(47, 3, 10, '2025-11-04', 1549.87, '2025-11-04 20:04:34', '2025-11-04 20:04:34'),
-(48, 3, 2, '2025-11-04', 1842.36, '2025-11-04 20:43:59', '2025-11-04 20:43:59');
+INSERT INTO `narudzba` (`Narudzba_ID`, `Kupac_ID`, `NacinPlacanja_ID`, `Datum_narudzbe`, `Ukupni_iznos`, `created_at`, `updated_at`, `Adresa_dostave`, `Status`) VALUES
+(1, 1, 2, '2024-06-17', 995.00, NULL, NULL, NULL, 'U obradi'),
+(2, 2, 1, '2024-06-18', 238.00, NULL, NULL, NULL, 'U obradi'),
+(3, 3, 3, '2024-06-19', 33.00, NULL, NULL, NULL, 'U obradi'),
+(4, 4, 2, '2024-06-20', 120.00, NULL, NULL, NULL, 'U obradi'),
+(5, 5, 1, '2024-06-21', 179.99, NULL, NULL, NULL, 'U obradi'),
+(6, 6, 3, '2024-06-22', 75.99, NULL, NULL, NULL, 'U obradi'),
+(7, 7, 2, '2024-06-23', 89.99, NULL, NULL, NULL, 'U obradi'),
+(8, 8, 1, '2024-06-24', 105.99, NULL, NULL, NULL, 'U obradi'),
+(9, 9, 3, '2024-06-25', 119.50, NULL, NULL, NULL, 'U obradi'),
+(10, 10, 2, '2024-06-26', 210.00, NULL, NULL, NULL, 'U obradi'),
+(11, 11, 1, '2024-06-27', 155.00, NULL, NULL, NULL, 'U obradi'),
+(12, 12, 3, '2024-06-28', 45.50, NULL, NULL, NULL, 'U obradi'),
+(13, 13, 2, '2024-06-29', 215.00, NULL, NULL, NULL, 'U obradi'),
+(14, 14, 1, '2024-06-30', 59.50, NULL, NULL, NULL, 'U obradi'),
+(15, 15, 3, '2024-07-01', 12.00, NULL, NULL, NULL, 'U obradi'),
+(16, 16, 2, '2024-07-02', 25.00, NULL, NULL, NULL, 'U obradi'),
+(17, 17, 1, '2024-07-03', 89.99, NULL, NULL, NULL, 'U obradi'),
+(18, 18, 3, '2024-07-04', 144.50, NULL, NULL, NULL, 'U obradi'),
+(19, 19, 2, '2024-07-05', 210.00, NULL, NULL, NULL, 'U obradi'),
+(20, 20, 1, '2024-07-06', 238.00, NULL, NULL, NULL, 'U obradi'),
+(21, 21, 3, '2024-07-07', 155.00, NULL, NULL, NULL, 'U obradi'),
+(22, 22, 2, '2024-07-08', 75.99, NULL, NULL, NULL, 'U obradi'),
+(23, 23, 1, '2024-07-09', 105.99, NULL, NULL, NULL, 'U obradi'),
+(24, 24, 3, '2024-07-10', 59.50, NULL, NULL, NULL, 'U obradi'),
+(25, 25, 2, '2024-07-11', 119.50, NULL, NULL, NULL, 'U obradi'),
+(26, 1, 2, '2024-12-01', 1354.99, NULL, NULL, NULL, 'U obradi'),
+(27, 2, 1, '2024-12-02', 518.99, NULL, NULL, NULL, 'U obradi'),
+(28, 3, 2, '2024-12-03', 1086.98, NULL, NULL, NULL, 'U obradi'),
+(29, 4, 3, '2024-12-04', 188.50, NULL, NULL, NULL, 'U obradi'),
+(30, 5, 1, '2024-12-05', 400.00, NULL, NULL, NULL, 'U obradi'),
+(31, 6, 2, '2024-12-06', 406.98, NULL, NULL, NULL, 'U obradi'),
+(32, 7, 3, '2024-12-07', 175.49, NULL, NULL, NULL, 'U obradi'),
+(33, 8, 2, '2024-12-08', 311.99, NULL, NULL, NULL, 'U obradi'),
+(34, 9, 1, '2024-12-09', 310.49, NULL, NULL, NULL, 'U obradi'),
+(35, 10, 2, '2024-12-10', 167.49, NULL, NULL, NULL, 'U obradi'),
+(36, 1, 1, '2025-03-01', 7649.98, NULL, NULL, NULL, 'U obradi'),
+(37, 2, 2, '2025-03-02', 149.99, NULL, NULL, NULL, 'U obradi'),
+(38, 5, 4, '2025-11-12', 1865.30, '2025-11-12 07:05:37', '2025-11-12 07:05:37', NULL, 'U obradi'),
+(39, 5, 4, '2025-11-12', 1842.36, '2025-11-12 07:07:39', '2025-11-12 07:07:39', NULL, 'U obradi'),
+(40, 5, 7, '2025-11-27', 1865.30, '2025-11-27 15:59:27', '2025-11-27 15:59:27', NULL, 'U obradi');
 
 -- --------------------------------------------------------
 
@@ -30067,18 +30063,18 @@ INSERT INTO `proizvod` (`Proizvod_ID`, `sifra`, `Naziv`, `Opis`, `Cijena`, `Krat
 (558, 'PRD-115LQ', 'Reprehenderit nemo nihil', 'Possimus ipsum asperiores est ullam illo. Quia et qui eius explicabo amet non veniam excepturi. Molestiae corrupti consequatur illum odio autem veniam ullam. Quia natus omnis accusantium voluptatum. Hic ea error qui et qui vitae. Aliquid dolores et vitae non provident voluptas commodi. Dolorum cupiditate natus velit soluta voluptas.', 583.61, 'Repellendus explicabo ut omnis dolore rerum voluptates.', 5, 6, 'uploads/products/product_10_67e2fa07645fe.jpg', 2),
 (559, 'PRD-022IQ', 'Sed vitae iure', 'Recusandae sequi aliquid inventore similique natus. Omnis non excepturi dolorem. Et eum rerum qui dolor. Molestias explicabo autem aperiam nemo nostrum aut. Doloribus perspiciatis id animi. Quasi quis nesciunt nam deleniti voluptas. Ea ut est dolorum amet ipsam atque quasi.', 250.14, 'Dolorem ea magni aspernatur aperiam a aperiam reiciendis ex quas.', 6, 53, 'uploads/products/product_7_682b531a776de.jpeg', 2),
 (560, 'PRD-563EL', 'Ipsum quo reiciendis', 'Minus alias placeat perspiciatis possimus. Sed nulla aspernatur dolor. Vel laboriosam sunt harum ab velit ut aliquid. Et enim quas aut libero consequatur delectus.', 1317.66, 'Consequatur aliquid provident ut quo dolor harum dicta.', 1, 8, 'uploads/products/product_1_67e2f5cdb34ef.jpg', 3),
-(561, 'PRD-075HO', 'Eos facere tempora', 'Tempore id perspiciatis velit autem. Pariatur quia ut sed minus ipsa eligendi asperiores voluptate. Et delectus autem reiciendis qui veritatis architecto neque. Magni rerum maxime optio harum est et deserunt et.', 926.60, 'Soluta tenetur pariatur facere omnis est eveniet quas.', 2, 81, 'uploads/products/product_6_682b52f23e66d.jpeg', 3),
+(561, 'PRD-075HO', 'Eos facere tempora', 'Tempore id perspiciatis velit autem. Pariatur quia ut sed minus ipsa eligendi asperiores voluptate. Et delectus autem reiciendis qui veritatis architecto neque. Magni rerum maxime optio harum est et deserunt et.', 926.60, 'Soluta tenetur pariatur facere omnis est eveniet quas.', 2, 83, 'uploads/products/product_6_682b52f23e66d.jpeg', 3),
 (562, 'PRD-301ZM', 'Veniam voluptates minus', 'Sed tempore eligendi earum id. Voluptas quasi odit ut molestiae quas. Quod eum officiis sint nihil libero ab autem accusantium. Ut quisquam et magnam inventore. Magni dicta sed quia sunt. Aperiam veritatis quae accusantium fugiat. Dolores enim nobis ducimus enim.', 773.98, 'Est quo autem sequi repellendus quis autem.', 5, 24, 'uploads/products/product_28_67f4d50690e1d.jpg', 2),
 (563, 'PRD-324FM', 'Debitis earum et', 'Nam similique nemo et. Ut perferendis doloribus est. Et quod ab est provident vel adipisci molestiae. Debitis odio excepturi reiciendis expedita atque. Et molestiae et a iusto est. Ullam quos laudantium magni magni sed voluptatem.', 518.96, 'Asperiores vitae est et ut beatae quas.', 3, 21, 'uploads/products/product_4_682b52cb519f9.jpeg', 1),
 (564, 'PRD-921OC', 'Qui sed impedit', 'At quibusdam sapiente commodi reprehenderit quo minus. Sunt impedit voluptatibus unde eius excepturi corporis tempora minus. Quam in rerum cumque quisquam. Et consectetur harum ipsum et minima asperiores. Voluptas pariatur odit maiores saepe iusto aut consequatur.', 1767.34, 'Harum velit cupiditate possimus laborum porro recusandae expedita non.', 3, 27, 'uploads/products/product_8_682b530d817de.jpeg', 3),
-(565, 'PRD-236WZ', 'Veritatis sed unde', 'Nam illo exercitationem nam. Quod incidunt qui molestiae et. Ullam ad sed voluptas et. Laudantium velit aut ut a.', 153.47, 'In minima nemo odit corrupti et rerum officia.', 6, 9, 'uploads/products/product_11_682b52c31797e.jpeg', 3),
-(566, 'PRD-952HN', 'Nihil fugit dolor', 'Ipsa earum non a et voluptatem. Similique aut voluptatem sed non tempore ut facere maxime. Nihil laudantium culpa voluptas iste sit. Ea adipisci et rem illo non omnis. Pariatur vero et consectetur est cupiditate.', 638.64, 'Ut possimus minus dolorem sint error beatae laborum aliquid.', 2, 3, 'uploads/products/product_16_682b52e1dfe9d.jpeg', 2),
+(565, 'PRD-236WZ', 'Veritatis sed unde', 'Nam illo exercitationem nam. Quod incidunt qui molestiae et. Ullam ad sed voluptas et. Laudantium velit aut ut a.', 153.47, 'In minima nemo odit corrupti et rerum officia.', 6, 13, 'uploads/products/product_11_682b52c31797e.jpeg', 3),
+(566, 'PRD-952HN', 'Nihil fugit dolor', 'Ipsa earum non a et voluptatem. Similique aut voluptatem sed non tempore ut facere maxime. Nihil laudantium culpa voluptas iste sit. Ea adipisci et rem illo non omnis. Pariatur vero et consectetur est cupiditate.', 638.64, 'Ut possimus minus dolorem sint error beatae laborum aliquid.', 2, 7, 'uploads/products/product_16_682b52e1dfe9d.jpeg', 2),
 (567, 'PRD-757IT', 'Cum illo facere', 'Ea doloribus eaque fugit explicabo fuga reiciendis. Neque nam magnam ex perspiciatis est. Dolore qui eum sed ut laboriosam quia. Autem id quia sit sunt. Maiores at est aliquid iusto a magni minima adipisci. Consequuntur vel molestias et voluptas quisquam facilis quis eius.', 1643.58, 'Dolorem dicta voluptatem explicabo dolores quas voluptatem.', 4, 29, 'uploads/products/product_18_682b52f92d6cd.jpeg', 3),
 (568, 'PRD-165JR', 'Illo est aspernatur', 'Enim ea aspernatur ab at minima nihil. Inventore minus et enim expedita. Commodi et id sit sunt ea tempore et. Qui quia cupiditate fugit. Maxime cum eaque optio eveniet debitis.', 1535.01, 'In et eaque minus porro autem consequuntur consequatur.', 6, 97, 'uploads/products/product_13_682b52bc21a0d.jpeg', 2),
 (569, 'PRD-355BX', 'Vitae quam saepe', 'Distinctio iure autem aut culpa neque. Porro eveniet reprehenderit sequi eligendi qui nemo eveniet. Dicta libero consequatur reprehenderit voluptate. Qui sint iste temporibus omnis voluptatibus maxime ut. Voluptas quibusdam quod atque ab. Sit vitae dolore pariatur iure voluptatum. Impedit sapiente et praesentium dolor.', 1960.31, 'Deleniti ut itaque ab consequatur ullam et animi quo.', 1, 8, 'uploads/products/product_18_682b52f92d6cd.jpeg', 2),
 (570, 'PRD-857TZ', 'Nihil sunt omnis', 'Velit voluptatem quis eos. Omnis et dicta aspernatur explicabo officiis omnis. Provident doloremque nam facilis molestiae expedita ratione. Illo sit delectus in quasi magnam.', 1318.12, 'Est esse occaecati repellendus sed quos voluptatum.', 3, 82, 'uploads/products/product_6_682b52f23e66d.jpeg', 1),
 (571, 'PRD-127AC', 'Aut omnis aliquam', 'Necessitatibus ullam sit a et quibusdam error. Voluptate quis at illo deleniti. Nobis alias labore iste id perferendis qui cum. Provident cupiditate earum adipisci magni necessitatibus veritatis dolores. Eaque quam dignissimos sit tempore in adipisci.', 923.01, 'Iste ratione et cum tempora nesciunt eius.', 4, 3, 'uploads/products/product_16_682b52e1dfe9d.jpeg', 3),
-(572, 'PRD-083QK', 'Dolore et voluptates', 'Cumque eligendi voluptas velit. Tempora odio dolore aperiam debitis velit. Tempora quidem labore unde libero soluta iusto. Quia esse accusantium aliquid tenetur et molestiae perferendis eum. Nostrum quaerat iure culpa quis. Quas voluptatem autem placeat placeat delectus dignissimos aut. Magni amet quibusdam eos magni.', 1549.87, 'A aut et praesentium consequatur eum doloribus non quis cum veritatis maxime.', 3, 85, 'uploads/products/product_13_682b52bc21a0d.jpeg', 2),
+(572, 'PRD-083QK', 'Dolore et voluptates', 'Cumque eligendi voluptas velit. Tempora odio dolore aperiam debitis velit. Tempora quidem labore unde libero soluta iusto. Quia esse accusantium aliquid tenetur et molestiae perferendis eum. Nostrum quaerat iure culpa quis. Quas voluptatem autem placeat placeat delectus dignissimos aut. Magni amet quibusdam eos magni.', 1549.87, 'A aut et praesentium consequatur eum doloribus non quis cum veritatis maxime.', 3, 87, 'uploads/products/product_13_682b52bc21a0d.jpeg', 2),
 (573, 'PRD-731GV', 'Laborum neque natus', 'Sit et eum nisi vero voluptas ipsa quaerat cupiditate. Sunt atque ducimus quia sit eos sequi vel. Vel sit amet dolore quibusdam laboriosam sunt. Doloribus necessitatibus accusamus eligendi enim sit sapiente eligendi recusandae. Consectetur rerum et et quis voluptatum. Placeat molestiae aliquam eos voluptatem. Enim asperiores at in omnis iusto a.', 706.64, 'Consectetur quasi est voluptates ipsum dolor tempora unde facilis.', 4, 76, 'uploads/products/product_15_682b52ff60908.jpeg', 1),
 (574, 'PRD-929VP', 'Aut optio porro', 'Vel voluptas at et minus impedit. Excepturi omnis enim voluptate aut voluptatem. Quod recusandae velit velit sed ut debitis facilis. Qui delectus sint voluptatem voluptas illo rem. Iure rerum nulla ex praesentium. Harum sed aut temporibus ex. Nihil asperiores quae qui aperiam expedita omnis.', 703.16, 'Quam similique et vitae saepe nihil quia nobis quo labore.', 4, 42, 'uploads/products/product_6_682b52f23e66d.jpeg', 3),
 (575, 'PRD-629EN', 'Labore iusto temporibus', 'Error ut deserunt sed sed. Ea quis et mollitia vel. Ut qui aliquid exercitationem velit voluptatem et repellat quibusdam. Autem consequatur eum est. Adipisci et mollitia animi. Voluptatibus voluptate error sint id.', 1700.65, 'Quas non nihil doloribus eum maxime ut ipsa sapiente est.', 6, 53, 'uploads/products/product_18_682b52f92d6cd.jpeg', 2),
@@ -30089,14 +30085,16 @@ INSERT INTO `proizvod` (`Proizvod_ID`, `sifra`, `Naziv`, `Opis`, `Cijena`, `Krat
 (580, 'PRD-150YQ', 'Est quod quam', 'Vel magni vero officia ducimus. Aut maiores dolor maiores. Voluptate amet sapiente aperiam reprehenderit id possimus et. Consequatur officia est beatae iusto mollitia atque occaecati. Excepturi rem labore id. Nemo voluptas natus magni assumenda cum.', 792.75, 'Quas id quis distinctio quibusdam consequatur ab recusandae occaecati sit aut.', 4, 18, 'uploads/products/product_6_682b52f23e66d.jpeg', 1),
 (581, 'PRD-579KR', 'Itaque consequatur eum', 'Ratione tenetur praesentium beatae voluptatibus reprehenderit voluptatem. Eum labore pariatur quia. Et nam placeat atque sint totam architecto. Voluptatem officiis voluptas maiores quis. Et at officia voluptatem et totam.', 1703.52, 'Repellendus eveniet molestiae recusandae aspernatur laudantium fugiat voluptas molestiae ea eos.', 6, 100, 'uploads/products/product_15_682b52ff60908.jpeg', 1),
 (582, 'PRD-844WA', 'Numquam illum maiores', 'Eum et est iure dolor et ipsum. Velit excepturi aut voluptatem et ut quia unde. Error dolor dolores et atque quia mollitia. Quod nam ipsa debitis ex commodi. Iusto rerum quam doloribus facere vel odit et.', 908.94, 'Et inventore laboriosam cum sed dolorum cumque deserunt.', 4, 39, 'uploads/products/product_39_683451723d7ed.jpg', 3),
-(583, 'PRD-935BI', 'Earum doloribus molestias', 'Natus aut aut voluptatem sit aliquam enim doloremque ratione. Ex et labore et dolorem qui. Harum quod vel est eaque aliquam. Illum consequuntur ut aut rerum assumenda neque quod blanditiis. Nostrum quo molestias non eveniet accusantium autem. Qui dolores et minima est eveniet nostrum libero.', 1334.00, 'Atque esse totam velit eaque suscipit eos ea repellendus perspiciatis temporibus voluptatem.', 1, 47, 'uploads/products/product_9_682b53079cbf5.jpeg', 1),
+(583, 'PRD-935BI', 'Earum doloribus molestias', 'Natus aut aut voluptatem sit aliquam enim doloremque ratione. Ex et labore et dolorem qui. Harum quod vel est eaque aliquam. Illum consequuntur ut aut rerum assumenda neque quod blanditiis. Nostrum quo molestias non eveniet accusantium autem. Qui dolores et minima est eveniet nostrum libero.', 1334.00, 'Atque esse totam velit eaque suscipit eos ea repellendus perspiciatis temporibus voluptatem.', 1, 51, 'uploads/products/product_9_682b53079cbf5.jpeg', 1),
 (584, 'PRD-436KG', 'Rerum provident dolore', 'Sit velit voluptatem aut delectus. Molestiae non quis sapiente. Possimus assumenda nisi qui aut sequi corrupti soluta. Ab consectetur quia enim. Eaque rerum quibusdam ipsa blanditiis voluptatem provident ipsum. Vitae cumque provident eos.', 1352.96, 'Exercitationem impedit occaecati aliquid doloremque eveniet quibusdam voluptates non iure tempore error.', 4, 10, 'uploads/products/product_5_682b531491006.jpeg', 1),
-(585, 'PRD-638NV', 'Nisi vel aperiam', 'Ab quibusdam dignissimos non vel. Quia facere optio velit ut et minima ratione. Cupiditate error libero voluptatem magni maxime quo. Ut impedit quis quia ab quia consectetur. Amet ab ipsum tenetur. Dolor animi nihil molestiae eos sed et. Minus ipsam tenetur numquam voluptate perspiciatis.', 710.71, 'Et reprehenderit quia enim optio animi sit eum sed voluptas.', 1, 73, 'uploads/products/product_1_67e2f5cdb34ef.jpg', 3),
+(585, 'PRD-638NV', 'Nisi vel aperiam', 'Ab quibusdam dignissimos non vel. Quia facere optio velit ut et minima ratione. Cupiditate error libero voluptatem magni maxime quo. Ut impedit quis quia ab quia consectetur. Amet ab ipsum tenetur. Dolor animi nihil molestiae eos sed et. Minus ipsam tenetur numquam voluptate perspiciatis.', 710.71, 'Et reprehenderit quia enim optio animi sit eum sed voluptas.', 1, 75, 'uploads/products/product_1_67e2f5cdb34ef.jpg', 3),
 (586, 'PRD-337GD', 'Debitis et ratione', 'Corrupti aut voluptas et fuga aliquam in. Nobis saepe necessitatibus doloremque ipsam. Tenetur ipsam amet suscipit impedit. Ipsum repellendus illum corrupti architecto. Dolorum assumenda molestiae accusantium quis molestiae exercitationem.', 1596.26, 'Magni et excepturi officiis saepe quo error et incidunt natus aperiam.', 3, 49, 'uploads/products/product_39_683451723d7ed.jpg', 1),
 (587, 'PRD-435WP', 'Officia distinctio accusamus', 'Est quis officiis aut in. Quo error tempore voluptate ex sed et alias. Minima perspiciatis velit quo ratione cumque facilis voluptate. Totam dolor et vitae.', 752.63, 'Ut natus molestias eligendi sed accusantium commodi voluptatem sit veritatis.', 5, 44, 'uploads/products/product_5_682b531491006.jpeg', 2),
 (588, 'PRD-198KQ', 'Recusandae perferendis dolores', 'Cum occaecati dolore quasi fuga. Unde atque voluptas ut officia. Est neque reiciendis officiis quia ut reiciendis. Et sequi blanditiis voluptatum quod.', 10.94, 'Est autem optio qui ex consequatur quibusdam sunt repudiandae necessitatibus.', 5, 54, 'uploads/products/product_10_67e2fa07645fe.jpg', 1),
-(589, 'PRD-731CY', 'Dolores earum ab', 'Est occaecati sunt dolorum eaque sunt qui. Commodi labore praesentium molestiae nihil. Quo quos occaecati molestiae sed ea tempora. Consequatur mollitia ducimus velit mollitia incidunt molestias ut delectus. Sit aut et et asperiores recusandae expedita omnis.', 1842.36, 'Culpa consequatur quae deleniti qui enim sint deserunt.', 6, 10, 'uploads/products/product_16_682b52e1dfe9d.jpeg', 1),
-(591, '123124523456223', 'Test', NULL, 12.00, NULL, 7, 123, NULL, NULL);
+(589, 'PRD-731CY', 'Dolores earum ab', 'Est occaecati sunt dolorum eaque sunt qui. Commodi labore praesentium molestiae nihil. Quo quos occaecati molestiae sed ea tempora. Consequatur mollitia ducimus velit mollitia incidunt molestias ut delectus. Sit aut et et asperiores recusandae expedita omnis.', 1842.36, 'Culpa consequatur quae deleniti qui enim sint deserunt.', 6, 16, 'uploads/products/product_16_682b52e1dfe9d.jpeg', 1),
+(591, '123124523456223', 'Test', NULL, 12.00, NULL, 7, 119, NULL, NULL),
+(594, 'PRD-731CX2', 'Procesor AMD Ryzen 5 8400F (6C/12T, up to 4.7GHz, 16MB, AM5), 100-100001591BOX', 'asdgadsgf', 123.00, 'gsdas', 3, 123, 'uploads/products/p3pxLojJV6yGeLNghqtVOJ6bNA6ZKh37O5b5Wnx7.jpg', 5),
+(595, 'INP-5600', 'Procesor AMD Ryzen 5 5600 (6C/12T, up to 4.4GHz, 32MB, AM4), 100-100000927BOX', 'AMD StoreMI Technology\r\nA fast and easy way to expand and accelerate the storage in a desktop PC with an AMD Ryzen processor.\r\n\r\nAMD \"Zen 3\" Core Architecture\r\nThe fastest cores in the world for PC gamers.\r\n\r\nAMD Ryzen VR-Ready Premium\r\nFor the best possible VR experiences, AMD offers select Ryzen VR-Ready Premium processors.\r\n\r\nSpecifications:\r\nPlatform Desktop\r\nProduct Family AMD Ryzen Processors\r\nNumber of CPU Cores 6\r\nNumber of Threads 12\r\nMax. Boost Clock Up to 4.4GHz\r\nBase Clock 3.5GHz\r\nL1 Cache 384KB\r\nL2 Cache 3MB\r\nL3 Cache 32MB\r\nDefault TDP 65W\r\nUnlocked for Overclocking\r\nCPU Socket AM4\r\nThermal Solution (PIB) AMD Wraith Stealth\r\nMax. Operating Temperature (Tjmax) 90°C\r\nPCI Express Version PCIe 4.0\r\nSystem Memory Type DDR4\r\nMemory Channels 2\r\nSystem Memory Specification Up to 3200MHz', 123.00, 'Serija: AMD Ryzen 5\r\n Podnožje: AMD AM4\r\n Broj jezgri: 6', 3, 20, 'uploads/products/r3us7vnR53PeF5GSCpiMohmhQnk3bojF6fVvfuSK.jpg', 5);
 
 -- --------------------------------------------------------
 
@@ -30118,8 +30116,8 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('5lUYmyenv2GBYGSZXBT7RCkClVIOBt9aKaXC2iUF', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiQkxRSEUwSTlJdjhwcldaQ3VuOVhxYzRoUTZEYUx6U2ZXQXlQNDlsUSI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9vcmRlcnMvNDgiO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozO3M6NDoiY2FydCI7YTowOnt9fQ==', 1762292655),
-('guNxJ1EY2siai8vu73wbrPxj0Pon0Tigdci5OqBX', 3, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/141.0.0.0 Safari/537.36', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoidnlpb2JUUEFNTThNdkE0alBlbFdxNEJzWnowaVJYbHkwWmViYmNLZiI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MzE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9vcmRlcnMvNDYiO31zOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aTozO3M6NDoiY2FydCI7YTowOnt9fQ==', 1762264399);
+('4VYlpcl0uP7NHPpvVhU23bCSWk05O7guBa3NGbG9', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoianYyWmVhNldsNVlSOGV0ckR1OWsxMnZmNlY4dmZ4ZVRsNFVsVzE0WCI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozOToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FkbWluL3Byb2R1Y3RzP3E9Ijt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1764260857),
+('yhdBJ06p1EtRrP4ClAkA8rSy1slZAytAxYQOWd98', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiaURaQ3piMUdYOU9sSERUc1lxbUsydDlHWmpnM09YYWp6SXU2d1ZqYyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7czo0OiJjYXJ0IjthOjM6e2k6NTg4O2E6NDp7czo0OiJuYW1lIjtzOjMwOiJSZWN1c2FuZGFlIHBlcmZlcmVuZGlzIGRvbG9yZXMiO3M6NToicHJpY2UiO3M6NToiMTAuOTQiO3M6ODoicXVhbnRpdHkiO2k6MTtzOjU6ImltYWdlIjtzOjQ1OiJ1cGxvYWRzL3Byb2R1Y3RzL3Byb2R1Y3RfMTBfNjdlMmZhMDc2NDVmZS5qcGciO31pOjU4OTthOjQ6e3M6NDoibmFtZSI7czoxNjoiRG9sb3JlcyBlYXJ1bSBhYiI7czo1OiJwcmljZSI7czo3OiIxODQyLjM2IjtzOjg6InF1YW50aXR5IjtpOjE7czo1OiJpbWFnZSI7czo0NjoidXBsb2Fkcy9wcm9kdWN0cy9wcm9kdWN0XzE2XzY4MmI1MmUxZGZlOWQuanBlZyI7fWk6NTkxO2E6NDp7czo0OiJuYW1lIjtzOjQ6IlRlc3QiO3M6NToicHJpY2UiO3M6NToiMTIuMDAiO3M6ODoicXVhbnRpdHkiO2k6MTtzOjU6ImltYWdlIjtOO319fQ==', 1764262871);
 
 -- --------------------------------------------------------
 
@@ -30129,65 +30127,66 @@ INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, 
 
 CREATE TABLE `tip_proizvoda` (
   `id_tip` int(11) NOT NULL,
-  `naziv_tip` varchar(50) NOT NULL
+  `naziv_tip` varchar(50) NOT NULL,
+  `kategorija_id` int(10) UNSIGNED DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `tip_proizvoda`
 --
 
-INSERT INTO `tip_proizvoda` (`id_tip`, `naziv_tip`) VALUES
-(1, 'Miš'),
-(2, 'Tipkovnica'),
-(3, 'Monitor'),
-(4, 'Grafička kartica'),
-(5, 'Procesor'),
-(6, 'Matična ploča'),
-(7, 'RAM memorija'),
-(8, 'SSD disk'),
-(9, 'HDD disk'),
-(10, 'Napajanje'),
-(11, 'Kučište'),
-(12, 'Ventilator za hlađenje'),
-(13, 'Vodeno hlađenje'),
-(14, 'Zvučnici'),
-(15, 'Slušalice'),
-(16, 'Mikrofon'),
-(17, 'Web kamera'),
-(18, 'USB hub'),
-(19, 'Eksterni hard disk'),
-(20, 'Flash drive'),
-(21, 'Memorijska kartica'),
-(22, 'Router'),
-(23, 'Modem'),
-(24, 'Ethernet switch'),
-(25, 'WiFi adapter'),
-(26, 'Bluetooth adapter'),
-(27, 'Gaming stolica'),
-(28, 'Podloga za mi??'),
-(29, 'Dr??a?? za slu??alice'),
-(30, 'Mikrofon za streaming'),
-(31, 'RGB LED traka'),
-(32, 'TV kartica'),
-(33, 'Capture kartica'),
-(34, 'VR headset'),
-(35, 'Joystick'),
-(36, 'Gamepad'),
-(37, 'Grafi??ki tablet'),
-(38, 'Projektor'),
-(39, 'Printer'),
-(40, 'Skener'),
-(41, 'Kablovi i adapteri'),
-(42, 'Torbica za laptop'),
-(43, 'Docking station'),
-(44, 'Laptop hladnjak'),
-(45, 'Be??i??ni punja??'),
-(46, 'Smart home ure??aji'),
-(47, 'NAS ure??aj'),
-(48, 'Zvu??na kartica'),
-(49, 'TV tuner'),
-(50, 'UPS (neprekidno napajanje)'),
-(51, 'Laptop');
+INSERT INTO `tip_proizvoda` (`id_tip`, `naziv_tip`, `kategorija_id`) VALUES
+(1, 'Miš', 5),
+(2, 'Tipkovnica', 5),
+(3, 'Monitor', 5),
+(4, 'Grafička kartica', 3),
+(5, 'Procesor', 3),
+(6, 'Matična ploča', 3),
+(7, 'RAM memorija', 3),
+(8, 'SSD disk', 4),
+(9, 'HDD disk', 4),
+(10, 'Napajanje', 3),
+(11, 'Kučište', 3),
+(12, 'Ventilator za hlađenje', 3),
+(13, 'Vodeno hlađenje', 3),
+(14, 'Zvučnici', 9),
+(15, 'Slušalice', 9),
+(16, 'Mikrofon', 9),
+(17, 'Web kamera', 9),
+(18, 'USB hub', 5),
+(19, 'Eksterni hard disk', 4),
+(20, 'Flash drive', 4),
+(21, 'Memorijska kartica', 4),
+(22, 'Router', 11),
+(23, 'Modem', 11),
+(24, 'Ethernet switch', 11),
+(25, 'WiFi adapter', 11),
+(26, 'Bluetooth adapter', 11),
+(27, 'Gaming stolica', 5),
+(28, 'Podloga za miš', 5),
+(29, 'Držač za slušalice', 9),
+(30, 'Mikrofon za streaming', 9),
+(31, 'RGB LED traka', 5),
+(32, 'TV kartica', 8),
+(33, 'Capture kartica', 10),
+(34, 'VR headset', 10),
+(35, 'Joystick', 10),
+(36, 'Gamepad', 10),
+(37, 'Grafički tablet', 7),
+(38, 'Projektor', 9),
+(39, 'Printer', 5),
+(40, 'Skener', 5),
+(41, 'Kablovi i adapteri', 5),
+(42, 'Torbica za laptop', 1),
+(43, 'Docking station', 5),
+(44, 'Laptop hladnjak', 1),
+(45, 'Bežični punjač', 6),
+(46, 'Smart home uređaji', 11),
+(47, 'NAS uređaj', 4),
+(48, 'Zvučna kartica', 9),
+(49, 'TV tuner', 7),
+(50, 'UPS (neprekidno napajanje)', 5),
+(51, 'Laptop', 1);
 
 -- --------------------------------------------------------
 
@@ -30200,6 +30199,7 @@ CREATE TABLE `users` (
   `ime` varchar(255) DEFAULT NULL,
   `prezime` varchar(255) DEFAULT NULL,
   `email` varchar(255) NOT NULL,
+  `is_admin` tinyint(1) NOT NULL DEFAULT 0,
   `telefon` varchar(20) DEFAULT NULL,
   `email_verified_at` timestamp NULL DEFAULT NULL,
   `password` varchar(255) NOT NULL,
@@ -30212,14 +30212,15 @@ CREATE TABLE `users` (
 -- Dumping data for table `users`
 --
 
-INSERT INTO `users` (`id`, `ime`, `prezime`, `email`, `telefon`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(2, 'Lucija', 'Vašatko', 'darijanko112@gmail.com', NULL, NULL, '$2y$12$DGYcbd52ioS/iovDPJGioOlOXnGzogq..JD3lrgn.h1JdKYYRmX0y', NULL, '2025-10-17 15:21:15', '2025-10-17 15:21:15'),
-(3, 'Ivana', 'Milić', 'imilic17@gmail.com', NULL, NULL, '$2y$12$Cs.fmVgMQ2JhPw7EnpAVT.QPbhMK14KnfzOF.973kNsIzle8lNJZm', NULL, '2025-10-18 06:02:32', '2025-10-18 06:02:32'),
-(4, 'Dariel', 'Kužilek', 'darijanko111@gmail.com', NULL, NULL, '$2y$12$n0Bpu2HsPyP8F1IaBko0Ee6y3B/NjN.leq1uk9II8oPsCO.IHW62a', NULL, '2025-10-21 13:50:20', '2025-10-21 13:50:20'),
-(5, 'Darijan', 'Vašatko', 'darijanko114@gmail.com', '0976652925', NULL, '$2y$12$pg0OICIFpKM/u103p5Fr/.MD7L1CImIwbEcpTmTzOqZ3/A956wG3y', NULL, '2025-10-25 13:28:56', '2025-10-25 16:26:49'),
-(6, 'Rea', 'Crnković', 'rea.crnkovic@gmail.com', '0976217261', NULL, '$2y$12$tbkCVff1PB5K0QdNGqV2UuUDI.n1rbHFuGjgzr5gv2XFyrfVfB1F6', NULL, '2025-10-25 16:48:22', '2025-10-25 16:51:37'),
-(7, 'Ana', 'Vašatko', 'ana.vasatko@gmail.com', NULL, NULL, '$2y$12$qYO8mGnFGY8j19vpmG7tEexCn8DN8dBV4Z4/fbeKK/n83mDrqHnrq', NULL, '2025-10-25 16:55:26', '2025-10-25 16:55:26'),
-(8, 'Domi', 'Dus', 'domi.dus@gmail.com', '0978556235', NULL, '$2y$12$gECk2QD72OinnJ8HnuB9uOKVu2Q2vNLek/xwLVe7YZ1Te6R.P9zp6', NULL, '2025-10-29 20:03:41', '2025-10-29 20:04:57');
+INSERT INTO `users` (`id`, `ime`, `prezime`, `email`, `is_admin`, `telefon`, `email_verified_at`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
+(2, 'Lucija', 'Vašatko', 'darijanko112@gmail.com', 0, NULL, NULL, '$2y$12$DGYcbd52ioS/iovDPJGioOlOXnGzogq..JD3lrgn.h1JdKYYRmX0y', NULL, '2025-10-17 15:21:15', '2025-10-17 15:21:15'),
+(3, 'Ivana', 'Milić', 'imilic17@gmail.com', 0, NULL, NULL, '$2y$12$Cs.fmVgMQ2JhPw7EnpAVT.QPbhMK14KnfzOF.973kNsIzle8lNJZm', NULL, '2025-10-18 06:02:32', '2025-10-18 06:02:32'),
+(4, 'Dariel', 'Kužilek', 'darijanko111@gmail.com', 0, NULL, NULL, '$2y$12$n0Bpu2HsPyP8F1IaBko0Ee6y3B/NjN.leq1uk9II8oPsCO.IHW62a', NULL, '2025-10-21 13:50:20', '2025-10-21 13:50:20'),
+(5, 'Darijan', 'Vašatko', 'darijanko114@gmail.com', 0, '0976652925', NULL, '$2y$12$pg0OICIFpKM/u103p5Fr/.MD7L1CImIwbEcpTmTzOqZ3/A956wG3y', NULL, '2025-10-25 13:28:56', '2025-10-25 16:26:49'),
+(6, 'Rea', 'Crnković', 'rea.crnkovic@gmail.com', 0, '0976217261', NULL, '$2y$12$tbkCVff1PB5K0QdNGqV2UuUDI.n1rbHFuGjgzr5gv2XFyrfVfB1F6', NULL, '2025-10-25 16:48:22', '2025-10-25 16:51:37'),
+(7, 'Ana', 'Vašatko', 'ana.vasatko@gmail.com', 0, NULL, NULL, '$2y$12$qYO8mGnFGY8j19vpmG7tEexCn8DN8dBV4Z4/fbeKK/n83mDrqHnrq', NULL, '2025-10-25 16:55:26', '2025-10-25 16:55:26'),
+(8, 'Domi', 'Dus', 'domi.dus@gmail.com', 0, '0978556235', NULL, '$2y$12$gECk2QD72OinnJ8HnuB9uOKVu2Q2vNLek/xwLVe7YZ1Te6R.P9zp6', NULL, '2025-10-29 20:03:41', '2025-10-29 20:04:57'),
+(9, 'Admin', 'User', 'admin@techshop.tsd', 1, '000000000', NULL, '$2y$12$6zzV/0EgYHqSrr6Q6iIl9OIn4fkfgIXmP7Y0n/OoUC530pRo8MMRO', NULL, '2025-11-13 18:41:56', '2025-11-13 18:41:56');
 
 -- --------------------------------------------------------
 
@@ -30249,7 +30250,7 @@ INSERT INTO `user_addresses` (`id`, `user_id`, `adresa`, `grad`, `postanski_broj
 (4, 5, 'Ivana Cankara 5', 'Daruvar', '43500', 'Hrvatska', 1, '2025-10-25 16:04:54', '2025-10-25 16:05:35'),
 (5, 6, 'Vinogradska cesta 15', 'Daruvar', '43500', 'Hrvatska', 1, '2025-10-25 16:51:37', '2025-10-25 16:51:37'),
 (6, 8, 'Ivana Meštrovića 57', 'Zagreb', '10000', 'Hrv', 1, '2025-10-29 20:04:57', '2025-10-29 20:04:57'),
-(7, 3, 'Ivana Gundulića 14', 'Daruvar', '43500', 'Hrvatska', 1, '2025-11-04 10:15:58', '2025-11-04 10:15:58');
+(7, 5, 'Ivana Gundulića 32', 'Sirač', '43512', 'Hrvatska', 0, '2025-11-12 07:07:21', '2025-11-12 07:07:21');
 
 --
 -- Indexes for dumped tables
@@ -30412,7 +30413,7 @@ ALTER TABLE `country_town`
 -- AUTO_INCREMENT for table `detalji_narudzbe`
 --
 ALTER TABLE `detalji_narudzbe`
-  MODIFY `DetaljiNarudzbe_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=44;
+  MODIFY `DetaljiNarudzbe_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -30430,7 +30431,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `kosarica`
 --
 ALTER TABLE `kosarica`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=73;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
 
 --
 -- AUTO_INCREMENT for table `kupac`
@@ -30442,7 +30443,7 @@ ALTER TABLE `kupac`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=29;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `nacin_placanja`
@@ -30454,13 +30455,13 @@ ALTER TABLE `nacin_placanja`
 -- AUTO_INCREMENT for table `narudzba`
 --
 ALTER TABLE `narudzba`
-  MODIFY `Narudzba_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+  MODIFY `Narudzba_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 
 --
 -- AUTO_INCREMENT for table `proizvod`
 --
 ALTER TABLE `proizvod`
-  MODIFY `Proizvod_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=592;
+  MODIFY `Proizvod_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=596;
 
 --
 -- AUTO_INCREMENT for table `tip_proizvoda`
@@ -30472,7 +30473,7 @@ ALTER TABLE `tip_proizvoda`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `user_addresses`
