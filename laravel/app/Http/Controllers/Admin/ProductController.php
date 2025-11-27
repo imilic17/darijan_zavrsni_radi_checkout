@@ -35,7 +35,9 @@ class ProductController extends Controller
         $categories = Kategorija::orderBy('ImeKategorija')->get();
         $types = TipProizvoda::orderBy('naziv_tip')->get();
 
-        return view('admin.products.index', compact('products', 'categories', 'types'));
+        $defaultSifra = $this->generateRandomSifra();
+
+        return view('admin.products.index', compact('products', 'categories', 'types', 'defaultSifra'));
     }
 
     public function create()
@@ -141,5 +143,15 @@ class ProductController extends Controller
         return redirect()
             ->route('admin.products.index')
             ->with('success', 'Proizvod je obrisan.');
+    }
+
+    private function generateRandomSifra(): string
+    {
+        // e.g. ART-123456
+        do {
+            $candidate = 'ART-' . random_int(100000, 999999);
+        } while (Proizvod::where('sifra', $candidate)->exists());
+
+        return $candidate;
     }
 }
