@@ -128,5 +128,61 @@ document.addEventListener('DOMContentLoaded', function () {
     filterTypesByCategory();
 });
 </script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+
+    // CLICK EDIT BUTTON → LOAD DATA INTO MODAL
+    document.querySelectorAll('.editProductBtn').forEach(btn => {
+        btn.addEventListener('click', function () {
+
+            const id        = this.dataset.id;
+            const sifra     = this.dataset.sifra;
+            const naziv     = this.dataset.naziv;
+            const kratki    = this.dataset.kratkiopis;
+            const opis      = this.dataset.opis;
+            const cijena    = this.dataset.cijena;
+            const zaliha    = this.dataset.zaliha;
+            const kategorija = this.dataset.kategorija;
+            const tip       = this.dataset.tip;
+            const slika     = this.dataset.slika;
+
+            // Fill form
+            document.getElementById('edit_sifra').value = sifra;
+            document.getElementById('edit_naziv').value = naziv;
+            document.getElementById('edit_kratkiopis').value = kratki;
+            document.getElementById('edit_opis').value = opis;
+            document.getElementById('edit_cijena').value = cijena;
+            document.getElementById('edit_zaliha').value = zaliha;
+            document.getElementById('edit_kategorija').value = kategorija;
+
+            // set tip BEFORE running dependent filter
+            document.getElementById('edit_tip').value = tip;
+
+            // Image preview
+            document.getElementById('edit_preview').src =
+                slika ? "{{ asset('storage') }}/" + slika : "{{ asset('img/no-image.png') }}";
+
+            // Set form action
+            document.getElementById('editProductForm').action =
+                `/admin/products/${id}`;
+        });
+    });
+
+});
+</script>
+<script>
+document.querySelectorAll('.deleteProductBtn').forEach(btn => {
+    btn.addEventListener('click', function () {
+        const id   = this.dataset.id;
+        const name = this.dataset.name;
+
+        document.getElementById('deleteProductName').innerText = name;
+        document.getElementById('deleteProductForm').action =
+            `/admin/products/${id}`;
+    });
+});
+</script>
+
 </body>
 </html>

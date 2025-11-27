@@ -136,19 +136,33 @@
 
                             {{-- Actions --}}
                             <td class="text-end">
-                                <a href="{{ route('admin.products.edit', $product) }}"
-                                    class="btn btn-sm btn-outline-primary me-1">
-                                    <i class="bi bi-pencil-square me-1"></i> Uredi
-                                </a>
+                                <button type="button"
+        class="btn btn-sm btn-outline-primary me-1 editProductBtn"
+        data-bs-toggle="modal"
+        data-bs-target="#editProductModal"
+        data-id="{{ $product->Proizvod_ID }}"
+        data-sifra="{{ $product->sifra }}"
+        data-naziv="{{ $product->Naziv }}"
+        data-kratkiopis="{{ $product->KratkiOpis }}"
+        data-opis="{{ $product->Opis }}"
+        data-cijena="{{ $product->Cijena }}"
+        data-zaliha="{{ $product->StanjeNaSkladistu }}"
+        data-kategorija="{{ $product->kategorija }}"
+        data-tip="{{ $product->tip_id }}"
+        data-slika="{{ $product->Slika }}">
+    <i class="bi bi-pencil-square me-1"></i> Uredi
+</button>
 
-                                <form action="{{ route('admin.products.destroy', $product) }}" method="POST" class="d-inline"
-                                    onsubmit="return confirm('Jesi siguran da želiš obrisati ovaj proizvod?');">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button class="btn btn-sm btn-outline-danger">
-                                        <i class="bi bi-trash me-1"></i> Obriši
-                                    </button>
-                                </form>
+
+                                <button type="button"
+        class="btn btn-sm btn-outline-danger deleteProductBtn"
+        data-bs-toggle="modal"
+        data-bs-target="#deleteProductModal"
+        data-id="{{ $product->Proizvod_ID }}"
+        data-name="{{ $product->Naziv }}">
+    <i class="bi bi-trash me-1"></i> Obriši
+</button>
+
                             </td>
                         </tr>
                     @empty
@@ -318,5 +332,137 @@
         </div>
     </div>
 </div>
+
+<!-- EDIT PRODUCT MODAL -->
+<div class="modal fade" id="editProductModal" tabindex="-1">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+        <div class="modal-content">
+            <form id="editProductForm" method="POST" enctype="multipart/form-data">
+                @csrf
+                @method('PUT')
+
+                <div class="modal-header">
+                    <h5 class="modal-title fw-bold">
+                        <i class="bi bi-pencil-square me-2"></i> Uredi proizvod
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body row g-3">
+
+                    <!-- Šifra -->
+                    <div class="col-md-4">
+                        <label class="form-label">Šifra</label>
+                        <input type="text" name="sifra" id="edit_sifra" class="form-control">
+                    </div>
+
+                    <!-- Naziv -->
+                    <div class="col-md-8">
+                        <label class="form-label">Naziv</label>
+                        <input type="text" name="Naziv" id="edit_naziv" class="form-control">
+                    </div>
+
+                    <!-- Kratki opis -->
+                    <div class="col-12">
+                        <label class="form-label">Kratki opis</label>
+                        <textarea name="KratkiOpis" id="edit_kratkiopis" rows="2" class="form-control"></textarea>
+                    </div>
+
+                    <!-- Opis -->
+                    <div class="col-12">
+                        <label class="form-label">Opis</label>
+                        <textarea name="Opis" id="edit_opis" rows="4" class="form-control"></textarea>
+                    </div>
+
+                    <!-- Cijena & Zaliha -->
+                    <div class="col-md-4">
+                        <label class="form-label">Cijena (€)</label>
+                        <input type="number" step="0.01" min="0"
+                               name="Cijena" id="edit_cijena"
+                               class="form-control">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label class="form-label">Stanje na skladištu</label>
+                        <input type="number" min="0"
+                               name="StanjeNaSkladistu" id="edit_zaliha"
+                               class="form-control">
+                    </div>
+
+                    <!-- Kategorija -->
+                    <div class="col-md-4">
+                        <label class="form-label">Kategorija</label>
+                        <select name="kategorija" id="edit_kategorija" class="form-select">
+                            @foreach($categories as $cat)
+                                <option value="{{ $cat->id_kategorija }}">
+                                    {{ $cat->ImeKategorija }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Tip proizvoda -->
+                    <div class="col-md-6">
+                        <label class="form-label">Tip proizvoda</label>
+                        <select name="tip_id" id="edit_tip" class="form-select">
+                            <option value="">Bez tipa</option>
+                            @foreach($types as $type)
+                                <option value="{{ $type->id_tip }}"
+                                    data-category-id="{{ $type->kategorija_id }}">
+                                    {{ $type->naziv_tip }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <!-- Nova slika -->
+                    <div class="col-md-6">
+                        <label class="form-label">Nova slika</label>
+                        <input type="file" name="Slika" class="form-control">
+                        <div class="mt-2">
+                            <img id="edit_preview" src="" class="border rounded"
+                                 style="width: 120px; height: 120px; object-fit: cover;">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Zatvori</button>
+                    <button type="submit" class="btn btn-primary">Spremi promjene</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="deleteProductModal" tabindex="-1">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <form id="deleteProductForm" method="POST">
+                @csrf
+                @method('DELETE')
+
+                <div class="modal-header">
+                    <h5 class="modal-title text-danger fw-bold">
+                        <i class="bi bi-exclamation-triangle me-2"></i> Potvrda brisanja
+                    </h5>
+                    <button class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <div class="modal-body">
+                    <p>Jesi siguran da želiš obrisati:</p>
+                    <p class="fw-bold text-primary" id="deleteProductName"></p>
+                </div>
+
+                <div class="modal-footer">
+                    <button class="btn btn-outline-secondary" data-bs-dismiss="modal">Odustani</button>
+                    <button type="submit" class="btn btn-danger">Obriši</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+</div>
+
 @endsection
 
