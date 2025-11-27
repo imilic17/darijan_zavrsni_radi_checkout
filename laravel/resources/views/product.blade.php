@@ -11,7 +11,7 @@
             <div class="col-md-6 text-center">
                 <div class="border rounded-4 shadow-sm overflow-hidden position-relative" 
                      style="max-width: 450px; margin: 0 auto;">
-                    <img src="{{ asset($proizvod->Slika) }}" 
+                    <img src="{{ $proizvod->slika_url }}" 
                          alt="{{ $proizvod->Naziv }}" 
                          class="img-fluid w-100" 
                          style="transition: transform 0.3s ease;">

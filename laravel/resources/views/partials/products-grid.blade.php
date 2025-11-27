@@ -21,7 +21,7 @@
                 {{-- 🖼️ Image --}}
                 <div class="position-relative" 
                      style="height: 220px; overflow: hidden; border-top-left-radius: 1rem; border-top-right-radius: 1rem;">
-                    <img src="{{ asset($proizvod->Slika) }}" 
+                    <img src="{{ $proizvod->slika_url }}" 
                          alt="{{ $proizvod->Naziv }}" 
                          class="w-100 h-100 object-fit-cover product-img"
                          style="transition: transform 0.25s ease;"

@@ -54,7 +54,7 @@
                     <!-- Image as link -->
                     <a href="{{ route('proizvod.show', $product->Proizvod_ID) }}" class="text-decoration-none">
                         <div class="position-relative" style="height: 200px; overflow: hidden;">
-                            <img src="{{ asset($product->Slika) }}" 
+                            <img src="{{ $product->slika_url }}" 
                                  alt="{{ $product->Naziv }}"
                                  class="w-100 h-100 object-fit-cover"
                                  style="transition: transform 0.4s ease;">

@@ -38,5 +38,23 @@ class Proizvod extends Model
         return $this->hasMany(DetaljiNarudzbe::class, 'Proizvod_ID', 'Proizvod_ID');
     }
 
+    public function getSlikaUrlAttribute()
+{
+    // ako nema slike → fallback
+    if (!$this->Slika) {
+        return asset('img/no-image.png'); // stavi svoju placeholder sliku
+    }
+
+    // ako je već full URL (npr. http://... ili https://...), samo je vrati
+    if (str_starts_with($this->Slika, 'http://') || str_starts_with($this->Slika, 'https://')) {
+        return $this->Slika;
+    }
+
+    // default: DB čuva npr. "uploads/products/xxx.jpg"
+    // fizički se nalazi u storage/app/public/uploads/products
+    // javni URL ide preko /storage/...
+    return asset('storage/' . $this->Slika);
+}
+
     
 }
