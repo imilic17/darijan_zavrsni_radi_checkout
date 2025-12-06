@@ -17,7 +17,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $orders = Narudzba::with('kupac')
+        $orders = Narudzba::with('user')
             ->orderByDesc('Datum_narudzbe')
             ->paginate(20);
 
@@ -28,7 +28,7 @@ class OrderController extends Controller
 
     public function show(Narudzba $order)
     {
-        $order->load(['kupac', 'detalji.proizvod', 'nacinPlacanja']);
+        $order->load(['user', 'detalji.proizvod', 'nacinPlacanja']);
 
         $statuses = $this->statuses;
 

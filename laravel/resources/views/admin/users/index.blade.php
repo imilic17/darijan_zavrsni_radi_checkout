@@ -16,7 +16,9 @@
                     <th>ID</th>
                     <th>Ime i prezime</th>
                     <th>Email</th>
+                    <th>Telefon</th>
                     <th>Broj narudžbi</th>
+                    <th>Admin</th>
                     <th class="text-end">Akcija</th>
                 </tr>
             </thead>
@@ -24,12 +26,13 @@
                 @forelse($users as $u)
                     <tr>
                         <td>#{{ $u->id }}</td>
-                        <td>{{ $u->ime }} {{ $u->prezime }}</td>
+                        <td>{{ $u->full_name }}</td>
                         <td>{{ $u->email }}</td>
+                        <td>{{ $u->telefon ?? '—' }}</td>
 
-                        <td>
-                            {{ $u->narudzbe()->count() }}
-                        </td>
+                        <td>{{ $u->narudzbe_count }}</td>
+
+                        <td>{{ $u->is_admin ? 'Da' : 'Ne' }}</td>
 
                         <td class="text-end">
                             <a href="{{ route('admin.users.show', $u) }}"
@@ -40,7 +43,7 @@
                     </tr>
                 @empty
                     <tr>
-                        <td colspan="5" class="text-center py-4 text-muted">
+                        <td colspan="7" class="text-center py-4 text-muted">
                             Nema registriranih korisnika.
                         </td>
                     </tr>

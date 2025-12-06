@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Auth;
 
 // Public controllers
 use App\Http\Controllers\ProizvodController;
@@ -31,18 +32,19 @@ Route::middleware(['auth', 'admin'])
     ->name('admin.')
     ->group(function () {
 
-        // Admin dashboard
         Route::get('/', [DashboardController::class, 'index'])
             ->name('dashboard');
 
-        // Admin management routes
         Route::resource('products', AdminProductController::class)->except(['show']);
         Route::resource('users', AdminUserController::class)->only(['index', 'show']);
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
-        Route::resource('users', AdminUserController::class)->only(['index', 'show']);
-        Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
+        Route::put('/orders/{order}/cancel', [AdminOrderController::class, 'cancel'])
+            ->name('orders.cancel');
 
+        Route::put('/orders/{order}/close', [AdminOrderController::class, 'close'])
+            ->name('orders.close');
     });
+
 
 
 
@@ -96,7 +98,11 @@ Route::get('/proizvod/{id}', [ProizvodController::class, 'show'])->name('proizvo
 
 // User dashboard after login
 Route::get('/dashboard', function () {
-    return view('dashboard');
+    if (Auth::user()->is_admin) {
+        return redirect()->route('admin.dashboard');
+    }
+
+    return view('dashboard'); // user dashboard
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 
@@ -148,4 +154,4 @@ Route::middleware(['auth'])->group(function () {
 
 
 // Laravel Breeze / Jetstream / Fortify auth routes
-require __DIR__.'/auth.php';
+require __DIR__ . '/auth.php';

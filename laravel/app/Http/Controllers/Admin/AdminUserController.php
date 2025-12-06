@@ -5,17 +5,29 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\User;
 
-class UserController extends Controller
+namespace App\Http\Controllers\Admin;
+
+use App\Http\Controllers\Controller;
+use App\Models\User;
+
+class AdminUserController extends Controller
 {
     public function index()
     {
-        $users = User::paginate(20);
+        $users = User::where('is_admin', false)   // ako želiš sakriti admin acc
+                     ->withCount('narudzbe')
+                     ->orderBy('created_at', 'desc')
+                     ->paginate(20);
+
         return view('admin.users.index', compact('users'));
     }
 
     public function show(User $user)
     {
-        $user->load('narudzbe');
+        $user->load(['narudzbe' => function ($q) {
+            $q->orderByDesc('Datum_narudzbe');
+        }]);
+
         return view('admin.users.show', compact('user'));
     }
 }

@@ -36,6 +36,16 @@ class User extends Authenticatable
         'remember_token',
     ];
 
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+        'is_admin' => 'boolean',
+    ];
+
+    public function isAdmin(): bool
+    {
+        return (bool) $this->is_admin;
+    }
+
     /**
      * Get the attributes that should be cast.
      *
@@ -56,6 +66,17 @@ class User extends Authenticatable
 public function addresses()
 {
     return $this->hasMany(UserAddress::class, 'user_id', 'id');
+}
+
+public function narudzbe()
+{
+    return $this->hasMany(Narudzba::class, 'Kupac_ID', 'id');
+}
+
+// quality-of-life accessor: $user->ImePrezime
+public function getImePrezimeAttribute(): string
+{
+    return trim(($this->ime ?? '') . ' ' . ($this->prezime ?? ''));
 }
 
 
