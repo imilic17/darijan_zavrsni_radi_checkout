@@ -6,12 +6,11 @@ use Closure;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class AdminMiddleware
+class IsAdmin
 {
     public function handle(Request $request, Closure $next)
     {
-        // must be logged in AND is_admin = 1
-        if (!Auth::check() || !Auth::user()->is_admin) {
+        if (!Auth::check() || !Auth::user()->isAdmin()) {
             abort(403, 'Nemate ovlasti za pristup ovoj stranici.');
         }
 

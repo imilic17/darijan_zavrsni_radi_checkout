@@ -30,7 +30,7 @@
                         <td>#{{ $order->Narudzba_ID }}</td>
 
                         <td>
-                            {{ $order->kupac->ImePrezime ?? $order->kupac->email ?? 'N/A' }}
+                            {{ $order->user->ImePrezime ?? $order->user->email ?? 'N/A' }}
                         </td>
 
                         <td>
@@ -76,9 +76,7 @@
         </table>
     </div>
 
-    <div class="card-footer">
-        {{ $orders->links() }}
-    </div>
+   
 </div>
 
 @endsection

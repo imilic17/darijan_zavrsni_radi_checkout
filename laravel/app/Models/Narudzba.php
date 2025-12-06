@@ -13,24 +13,26 @@ class Narudzba extends Model
     protected $primaryKey = 'Narudzba_ID';
     public $timestamps = true;
 
-    protected $fillable = [
+     protected $fillable = [
         'Kupac_ID',
         'NacinPlacanja_ID',
         'Datum_narudzbe',
         'Ukupni_iznos',
-        'Status',   // ⬅️ IMPORTANT: allow updating status
+        'Status',
+        'Adresa_dostave',
     ];
 
     /** ---------------------------
      *  🔗 Relations
      *  --------------------------- */
 
-    public function kupac()
+     // 👉 NOVO: vežemo na users
+    public function user()
     {
-        return $this->belongsTo(Kupac::class, 'Kupac_ID');
+        // Kupac_ID u narudzba → id u users
+        return $this->belongsTo(User::class, 'Kupac_ID', 'id');
     }
-
-    public function detalji()
+     public function detalji()
     {
         return $this->hasMany(DetaljiNarudzbe::class, 'Narudzba_ID');
     }

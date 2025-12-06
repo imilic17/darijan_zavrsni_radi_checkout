@@ -90,7 +90,8 @@ class CheckoutController extends Controller
             $order = Narudzba::create([
                 'Kupac_ID' => $user->id,
                 'NacinPlacanja_ID' => $validated['nacin_placanja_id'],
-                'Datum_narudzbe' => now()->toDateString(),
+                'Datum_narudzbe' => now()->format('Y-m-d H:i:s'),
+
                 'Ukupni_iznos' => $total,
             ]);
 

@@ -1,4 +1,5 @@
 @extends('layouts.app')
+@php use Illuminate\Support\Facades\Storage; @endphp
 
 @section('title', 'Moja košarica — TechShop')
 
@@ -46,30 +47,44 @@
                                 @endphp
 
                                 @foreach($cart as $id => $item)
-                                    @php 
-                                        // Detect structure
-                                        if (isset($item['product'])) {
-                                            $product = $item['product'];
-                                            $name = $product->Naziv;
-                                            $price = $product->Cijena;
-                                            $image = $product->Slika;
-                                            $quantity = $item['quantity'];
-                                        } else {
-                                            $name = $item['name'];
-                                            $price = $item['price'];
-                                            $image = $item['image'];
-                                            $quantity = $item['quantity'];
-                                        }
+    @php 
+        // 1) Extract data
+        if (isset($item['product'])) {
+            $product  = $item['product'];
+            $name     = $product->Naziv;
+            $price    = $product->Cijena;
+            $imageRaw = $product->Slika;  // e.g. "uploads/products/xxx.jpg"
+            $quantity = $item['quantity'];
+        } else {
+            $name     = $item['name'];
+            $price    = $item['price'];
+            $imageRaw = $item['image'] ?? null;
+            $quantity = $item['quantity'];
+        }
 
-                                        $subtotalWithTax = $price * $quantity;
-                                        $subtotalWithoutTax = $subtotalWithTax / (1 + $taxRate);
-                                        $total += $subtotalWithTax;
-                                    @endphp
+        // 2) Build final URL
+        if ($imageRaw && (str_starts_with($imageRaw, 'http://') || str_starts_with($imageRaw, 'https://'))) {
+            // full URL already
+            $imageUrl = $imageRaw;
+        } elseif ($imageRaw) {
+            // stored like "uploads/products/filename.jpg" -> /storage/uploads/products/filename.jpg
+            $imageUrl = Storage::url($imageRaw);
+        } else {
+            // fallback
+            $imageUrl = asset('images/default-product.png');
+        }
+
+        // 3) Totals
+        $subtotalWithTax    = $price * $quantity;
+        $subtotalWithoutTax = $subtotalWithTax / (1 + $taxRate);
+        $total             += $subtotalWithTax;
+    @endphp
+
                                     <tr class="cart-item-row">
                                         <td>
                                             <div class="d-flex align-items-center">
                                                 <div class="cart-img-wrapper me-3">
-                                                    <img src="{{ asset($image) }}" alt="{{ $name }}" class="cart-img">
+                                                    <img src="{{ $imageUrl }}" alt="{{ $name }}" class="cart-img">
                                                 </div>
                                                 <div>
                                                     <h6 class="fw-semibold mb-1">{{ $name }}</h6>
