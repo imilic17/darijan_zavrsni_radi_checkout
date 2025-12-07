@@ -7,14 +7,15 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Str;
+
 use App\Models\Kosarica;
-use App\Models\Proizvod;
 use App\Models\UserAddress;
 use App\Models\NacinPlacanja;
 use App\Models\Narudzba;
 use App\Models\DetaljiNarudzbe;
-
-use Illuminate\Support\Facades\Mail;
+use App\Models\Payment;
 use App\Mail\OrderReceiptMail;
 
 class CheckoutController extends Controller
@@ -26,13 +27,9 @@ class CheckoutController extends Controller
     {
         $user = Auth::user();
 
-        // Get addresses (delivery)
         $addresses = UserAddress::where('user_id', $user->id)->get();
-
-        // Get payment methods
         $paymentMethods = NacinPlacanja::all();
 
-        // Get items from the user's cart
         $cartItems = Kosarica::where('korisnik_id', $user->id)
             ->with('proizvod')
             ->get();
@@ -41,7 +38,6 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Vaša košarica je prazna.');
         }
 
-        // Calculate total
         $total = $cartItems->sum(function ($item) {
             return $item->proizvod->Cijena * $item->kolicina;
         });
@@ -58,18 +54,29 @@ class CheckoutController extends Controller
 
         Log::info('CheckoutController@store called', ['user_id' => $user->id ?? null]);
 
+        // ✅ Validacija
         $validator = Validator::make($request->all(), [
-            'adresa_dostave' => 'required|string|max:255',
+            'adresa_dostave'    => 'required|string|max:255',
             'nacin_placanja_id' => 'required|exists:nacin_placanja,NacinPlacanja_ID',
         ]);
 
         if ($validator->fails()) {
-            Log::warning('Checkout validation failed', ['errors' => $validator->errors()->toArray(), 'input' => $request->all()]);
+            Log::warning('Checkout validation failed', [
+                'errors' => $validator->errors()->toArray(),
+                'input'  => $request->all(),
+            ]);
+
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $validated = $validator->validated();
 
+        // Dohvati nacin placanja
+        $paymentMethod = NacinPlacanja::findOrFail($validated['nacin_placanja_id']);
+        // Kartično plaćanje je ID 7 (po tvojoj slici)
+        $isCardPayment = ((int) $paymentMethod->NacinPlacanja_ID === 7);
+
+        // 🛒 Košarica
         $cartItems = Kosarica::where('korisnik_id', $user->id)
             ->with('proizvod')
             ->get();
@@ -78,6 +85,7 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Vaša košarica je prazna.');
         }
 
+        // 💰 Ukupno
         $total = $cartItems->sum(function ($item) {
             return $item->proizvod->Cijena * $item->kolicina;
         });
@@ -85,43 +93,82 @@ class CheckoutController extends Controller
         DB::beginTransaction();
 
         try {
-            Log::info('Attempting to create order', ['user' => $user->id ?? null, 'total' => $total]);
+            Log::info('Attempting to create order', [
+                'user'  => $user->id ?? null,
+                'total' => $total,
+            ]);
 
+            // 🧾 Narudžba
             $order = Narudzba::create([
-                'Kupac_ID' => $user->id,
-                'NacinPlacanja_ID' => $validated['nacin_placanja_id'],
-                'Datum_narudzbe' => now()->format('Y-m-d H:i:s'),
-                'Ukupni_iznos' => $total,
+                'Kupac_ID'          => $user->id,
+                'NacinPlacanja_ID'  => $paymentMethod->NacinPlacanja_ID,
+                'Datum_narudzbe'    => now()->format('Y-m-d H:i:s'),
+                'Ukupni_iznos'      => $total,
+                'Adresa_dostave'    => $validated['adresa_dostave'],
+                'Status'            => 'U obradi',
             ]);
 
             Log::info('Order created', ['Narudzba_ID' => $order->Narudzba_ID ?? null]);
 
+            // 📦 Detalji narudžbe
             foreach ($cartItems as $item) {
                 DetaljiNarudzbe::create([
                     'Narudzba_ID' => $order->Narudzba_ID,
                     'Proizvod_ID' => $item->proizvod_id,
-                    'Kolicina' => $item->kolicina,
+                    'Kolicina'    => $item->kolicina,
+                    // ako imaš stupac 'cijena' u detaljima:
+                    // 'cijena'      => $item->proizvod->Cijena,
                 ]);
 
                 $item->proizvod->decrement('StanjeNaSkladistu', $item->kolicina);
             }
 
-            // ✉️ Pošalji račun na email (za test sada tebi)
-            // Ako Narudzba ima relaciju kupac()->belongsTo(User::class, 'Kupac_ID'):
-            // $email = $order->kupac->email;
-            // Za jednostavno testiranje:
-            $email = $user->email;
-
-            Mail::to($email)->send(new OrderReceiptMail($order));
-
             // 🧺 Očisti košaricu
             Kosarica::where('korisnik_id', $user->id)->delete();
 
-            DB::commit();
+            if ($isCardPayment) {
+                // 💳 KARTIČNO PLAĆANJE → ide na FakePay
+                $payment = Payment::create([
+                    'narudzba_id' => $order->Narudzba_ID,
+                    'provider'    => 'fakepay',
+                    'reference'   => 'TS-' . now()->format('YmdHis') . '-' . Str::upper(Str::random(6)),
+                    'amount'      => $order->Ukupni_iznos,
+                    'currency'    => 'EUR',
+                    'status'      => 'pending',
+                ]);
 
-            Log::info('Checkout completed, clearing cart and redirecting', ['user' => $user->id ?? null]);
+                DB::commit();
 
-            return redirect()->route('orders.index')->with('success', 'Narudžba je uspješno potvrđena! Račun je poslan na e-mail.');
+                Log::info('Checkout completed (card), redirecting to FakePay', [
+                    'user'        => $user->id ?? null,
+                    'Narudzba_ID' => $order->Narudzba_ID ?? null,
+                    'Payment_ID'  => $payment->id ?? null,
+                ]);
+
+                return redirect()->route('payments.fakepay', $payment->id);
+            } else {
+                // 💵 POUZEĆE / OFFLINE → nema FakePay
+                $order->Status = 'Čeka plaćanje pouzećem';
+                $order->save();
+
+                DB::commit();
+
+                // pošalji račun odmah
+                $email = optional($order->user)->email;
+                if ($email) {
+                    Mail::to($email)->send(new OrderReceiptMail($order));
+                }
+
+                Log::info('Checkout completed (COD), redirecting to orders.show', [
+                    'user'        => $user->id ?? null,
+                    'Narudzba_ID' => $order->Narudzba_ID ?? null,
+                ]);
+
+                return redirect()
+                    ->route('orders.show', $order->Narudzba_ID)
+                    ->with('success', 'Narudžba je zaprimljena. Plaćanje pri pouzeću.');
+            }
+
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Checkout failed', ['exception' => $e->getMessage()]);

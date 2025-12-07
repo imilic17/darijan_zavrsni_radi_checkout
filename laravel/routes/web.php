@@ -12,6 +12,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\CountryController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\CountryTownController;
+use App\Http\Controllers\FakePayController;
 
 // Admin controllers
 use App\Http\Controllers\Admin\DashboardController;
@@ -150,6 +151,17 @@ Route::middleware(['auth'])->group(function () {
 Route::middleware(['auth'])->group(function () {
     Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding.show');
     Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
+});
+
+Route::middleware('auth')->group(function () {
+    Route::get('/payments/fakepay/{payment}', [FakePayController::class, 'show'])
+        ->name('payments.fakepay');
+
+    Route::post('/payments/fakepay/{payment}/process', [FakePayController::class, 'process'])
+        ->name('payments.fakepay.process');
+
+    Route::get('/payments/fakepay/{payment}/callback', [FakePayController::class, 'callback'])
+        ->name('payments.fakepay.callback');
 });
 
 
