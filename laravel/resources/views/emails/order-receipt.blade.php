@@ -3,7 +3,7 @@
 <html lang="hr">
 <head>
     <meta charset="utf-8">
-    <title>Račun za narudžbu #{{ $order->Narudzba_ID }}</title>
+    <title>Račun za vašu narudžbu </title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
 <body style="margin:0; padding:0; background-color:#f3f4f6; font-family: -apple-system,BlinkMacSystemFont,'Segoe UI',Arial,sans-serif;">
@@ -21,18 +21,16 @@
                                 <td style="font-size:20px; font-weight:700;">
                                     TechShop
                                 </td>
-                                <td align="right" style="font-size:12px; color:#9ca3af;">
-                                    Račun #{{ $order->Narudzba_ID }}
-                                </td>
+                                
                             </tr>
                         </table>
                     </td>
                 </tr>
 
-                <!-- Body -->
+                
                 <tr>
                     <td style="padding:24px;">
-                        <!-- Intro -->
+                        <!-- Uvod -->
                         <p style="margin:0 0 12px 0; font-size:16px; font-weight:600; color:#111827;">
                             Hvala na kupnji, {{ $order->user->ime }}!
                         </p>
@@ -40,7 +38,7 @@
                             U nastavku je sažetak vaše narudžbe. Ovaj račun je automatski generiran i služi kao potvrda kupnje.
                         </p>
 
-                        <!-- Order meta -->
+                        <!-- Podaci o narudžbi -->
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse; margin-bottom:20px;">
                             <tr>
                                 <td style="width:50%; vertical-align:top; padding-right:8px;">
@@ -50,7 +48,7 @@
                                         </div>
                                         <div style="font-size:14px; color:#111827; line-height:1.6;">
                                             <strong>{{ $order->user->ime }} {{ $order->user->prezime }}</strong><br>
-                                            {{-- Ako koristiš Adresa_dostave, ovo zamijeni prema potrebi --}}
+                                            
                                             {{ $order->Adresa_dostave ?? $order->user->adresa }}<br>
                                             {{ $order->user->postanski_broj ?? '' }} {{ $order->user->grad ?? '' }}<br>
                                             @if(!empty($order->user->telefon))
@@ -78,7 +76,7 @@
                             </tr>
                         </table>
 
-                        <!-- Items table -->
+                        <!-- stavke narudžbe -->
                         @php
                             $subtotal = 0;
                         @endphp
@@ -132,7 +130,7 @@
                             </table>
                         </div>
 
-                        <!-- Totals -->
+                        <!-- ukupno -->
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse; margin-top:16px;">
                             <tr>
                                 <td style="width:60%;"></td>
@@ -167,7 +165,7 @@
                             </tr>
                         </table>
 
-                        <!-- Info / footer -->
+                        <!-- footer -->
                         <p style="margin:20px 0 6px 0; font-size:13px; color:#6b7280; line-height:1.6;">
                             Račun je kompjuterski izdan i vrijedi bez pečata i potpisa.
                         </p>
@@ -181,7 +179,7 @@
                     </td>
                 </tr>
             </table>
-            <!-- /Card -->
+            
         </td>
     </tr>
 </table>
