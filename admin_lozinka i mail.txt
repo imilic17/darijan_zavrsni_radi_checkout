@@ -1,3 +1,7 @@
 email: admin@techshop.tsd
 
+email (google): techshop.project.zavrsni.dv@gmail.com
+
 password: TlwK[(9}fQ1~g;Q7]xo-H~(J!Vz}.4PouVhrnH^ir,VK-aGqAG
+
+app password for google: hhrutuhbzjbgzlgo
