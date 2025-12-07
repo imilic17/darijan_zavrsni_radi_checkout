@@ -14,6 +14,9 @@ use App\Models\NacinPlacanja;
 use App\Models\Narudzba;
 use App\Models\DetaljiNarudzbe;
 
+use Illuminate\Support\Facades\Mail;
+use App\Mail\OrderReceiptMail;
+
 class CheckoutController extends Controller
 {
     /**
@@ -55,7 +58,6 @@ class CheckoutController extends Controller
 
         Log::info('CheckoutController@store called', ['user_id' => $user->id ?? null]);
 
-        // ✅ Validation (use Validator to log failures instead of silent redirect)
         $validator = Validator::make($request->all(), [
             'adresa_dostave' => 'required|string|max:255',
             'nacin_placanja_id' => 'required|exists:nacin_placanja,NacinPlacanja_ID',
@@ -68,7 +70,6 @@ class CheckoutController extends Controller
 
         $validated = $validator->validated();
 
-        // Get cart items
         $cartItems = Kosarica::where('korisnik_id', $user->id)
             ->with('proizvod')
             ->get();
@@ -77,7 +78,6 @@ class CheckoutController extends Controller
             return redirect()->route('cart.index')->with('error', 'Vaša košarica je prazna.');
         }
 
-        // Calculate total price
         $total = $cartItems->sum(function ($item) {
             return $item->proizvod->Cijena * $item->kolicina;
         });
@@ -86,18 +86,16 @@ class CheckoutController extends Controller
 
         try {
             Log::info('Attempting to create order', ['user' => $user->id ?? null, 'total' => $total]);
-            // ✅ Create order (use column names that match the migration / model)
+
             $order = Narudzba::create([
                 'Kupac_ID' => $user->id,
                 'NacinPlacanja_ID' => $validated['nacin_placanja_id'],
                 'Datum_narudzbe' => now()->format('Y-m-d H:i:s'),
-
                 'Ukupni_iznos' => $total,
             ]);
 
             Log::info('Order created', ['Narudzba_ID' => $order->Narudzba_ID ?? null]);
 
-            // ✅ Create order details
             foreach ($cartItems as $item) {
                 DetaljiNarudzbe::create([
                     'Narudzba_ID' => $order->Narudzba_ID,
@@ -105,18 +103,25 @@ class CheckoutController extends Controller
                     'Kolicina' => $item->kolicina,
                 ]);
 
-                // Optionally decrease stock
                 $item->proizvod->decrement('StanjeNaSkladistu', $item->kolicina);
             }
 
-            // ✅ Clear cart
+            // ✉️ Pošalji račun na email (za test sada tebi)
+            // Ako Narudzba ima relaciju kupac()->belongsTo(User::class, 'Kupac_ID'):
+            // $email = $order->kupac->email;
+            // Za jednostavno testiranje:
+            $email = $user->email;
+
+            Mail::to($email)->send(new OrderReceiptMail($order));
+
+            // 🧺 Očisti košaricu
             Kosarica::where('korisnik_id', $user->id)->delete();
 
             DB::commit();
 
             Log::info('Checkout completed, clearing cart and redirecting', ['user' => $user->id ?? null]);
 
-            return redirect()->route('orders.index')->with('success', 'Narudžba je uspješno potvrđena!');
+            return redirect()->route('orders.index')->with('success', 'Narudžba je uspješno potvrđena! Račun je poslan na e-mail.');
         } catch (\Exception $e) {
             DB::rollBack();
             Log::error('Checkout failed', ['exception' => $e->getMessage()]);
