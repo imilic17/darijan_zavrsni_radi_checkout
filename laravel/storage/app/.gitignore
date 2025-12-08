@@ -1,4 +1,6 @@
 *
-#!private/
-#!public/
+!private/
+!public/
+!public/uploads/
+!public/uploads/products/
 !.gitignore
