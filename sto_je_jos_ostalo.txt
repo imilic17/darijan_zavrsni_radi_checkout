@@ -1,5 +1,6 @@
 Ostalo je:
 
-1. dovršit admin slučelje (narudžbe i korisnici)
-2. e-mail - računi
-3. ono testno plačanje
+1. dovršit admin sučelje (narudžbe i korisnici) -riješeno-
+2. e-mail - računi -riješeno-
+3. ono testno plaćanje -riješeno-
+4. resetiranje lozinke -riješeno-

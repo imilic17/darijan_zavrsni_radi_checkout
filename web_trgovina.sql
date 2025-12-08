@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 27, 2025 at 06:02 PM
+-- Generation Time: Dec 08, 2025 at 09:46 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.2.12
 
@@ -32,14 +32,6 @@ CREATE TABLE `cache` (
   `value` mediumtext NOT NULL,
   `expiration` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `cache`
---
-
-INSERT INTO `cache` (`key`, `value`, `expiration`) VALUES
-('laravel-cache-darijanko112@gmail.com|127.0.0.1', 'i:3;', 1761406149),
-('laravel-cache-darijanko112@gmail.com|127.0.0.1:timer', 'i:1761406149;', 1761406149);
 
 -- --------------------------------------------------------
 
@@ -29147,11 +29139,25 @@ INSERT INTO `detalji_narudzbe` (`DetaljiNarudzbe_ID`, `Narudzba_ID`, `Proizvod_I
 (28, 2, 2, 1, NULL, NULL),
 (29, 38, 588, 1, '2025-11-12 07:05:37', '2025-11-12 07:05:37'),
 (30, 38, 589, 1, '2025-11-12 07:05:38', '2025-11-12 07:05:38'),
-(31, 38, 591, 1, '2025-11-12 07:05:38', '2025-11-12 07:05:38'),
 (32, 39, 589, 1, '2025-11-12 07:07:39', '2025-11-12 07:07:39'),
 (33, 40, 588, 1, '2025-11-27 15:59:27', '2025-11-27 15:59:27'),
 (34, 40, 589, 1, '2025-11-27 15:59:27', '2025-11-27 15:59:27'),
-(35, 40, 591, 1, '2025-11-27 15:59:27', '2025-11-27 15:59:27');
+(36, 41, 594, 1, '2025-12-06 10:17:47', '2025-12-06 10:17:47'),
+(37, 42, 595, 1, '2025-12-06 10:20:56', '2025-12-06 10:20:56'),
+(38, 43, 595, 1, '2025-12-07 14:42:23', '2025-12-07 14:42:23'),
+(39, 44, 594, 1, '2025-12-07 14:45:23', '2025-12-07 14:45:23'),
+(40, 45, 594, 1, '2025-12-07 15:16:54', '2025-12-07 15:16:54'),
+(41, 46, 587, 1, '2025-12-07 15:19:58', '2025-12-07 15:19:58'),
+(42, 46, 588, 1, '2025-12-07 15:19:58', '2025-12-07 15:19:58'),
+(43, 46, 597, 1, '2025-12-07 15:19:58', '2025-12-07 15:19:58'),
+(44, 47, 576, 1, '2025-12-07 15:26:02', '2025-12-07 15:26:02'),
+(45, 47, 577, 1, '2025-12-07 15:26:02', '2025-12-07 15:26:02'),
+(46, 47, 578, 1, '2025-12-07 15:26:02', '2025-12-07 15:26:02'),
+(47, 47, 584, 1, '2025-12-07 15:26:02', '2025-12-07 15:26:02'),
+(48, 47, 586, 1, '2025-12-07 15:26:02', '2025-12-07 15:26:02'),
+(49, 48, 584, 1, '2025-12-07 15:26:28', '2025-12-07 15:26:28'),
+(50, 48, 586, 1, '2025-12-07 15:26:28', '2025-12-07 15:26:28'),
+(51, 48, 589, 1, '2025-12-07 15:26:28', '2025-12-07 15:26:28');
 
 --
 -- Triggers `detalji_narudzbe`
@@ -29287,7 +29293,8 @@ INSERT INTO `kosarica` (`id`, `korisnik_id`, `proizvod_id`, `kolicina`, `datum_d
 (49, 1, 587, 1, '2025-10-23 16:59:38'),
 (50, 1, 585, 1, '2025-10-23 16:59:38'),
 (51, 1, 589, 2, '2025-10-23 16:59:38'),
-(52, 1, 393, 1, '2025-10-23 16:59:38');
+(52, 1, 393, 1, '2025-10-23 16:59:38'),
+(76, 5, 595, 1, '2025-12-07 16:32:46');
 
 -- --------------------------------------------------------
 
@@ -29392,7 +29399,8 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (28, '2025_11_04_000000_add_timestamps_to_detalji_narudzbe_table', 9),
 (29, '2025_11_04_010000_add_adresa_dostave_to_narudzba_table', 9),
 (30, '2025_11_13_193407_add_is_admin_to_users_table', 10),
-(31, '2025_11_13_202024_add_status_to_narudzba_table', 11);
+(31, '2025_11_13_202024_add_status_to_narudzba_table', 11),
+(32, '2025_11_27_161550_add_kategorija_id_to_tip_proizvoda_table', 12);
 
 -- --------------------------------------------------------
 
@@ -29430,7 +29438,7 @@ CREATE TABLE `narudzba` (
   `Narudzba_ID` int(11) NOT NULL,
   `Kupac_ID` int(11) DEFAULT NULL,
   `NacinPlacanja_ID` int(11) DEFAULT NULL,
-  `Datum_narudzbe` date NOT NULL,
+  `Datum_narudzbe` datetime NOT NULL,
   `Ukupni_iznos` decimal(10,2) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -29443,46 +29451,54 @@ CREATE TABLE `narudzba` (
 --
 
 INSERT INTO `narudzba` (`Narudzba_ID`, `Kupac_ID`, `NacinPlacanja_ID`, `Datum_narudzbe`, `Ukupni_iznos`, `created_at`, `updated_at`, `Adresa_dostave`, `Status`) VALUES
-(1, 1, 2, '2024-06-17', 995.00, NULL, NULL, NULL, 'U obradi'),
-(2, 2, 1, '2024-06-18', 238.00, NULL, NULL, NULL, 'U obradi'),
-(3, 3, 3, '2024-06-19', 33.00, NULL, NULL, NULL, 'U obradi'),
-(4, 4, 2, '2024-06-20', 120.00, NULL, NULL, NULL, 'U obradi'),
-(5, 5, 1, '2024-06-21', 179.99, NULL, NULL, NULL, 'U obradi'),
-(6, 6, 3, '2024-06-22', 75.99, NULL, NULL, NULL, 'U obradi'),
-(7, 7, 2, '2024-06-23', 89.99, NULL, NULL, NULL, 'U obradi'),
-(8, 8, 1, '2024-06-24', 105.99, NULL, NULL, NULL, 'U obradi'),
-(9, 9, 3, '2024-06-25', 119.50, NULL, NULL, NULL, 'U obradi'),
-(10, 10, 2, '2024-06-26', 210.00, NULL, NULL, NULL, 'U obradi'),
-(11, 11, 1, '2024-06-27', 155.00, NULL, NULL, NULL, 'U obradi'),
-(12, 12, 3, '2024-06-28', 45.50, NULL, NULL, NULL, 'U obradi'),
-(13, 13, 2, '2024-06-29', 215.00, NULL, NULL, NULL, 'U obradi'),
-(14, 14, 1, '2024-06-30', 59.50, NULL, NULL, NULL, 'U obradi'),
-(15, 15, 3, '2024-07-01', 12.00, NULL, NULL, NULL, 'U obradi'),
-(16, 16, 2, '2024-07-02', 25.00, NULL, NULL, NULL, 'U obradi'),
-(17, 17, 1, '2024-07-03', 89.99, NULL, NULL, NULL, 'U obradi'),
-(18, 18, 3, '2024-07-04', 144.50, NULL, NULL, NULL, 'U obradi'),
-(19, 19, 2, '2024-07-05', 210.00, NULL, NULL, NULL, 'U obradi'),
-(20, 20, 1, '2024-07-06', 238.00, NULL, NULL, NULL, 'U obradi'),
-(21, 21, 3, '2024-07-07', 155.00, NULL, NULL, NULL, 'U obradi'),
-(22, 22, 2, '2024-07-08', 75.99, NULL, NULL, NULL, 'U obradi'),
-(23, 23, 1, '2024-07-09', 105.99, NULL, NULL, NULL, 'U obradi'),
-(24, 24, 3, '2024-07-10', 59.50, NULL, NULL, NULL, 'U obradi'),
-(25, 25, 2, '2024-07-11', 119.50, NULL, NULL, NULL, 'U obradi'),
-(26, 1, 2, '2024-12-01', 1354.99, NULL, NULL, NULL, 'U obradi'),
-(27, 2, 1, '2024-12-02', 518.99, NULL, NULL, NULL, 'U obradi'),
-(28, 3, 2, '2024-12-03', 1086.98, NULL, NULL, NULL, 'U obradi'),
-(29, 4, 3, '2024-12-04', 188.50, NULL, NULL, NULL, 'U obradi'),
-(30, 5, 1, '2024-12-05', 400.00, NULL, NULL, NULL, 'U obradi'),
-(31, 6, 2, '2024-12-06', 406.98, NULL, NULL, NULL, 'U obradi'),
-(32, 7, 3, '2024-12-07', 175.49, NULL, NULL, NULL, 'U obradi'),
-(33, 8, 2, '2024-12-08', 311.99, NULL, NULL, NULL, 'U obradi'),
-(34, 9, 1, '2024-12-09', 310.49, NULL, NULL, NULL, 'U obradi'),
-(35, 10, 2, '2024-12-10', 167.49, NULL, NULL, NULL, 'U obradi'),
-(36, 1, 1, '2025-03-01', 7649.98, NULL, NULL, NULL, 'U obradi'),
-(37, 2, 2, '2025-03-02', 149.99, NULL, NULL, NULL, 'U obradi'),
-(38, 5, 4, '2025-11-12', 1865.30, '2025-11-12 07:05:37', '2025-11-12 07:05:37', NULL, 'U obradi'),
-(39, 5, 4, '2025-11-12', 1842.36, '2025-11-12 07:07:39', '2025-11-12 07:07:39', NULL, 'U obradi'),
-(40, 5, 7, '2025-11-27', 1865.30, '2025-11-27 15:59:27', '2025-11-27 15:59:27', NULL, 'U obradi');
+(1, 1, 2, '2024-06-17 00:00:00', 995.00, NULL, NULL, NULL, 'U obradi'),
+(2, 2, 1, '2024-06-18 00:00:00', 238.00, NULL, NULL, NULL, 'U obradi'),
+(3, 3, 3, '2024-06-19 00:00:00', 33.00, NULL, NULL, NULL, 'U obradi'),
+(4, 4, 2, '2024-06-20 00:00:00', 120.00, NULL, NULL, NULL, 'U obradi'),
+(5, 5, 1, '2024-06-21 00:00:00', 179.99, NULL, NULL, NULL, 'U obradi'),
+(6, 6, 3, '2024-06-22 00:00:00', 75.99, NULL, NULL, NULL, 'U obradi'),
+(7, 7, 2, '2024-06-23 00:00:00', 89.99, NULL, NULL, NULL, 'U obradi'),
+(8, 8, 1, '2024-06-24 00:00:00', 105.99, NULL, NULL, NULL, 'U obradi'),
+(9, 9, 3, '2024-06-25 00:00:00', 119.50, NULL, NULL, NULL, 'U obradi'),
+(10, 10, 2, '2024-06-26 00:00:00', 210.00, NULL, NULL, NULL, 'U obradi'),
+(11, 11, 1, '2024-06-27 00:00:00', 155.00, NULL, NULL, NULL, 'U obradi'),
+(12, 12, 3, '2024-06-28 00:00:00', 45.50, NULL, NULL, NULL, 'U obradi'),
+(13, 13, 2, '2024-06-29 00:00:00', 215.00, NULL, NULL, NULL, 'U obradi'),
+(14, 14, 1, '2024-06-30 00:00:00', 59.50, NULL, NULL, NULL, 'U obradi'),
+(15, 15, 3, '2024-07-01 00:00:00', 12.00, NULL, NULL, NULL, 'U obradi'),
+(16, 16, 2, '2024-07-02 00:00:00', 25.00, NULL, NULL, NULL, 'U obradi'),
+(17, 17, 1, '2024-07-03 00:00:00', 89.99, NULL, NULL, NULL, 'U obradi'),
+(18, 18, 3, '2024-07-04 00:00:00', 144.50, NULL, NULL, NULL, 'U obradi'),
+(19, 19, 2, '2024-07-05 00:00:00', 210.00, NULL, NULL, NULL, 'U obradi'),
+(20, 20, 1, '2024-07-06 00:00:00', 238.00, NULL, NULL, NULL, 'U obradi'),
+(21, 21, 3, '2024-07-07 00:00:00', 155.00, NULL, NULL, NULL, 'U obradi'),
+(22, 22, 2, '2024-07-08 00:00:00', 75.99, NULL, NULL, NULL, 'U obradi'),
+(23, 23, 1, '2024-07-09 00:00:00', 105.99, NULL, NULL, NULL, 'U obradi'),
+(24, 24, 3, '2024-07-10 00:00:00', 59.50, NULL, NULL, NULL, 'U obradi'),
+(25, 25, 2, '2024-07-11 00:00:00', 119.50, NULL, NULL, NULL, 'U obradi'),
+(26, 1, 2, '2024-12-01 00:00:00', 1354.99, NULL, NULL, NULL, 'U obradi'),
+(27, 2, 1, '2024-12-02 00:00:00', 518.99, NULL, NULL, NULL, 'U obradi'),
+(28, 3, 2, '2024-12-03 00:00:00', 1086.98, NULL, NULL, NULL, 'U obradi'),
+(29, 4, 3, '2024-12-04 00:00:00', 188.50, NULL, NULL, NULL, 'U obradi'),
+(30, 5, 1, '2024-12-05 00:00:00', 400.00, NULL, NULL, NULL, 'U obradi'),
+(31, 6, 2, '2024-12-06 00:00:00', 406.98, NULL, NULL, NULL, 'U obradi'),
+(32, 7, 3, '2024-12-07 00:00:00', 175.49, NULL, NULL, NULL, 'U obradi'),
+(33, 8, 2, '2024-12-08 00:00:00', 311.99, NULL, NULL, NULL, 'U obradi'),
+(34, 9, 1, '2024-12-09 00:00:00', 310.49, NULL, NULL, NULL, 'U obradi'),
+(35, 10, 2, '2024-12-10 00:00:00', 167.49, NULL, NULL, NULL, 'U obradi'),
+(36, 1, 1, '2025-03-01 00:00:00', 7649.98, NULL, NULL, NULL, 'U obradi'),
+(37, 2, 2, '2025-03-02 00:00:00', 149.99, NULL, NULL, NULL, 'U obradi'),
+(38, 5, 4, '2025-11-12 00:00:00', 1865.30, '2025-11-12 07:05:37', '2025-11-12 07:05:37', NULL, 'U obradi'),
+(39, 5, 4, '2025-11-12 00:00:00', 1842.36, '2025-11-12 07:07:39', '2025-11-12 07:07:39', NULL, 'U obradi'),
+(40, 5, 7, '2025-11-27 00:00:00', 1865.30, '2025-11-27 15:59:27', '2025-11-27 15:59:27', NULL, 'U obradi'),
+(41, 5, 1, '2025-12-06 00:00:00', 123.00, '2025-12-06 10:17:47', '2025-12-06 10:18:31', NULL, 'Narudžba završena'),
+(42, 5, 9, '2025-12-06 11:20:56', 123.00, '2025-12-06 10:20:56', '2025-12-06 10:20:56', NULL, 'U obradi'),
+(43, 5, 1, '2025-12-07 15:42:23', 123.00, '2025-12-07 14:42:23', '2025-12-07 14:42:23', NULL, 'U obradi'),
+(44, 5, 7, '2025-12-07 15:45:23', 123.00, '2025-12-07 14:45:23', '2025-12-07 14:45:23', NULL, 'U obradi'),
+(45, 5, 7, '2025-12-07 16:16:54', 123.00, '2025-12-07 15:16:54', '2025-12-07 15:17:35', 'Ivana Cankara 5, Daruvar, Hrvatska', 'Plaćeno'),
+(46, 5, 9, '2025-12-07 16:19:58', 872.57, '2025-12-07 15:19:58', '2025-12-07 15:19:58', 'Ivana Cankara 5, Daruvar, Hrvatska', 'U obradi'),
+(47, 5, 9, '2025-12-07 16:26:02', 6576.63, '2025-12-07 15:26:02', '2025-12-07 15:26:02', 'Ivana Cankara 5, Daruvar, Hrvatska', 'Čeka plaćanje pouzećem'),
+(48, 5, 7, '2025-12-07 16:26:28', 4791.58, '2025-12-07 15:26:28', '2025-12-07 15:26:28', 'Ivana Cankara 5, Daruvar, Hrvatska', 'U obradi');
 
 -- --------------------------------------------------------
 
@@ -29495,6 +29511,41 @@ CREATE TABLE `password_reset_tokens` (
   `token` varchar(255) NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `password_reset_tokens`
+--
+
+INSERT INTO `password_reset_tokens` (`email`, `token`, `created_at`) VALUES
+('darijanko114@gmail.com', '$2y$12$YK3ULmatwjINOPBfqiXi7eub8XE4X3SPeAjcLTtJjYqbpCEp5qO4y', '2025-12-06 11:44:02');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `payments`
+--
+
+CREATE TABLE `payments` (
+  `id` bigint(20) UNSIGNED NOT NULL,
+  `narudzba_id` bigint(20) UNSIGNED NOT NULL,
+  `provider` varchar(255) NOT NULL DEFAULT 'fakepay',
+  `reference` varchar(255) NOT NULL,
+  `amount` decimal(10,2) NOT NULL,
+  `currency` varchar(3) NOT NULL DEFAULT 'EUR',
+  `status` enum('pending','success','failed') NOT NULL DEFAULT 'pending',
+  `meta` longtext CHARACTER SET utf8mb4 COLLATE utf8mb4_bin DEFAULT NULL CHECK (json_valid(`meta`)),
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `payments`
+--
+
+INSERT INTO `payments` (`id`, `narudzba_id`, `provider`, `reference`, `amount`, `currency`, `status`, `meta`, `created_at`, `updated_at`) VALUES
+(1, 45, 'fakepay', 'TS-20251207161654-FFXU8O', 123.00, 'EUR', 'success', '{\"fake_gateway_message\":\"Payment authorised (test).\"}', '2025-12-07 15:16:54', '2025-12-07 15:17:35'),
+(2, 46, 'fakepay', 'TS-20251207161958-AR13XQ', 872.57, 'EUR', 'pending', NULL, '2025-12-07 15:19:58', '2025-12-07 15:19:58'),
+(3, 48, 'fakepay', 'TS-20251207162628-NBDJSP', 4791.58, 'EUR', 'pending', NULL, '2025-12-07 15:26:28', '2025-12-07 15:26:28');
 
 -- --------------------------------------------------------
 
@@ -30078,23 +30129,23 @@ INSERT INTO `proizvod` (`Proizvod_ID`, `sifra`, `Naziv`, `Opis`, `Cijena`, `Krat
 (573, 'PRD-731GV', 'Laborum neque natus', 'Sit et eum nisi vero voluptas ipsa quaerat cupiditate. Sunt atque ducimus quia sit eos sequi vel. Vel sit amet dolore quibusdam laboriosam sunt. Doloribus necessitatibus accusamus eligendi enim sit sapiente eligendi recusandae. Consectetur rerum et et quis voluptatum. Placeat molestiae aliquam eos voluptatem. Enim asperiores at in omnis iusto a.', 706.64, 'Consectetur quasi est voluptates ipsum dolor tempora unde facilis.', 4, 76, 'uploads/products/product_15_682b52ff60908.jpeg', 1),
 (574, 'PRD-929VP', 'Aut optio porro', 'Vel voluptas at et minus impedit. Excepturi omnis enim voluptate aut voluptatem. Quod recusandae velit velit sed ut debitis facilis. Qui delectus sint voluptatem voluptas illo rem. Iure rerum nulla ex praesentium. Harum sed aut temporibus ex. Nihil asperiores quae qui aperiam expedita omnis.', 703.16, 'Quam similique et vitae saepe nihil quia nobis quo labore.', 4, 42, 'uploads/products/product_6_682b52f23e66d.jpeg', 3),
 (575, 'PRD-629EN', 'Labore iusto temporibus', 'Error ut deserunt sed sed. Ea quis et mollitia vel. Ut qui aliquid exercitationem velit voluptatem et repellat quibusdam. Autem consequatur eum est. Adipisci et mollitia animi. Voluptatibus voluptate error sint id.', 1700.65, 'Quas non nihil doloribus eum maxime ut ipsa sapiente est.', 6, 53, 'uploads/products/product_18_682b52f92d6cd.jpeg', 2),
-(576, 'PRD-213MU', 'Eum rerum quo', 'Ipsum tempora qui aut ratione impedit hic. Aut dolorem odio explicabo dicta quasi consequatur dolor quia. Omnis mollitia illo velit eum quibusdam temporibus enim. Esse quo eligendi id quidem ea esse quis modi. Qui et sit quae consequatur et consequuntur sunt. Qui aliquid sed debitis.', 1232.91, 'Fugiat sit sint autem molestias tempore.', 4, 18, 'uploads/products/product_10_67e2fa07645fe.jpg', 2),
-(577, 'PRD-522XH', 'Corrupti qui excepturi', 'Repellendus aliquid suscipit vitae assumenda commodi odit. Cumque sapiente omnis asperiores qui consectetur vitae. Reprehenderit voluptatem non dolores qui. Dignissimos autem itaque mollitia quod quidem minima rem. Nobis et eius dolorum omnis unde est. Quos voluptates consequatur corporis quas consequatur.', 1403.18, 'Culpa molestiae occaecati sed ipsa quis aperiam tempore vero non minus.', 6, 71, 'uploads/products/product_5_682b531491006.jpeg', 2),
-(578, 'PRD-302TM', 'Dolor nostrum asperiores', 'Commodi perspiciatis veniam velit aut voluptatem voluptate ipsum cum. Eum qui sed et sed omnis. Sit voluptatem odit animi nisi placeat et. Ducimus soluta animi quisquam sit dolores.', 991.32, 'Eum nesciunt aut qui nihil et quam et quasi ea.', 3, 13, 'uploads/products/product_39_683451723d7ed.jpg', 2),
+(576, 'PRD-213MU', 'Eum rerum quo', 'Ipsum tempora qui aut ratione impedit hic. Aut dolorem odio explicabo dicta quasi consequatur dolor quia. Omnis mollitia illo velit eum quibusdam temporibus enim. Esse quo eligendi id quidem ea esse quis modi. Qui et sit quae consequatur et consequuntur sunt. Qui aliquid sed debitis.', 1232.91, 'Fugiat sit sint autem molestias tempore.', 4, 16, 'uploads/products/product_10_67e2fa07645fe.jpg', 2),
+(577, 'PRD-522XH', 'Corrupti qui excepturi', 'Repellendus aliquid suscipit vitae assumenda commodi odit. Cumque sapiente omnis asperiores qui consectetur vitae. Reprehenderit voluptatem non dolores qui. Dignissimos autem itaque mollitia quod quidem minima rem. Nobis et eius dolorum omnis unde est. Quos voluptates consequatur corporis quas consequatur.', 1403.18, 'Culpa molestiae occaecati sed ipsa quis aperiam tempore vero non minus.', 6, 69, 'uploads/products/product_5_682b531491006.jpeg', 2),
+(578, 'PRD-302TM', 'Dolor nostrum asperiores', 'Commodi perspiciatis veniam velit aut voluptatem voluptate ipsum cum. Eum qui sed et sed omnis. Sit voluptatem odit animi nisi placeat et. Ducimus soluta animi quisquam sit dolores.', 991.32, 'Eum nesciunt aut qui nihil et quam et quasi ea.', 3, 11, 'uploads/products/product_39_683451723d7ed.jpg', 2),
 (579, 'PRD-405SG', 'Dolorum ut maxime', 'Consectetur mollitia consequatur corporis aut eos aut vel. Iste quia itaque autem atque. Accusantium sed aliquam nemo et doloribus eligendi. Quia necessitatibus in facere eveniet. Reprehenderit nemo inventore iure qui deserunt quam.', 1226.08, 'Quo et aliquam dicta est sint doloremque voluptates.', 5, 70, 'uploads/products/product_8_682b530d817de.jpeg', 3),
 (580, 'PRD-150YQ', 'Est quod quam', 'Vel magni vero officia ducimus. Aut maiores dolor maiores. Voluptate amet sapiente aperiam reprehenderit id possimus et. Consequatur officia est beatae iusto mollitia atque occaecati. Excepturi rem labore id. Nemo voluptas natus magni assumenda cum.', 792.75, 'Quas id quis distinctio quibusdam consequatur ab recusandae occaecati sit aut.', 4, 18, 'uploads/products/product_6_682b52f23e66d.jpeg', 1),
 (581, 'PRD-579KR', 'Itaque consequatur eum', 'Ratione tenetur praesentium beatae voluptatibus reprehenderit voluptatem. Eum labore pariatur quia. Et nam placeat atque sint totam architecto. Voluptatem officiis voluptas maiores quis. Et at officia voluptatem et totam.', 1703.52, 'Repellendus eveniet molestiae recusandae aspernatur laudantium fugiat voluptas molestiae ea eos.', 6, 100, 'uploads/products/product_15_682b52ff60908.jpeg', 1),
 (582, 'PRD-844WA', 'Numquam illum maiores', 'Eum et est iure dolor et ipsum. Velit excepturi aut voluptatem et ut quia unde. Error dolor dolores et atque quia mollitia. Quod nam ipsa debitis ex commodi. Iusto rerum quam doloribus facere vel odit et.', 908.94, 'Et inventore laboriosam cum sed dolorum cumque deserunt.', 4, 39, 'uploads/products/product_39_683451723d7ed.jpg', 3),
 (583, 'PRD-935BI', 'Earum doloribus molestias', 'Natus aut aut voluptatem sit aliquam enim doloremque ratione. Ex et labore et dolorem qui. Harum quod vel est eaque aliquam. Illum consequuntur ut aut rerum assumenda neque quod blanditiis. Nostrum quo molestias non eveniet accusantium autem. Qui dolores et minima est eveniet nostrum libero.', 1334.00, 'Atque esse totam velit eaque suscipit eos ea repellendus perspiciatis temporibus voluptatem.', 1, 51, 'uploads/products/product_9_682b53079cbf5.jpeg', 1),
-(584, 'PRD-436KG', 'Rerum provident dolore', 'Sit velit voluptatem aut delectus. Molestiae non quis sapiente. Possimus assumenda nisi qui aut sequi corrupti soluta. Ab consectetur quia enim. Eaque rerum quibusdam ipsa blanditiis voluptatem provident ipsum. Vitae cumque provident eos.', 1352.96, 'Exercitationem impedit occaecati aliquid doloremque eveniet quibusdam voluptates non iure tempore error.', 4, 10, 'uploads/products/product_5_682b531491006.jpeg', 1),
+(584, 'PRD-436KG', 'Rerum provident dolore', 'Sit velit voluptatem aut delectus. Molestiae non quis sapiente. Possimus assumenda nisi qui aut sequi corrupti soluta. Ab consectetur quia enim. Eaque rerum quibusdam ipsa blanditiis voluptatem provident ipsum. Vitae cumque provident eos.', 1352.96, 'Exercitationem impedit occaecati aliquid doloremque eveniet quibusdam voluptates non iure tempore error.', 4, 6, 'uploads/products/product_5_682b531491006.jpeg', 1),
 (585, 'PRD-638NV', 'Nisi vel aperiam', 'Ab quibusdam dignissimos non vel. Quia facere optio velit ut et minima ratione. Cupiditate error libero voluptatem magni maxime quo. Ut impedit quis quia ab quia consectetur. Amet ab ipsum tenetur. Dolor animi nihil molestiae eos sed et. Minus ipsam tenetur numquam voluptate perspiciatis.', 710.71, 'Et reprehenderit quia enim optio animi sit eum sed voluptas.', 1, 75, 'uploads/products/product_1_67e2f5cdb34ef.jpg', 3),
-(586, 'PRD-337GD', 'Debitis et ratione', 'Corrupti aut voluptas et fuga aliquam in. Nobis saepe necessitatibus doloremque ipsam. Tenetur ipsam amet suscipit impedit. Ipsum repellendus illum corrupti architecto. Dolorum assumenda molestiae accusantium quis molestiae exercitationem.', 1596.26, 'Magni et excepturi officiis saepe quo error et incidunt natus aperiam.', 3, 49, 'uploads/products/product_39_683451723d7ed.jpg', 1),
-(587, 'PRD-435WP', 'Officia distinctio accusamus', 'Est quis officiis aut in. Quo error tempore voluptate ex sed et alias. Minima perspiciatis velit quo ratione cumque facilis voluptate. Totam dolor et vitae.', 752.63, 'Ut natus molestias eligendi sed accusantium commodi voluptatem sit veritatis.', 5, 44, 'uploads/products/product_5_682b531491006.jpeg', 2),
-(588, 'PRD-198KQ', 'Recusandae perferendis dolores', 'Cum occaecati dolore quasi fuga. Unde atque voluptas ut officia. Est neque reiciendis officiis quia ut reiciendis. Et sequi blanditiis voluptatum quod.', 10.94, 'Est autem optio qui ex consequatur quibusdam sunt repudiandae necessitatibus.', 5, 54, 'uploads/products/product_10_67e2fa07645fe.jpg', 1),
-(589, 'PRD-731CY', 'Dolores earum ab', 'Est occaecati sunt dolorum eaque sunt qui. Commodi labore praesentium molestiae nihil. Quo quos occaecati molestiae sed ea tempora. Consequatur mollitia ducimus velit mollitia incidunt molestias ut delectus. Sit aut et et asperiores recusandae expedita omnis.', 1842.36, 'Culpa consequatur quae deleniti qui enim sint deserunt.', 6, 16, 'uploads/products/product_16_682b52e1dfe9d.jpeg', 1),
-(591, '123124523456223', 'Test', NULL, 12.00, NULL, 7, 119, NULL, NULL),
-(594, 'PRD-731CX2', 'Procesor AMD Ryzen 5 8400F (6C/12T, up to 4.7GHz, 16MB, AM5), 100-100001591BOX', 'asdgadsgf', 123.00, 'gsdas', 3, 123, 'uploads/products/p3pxLojJV6yGeLNghqtVOJ6bNA6ZKh37O5b5Wnx7.jpg', 5),
-(595, 'INP-5600', 'Procesor AMD Ryzen 5 5600 (6C/12T, up to 4.4GHz, 32MB, AM4), 100-100000927BOX', 'AMD StoreMI Technology\r\nA fast and easy way to expand and accelerate the storage in a desktop PC with an AMD Ryzen processor.\r\n\r\nAMD \"Zen 3\" Core Architecture\r\nThe fastest cores in the world for PC gamers.\r\n\r\nAMD Ryzen VR-Ready Premium\r\nFor the best possible VR experiences, AMD offers select Ryzen VR-Ready Premium processors.\r\n\r\nSpecifications:\r\nPlatform Desktop\r\nProduct Family AMD Ryzen Processors\r\nNumber of CPU Cores 6\r\nNumber of Threads 12\r\nMax. Boost Clock Up to 4.4GHz\r\nBase Clock 3.5GHz\r\nL1 Cache 384KB\r\nL2 Cache 3MB\r\nL3 Cache 32MB\r\nDefault TDP 65W\r\nUnlocked for Overclocking\r\nCPU Socket AM4\r\nThermal Solution (PIB) AMD Wraith Stealth\r\nMax. Operating Temperature (Tjmax) 90°C\r\nPCI Express Version PCIe 4.0\r\nSystem Memory Type DDR4\r\nMemory Channels 2\r\nSystem Memory Specification Up to 3200MHz', 123.00, 'Serija: AMD Ryzen 5\r\n Podnožje: AMD AM4\r\n Broj jezgri: 6', 3, 20, 'uploads/products/r3us7vnR53PeF5GSCpiMohmhQnk3bojF6fVvfuSK.jpg', 5);
+(586, 'PRD-337GD', 'Debitis et ratione', 'Corrupti aut voluptas et fuga aliquam in. Nobis saepe necessitatibus doloremque ipsam. Tenetur ipsam amet suscipit impedit. Ipsum repellendus illum corrupti architecto. Dolorum assumenda molestiae accusantium quis molestiae exercitationem.', 1596.26, 'Magni et excepturi officiis saepe quo error et incidunt natus aperiam.', 3, 45, 'uploads/products/product_39_683451723d7ed.jpg', 1),
+(587, 'PRD-435WP', 'Officia distinctio accusamus', 'Est quis officiis aut in. Quo error tempore voluptate ex sed et alias. Minima perspiciatis velit quo ratione cumque facilis voluptate. Totam dolor et vitae.', 752.63, 'Ut natus molestias eligendi sed accusantium commodi voluptatem sit veritatis.', 5, 42, 'uploads/products/product_5_682b531491006.jpeg', 2),
+(588, 'PRD-198KQ', 'Recusandae perferendis dolores', 'Cum occaecati dolore quasi fuga. Unde atque voluptas ut officia. Est neque reiciendis officiis quia ut reiciendis. Et sequi blanditiis voluptatum quod.', 10.94, 'Est autem optio qui ex consequatur quibusdam sunt repudiandae necessitatibus.', 5, 52, 'uploads/products/product_10_67e2fa07645fe.jpg', 1),
+(589, 'PRD-731CY', 'Dolores earum ab', 'Est occaecati sunt dolorum eaque sunt qui. Commodi labore praesentium molestiae nihil. Quo quos occaecati molestiae sed ea tempora. Consequatur mollitia ducimus velit mollitia incidunt molestias ut delectus. Sit aut et et asperiores recusandae expedita omnis.', 1842.36, 'Culpa consequatur quae deleniti qui enim sint deserunt.', 6, 14, 'uploads/products/product_16_682b52e1dfe9d.jpeg', 1),
+(594, 'PRD-731CX2', 'Procesor AMD Ryzen 5 8400F (6C/12T, up to 4.7GHz, 16MB, AM5), 100-100001591BOX', 'asdgadsgf', 123.00, 'gsdas', 3, 117, 'uploads/products/p3pxLojJV6yGeLNghqtVOJ6bNA6ZKh37O5b5Wnx7.jpg', 5),
+(595, 'INP-5600', 'Procesor AMD Ryzen 5 5600 (6C/12T, up to 4.4GHz, 32MB, AM4), 100-100000927BOX', 'AMD StoreMI Technology\r\nA fast and easy way to expand and accelerate the storage in a desktop PC with an AMD Ryzen processor.\r\n\r\nAMD \"Zen 3\" Core Architecture\r\nThe fastest cores in the world for PC gamers.\r\n\r\nAMD Ryzen VR-Ready Premium\r\nFor the best possible VR experiences, AMD offers select Ryzen VR-Ready Premium processors.\r\n\r\nSpecifications:\r\nPlatform Desktop\r\nProduct Family AMD Ryzen Processors\r\nNumber of CPU Cores 6\r\nNumber of Threads 12\r\nMax. Boost Clock Up to 4.4GHz\r\nBase Clock 3.5GHz\r\nL1 Cache 384KB\r\nL2 Cache 3MB\r\nL3 Cache 32MB\r\nDefault TDP 65W\r\nUnlocked for Overclocking\r\nCPU Socket AM4\r\nThermal Solution (PIB) AMD Wraith Stealth\r\nMax. Operating Temperature (Tjmax) 90°C\r\nPCI Express Version PCIe 4.0\r\nSystem Memory Type DDR4\r\nMemory Channels 2\r\nSystem Memory Specification Up to 3200MHz', 123.00, 'Serija: AMD Ryzen 5\r\n Podnožje: AMD AM4\r\n Broj jezgri: 6', 3, 16, 'uploads/products/r3us7vnR53PeF5GSCpiMohmhQnk3bojF6fVvfuSK.jpg', 5),
+(597, 'ART-672855', 'SSD Kingston A400, 2.5\", 960GB, SATA3 6Gb/s, R500/W450', 'Kingston’s A400 solid-state drive dramatically improves the responsiveness of your existing system with incredible boot, loading and transfer times compared to mechanical hard drives. Powered by a latest gen controller for read and write speeds up to 500MB/s and 450MB/s, this SSD is 10x faster than a traditional hard drive for higher performance, ultra-responsive multi-tasking and an overall faster system. Also more reliable and durable than a hard drive.\r\n\r\nAlso more reliable and durable than a hard drive, A400 is built with Flash memory. There are no moving parts, making it less likely to fail than a mechanical hard drive. It is also cooler and quieter, and its shock and vibration resistance makes it ideal for notebooks and other mobile computing devices.\r\n\r\nSpecifications:\r\nStorage Drive Type SSD\r\nForm Factor 2.5\"\r\nInterface SATA\r\nPerformance\r\nCapacity 960 GB\r\nRead speed (max.) 500 MB/s\r\nWrite speed (max.) 450 MB/s\r\nLifespan (MTBF) 2,000,000 hours', 109.00, 'Kapacitet: 960GB\r\n Veličina: 2.5\" SSD\r\n Sučelje: SATA3 SSD', 4, 18, 'uploads/products/GaCCNN3Ho2JpSFJb5xmpg19Der9VmLx2WVOl2MPb.jpg', 8);
 
 -- --------------------------------------------------------
 
@@ -30116,8 +30167,7 @@ CREATE TABLE `sessions` (
 --
 
 INSERT INTO `sessions` (`id`, `user_id`, `ip_address`, `user_agent`, `payload`, `last_activity`) VALUES
-('4VYlpcl0uP7NHPpvVhU23bCSWk05O7guBa3NGbG9', NULL, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0', 'YTo0OntzOjY6Il90b2tlbiI7czo0MDoianYyWmVhNldsNVlSOGV0ckR1OWsxMnZmNlY4dmZ4ZVRsNFVsVzE0WCI7czozOiJ1cmwiO2E6MTp7czo4OiJpbnRlbmRlZCI7czozOToiaHR0cDovLzEyNy4wLjAuMTo4MDAwL2FkbWluL3Byb2R1Y3RzP3E9Ijt9czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6Mjc6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMC9sb2dpbiI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fX0=', 1764260857),
-('yhdBJ06p1EtRrP4ClAkA8rSy1slZAytAxYQOWd98', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiaURaQ3piMUdYOU9sSERUc1lxbUsydDlHWmpnM09YYWp6SXU2d1ZqYyI7czo2OiJfZmxhc2giO2E6Mjp7czozOiJvbGQiO2E6MDp7fXM6MzoibmV3IjthOjA6e319czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7czo0OiJjYXJ0IjthOjM6e2k6NTg4O2E6NDp7czo0OiJuYW1lIjtzOjMwOiJSZWN1c2FuZGFlIHBlcmZlcmVuZGlzIGRvbG9yZXMiO3M6NToicHJpY2UiO3M6NToiMTAuOTQiO3M6ODoicXVhbnRpdHkiO2k6MTtzOjU6ImltYWdlIjtzOjQ1OiJ1cGxvYWRzL3Byb2R1Y3RzL3Byb2R1Y3RfMTBfNjdlMmZhMDc2NDVmZS5qcGciO31pOjU4OTthOjQ6e3M6NDoibmFtZSI7czoxNjoiRG9sb3JlcyBlYXJ1bSBhYiI7czo1OiJwcmljZSI7czo3OiIxODQyLjM2IjtzOjg6InF1YW50aXR5IjtpOjE7czo1OiJpbWFnZSI7czo0NjoidXBsb2Fkcy9wcm9kdWN0cy9wcm9kdWN0XzE2XzY4MmI1MmUxZGZlOWQuanBlZyI7fWk6NTkxO2E6NDp7czo0OiJuYW1lIjtzOjQ6IlRlc3QiO3M6NToicHJpY2UiO3M6NToiMTIuMDAiO3M6ODoicXVhbnRpdHkiO2k6MTtzOjU6ImltYWdlIjtOO319fQ==', 1764262871);
+('73hL4MTZygnip2K9kRV5pdx4xxw68od2UATvhmwj', 5, '127.0.0.1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/140.0.0.0 Safari/537.36 OPR/124.0.0.0', 'YTo1OntzOjY6Il90b2tlbiI7czo0MDoiWEtFTjM1b21MN2JoanhGNFpMYklQZUdmWDJmeHZ6TlZZVmd6bjhiYiI7czo5OiJfcHJldmlvdXMiO2E6MTp7czozOiJ1cmwiO3M6MjE6Imh0dHA6Ly8xMjcuMC4wLjE6ODAwMCI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NTA6ImxvZ2luX3dlYl81OWJhMzZhZGRjMmIyZjk0MDE1ODBmMDE0YzdmNThlYTRlMzA5ODlkIjtpOjU7czo0OiJjYXJ0IjthOjA6e319', 1765125166);
 
 -- --------------------------------------------------------
 
@@ -30216,7 +30266,7 @@ INSERT INTO `users` (`id`, `ime`, `prezime`, `email`, `is_admin`, `telefon`, `em
 (2, 'Lucija', 'Vašatko', 'darijanko112@gmail.com', 0, NULL, NULL, '$2y$12$DGYcbd52ioS/iovDPJGioOlOXnGzogq..JD3lrgn.h1JdKYYRmX0y', NULL, '2025-10-17 15:21:15', '2025-10-17 15:21:15'),
 (3, 'Ivana', 'Milić', 'imilic17@gmail.com', 0, NULL, NULL, '$2y$12$Cs.fmVgMQ2JhPw7EnpAVT.QPbhMK14KnfzOF.973kNsIzle8lNJZm', NULL, '2025-10-18 06:02:32', '2025-10-18 06:02:32'),
 (4, 'Dariel', 'Kužilek', 'darijanko111@gmail.com', 0, NULL, NULL, '$2y$12$n0Bpu2HsPyP8F1IaBko0Ee6y3B/NjN.leq1uk9II8oPsCO.IHW62a', NULL, '2025-10-21 13:50:20', '2025-10-21 13:50:20'),
-(5, 'Darijan', 'Vašatko', 'darijanko114@gmail.com', 0, '0976652925', NULL, '$2y$12$pg0OICIFpKM/u103p5Fr/.MD7L1CImIwbEcpTmTzOqZ3/A956wG3y', NULL, '2025-10-25 13:28:56', '2025-10-25 16:26:49'),
+(5, 'Darijan', 'Vašatko', 'darijanko114@gmail.com', 0, '0976652925', NULL, '$2y$12$J5ycK0xb7iVFDJAqlWesk.dH5QEshn0LqxxQzgkCf00tWlymNTw72', 'E7Xekvp23xNagV5usNtBOeYuIlMveAhckHg0svNIdIgBb1CrYGFwYfNg6FWq', '2025-10-25 13:28:56', '2025-12-06 11:36:28'),
 (6, 'Rea', 'Crnković', 'rea.crnkovic@gmail.com', 0, '0976217261', NULL, '$2y$12$tbkCVff1PB5K0QdNGqV2UuUDI.n1rbHFuGjgzr5gv2XFyrfVfB1F6', NULL, '2025-10-25 16:48:22', '2025-10-25 16:51:37'),
 (7, 'Ana', 'Vašatko', 'ana.vasatko@gmail.com', 0, NULL, NULL, '$2y$12$qYO8mGnFGY8j19vpmG7tEexCn8DN8dBV4Z4/fbeKK/n83mDrqHnrq', NULL, '2025-10-25 16:55:26', '2025-10-25 16:55:26'),
 (8, 'Domi', 'Dus', 'domi.dus@gmail.com', 0, '0978556235', NULL, '$2y$12$gECk2QD72OinnJ8HnuB9uOKVu2Q2vNLek/xwLVe7YZ1Te6R.P9zp6', NULL, '2025-10-29 20:03:41', '2025-10-29 20:04:57'),
@@ -30358,6 +30408,12 @@ ALTER TABLE `password_reset_tokens`
   ADD PRIMARY KEY (`email`);
 
 --
+-- Indexes for table `payments`
+--
+ALTER TABLE `payments`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- Indexes for table `proizvod`
 --
 ALTER TABLE `proizvod`
@@ -30413,7 +30469,7 @@ ALTER TABLE `country_town`
 -- AUTO_INCREMENT for table `detalji_narudzbe`
 --
 ALTER TABLE `detalji_narudzbe`
-  MODIFY `DetaljiNarudzbe_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
+  MODIFY `DetaljiNarudzbe_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=52;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -30431,7 +30487,7 @@ ALTER TABLE `jobs`
 -- AUTO_INCREMENT for table `kosarica`
 --
 ALTER TABLE `kosarica`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=60;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=77;
 
 --
 -- AUTO_INCREMENT for table `kupac`
@@ -30443,7 +30499,7 @@ ALTER TABLE `kupac`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
+  MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=33;
 
 --
 -- AUTO_INCREMENT for table `nacin_placanja`
@@ -30455,13 +30511,19 @@ ALTER TABLE `nacin_placanja`
 -- AUTO_INCREMENT for table `narudzba`
 --
 ALTER TABLE `narudzba`
-  MODIFY `Narudzba_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
+  MODIFY `Narudzba_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=49;
+
+--
+-- AUTO_INCREMENT for table `payments`
+--
+ALTER TABLE `payments`
+  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `proizvod`
 --
 ALTER TABLE `proizvod`
-  MODIFY `Proizvod_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=596;
+  MODIFY `Proizvod_ID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=598;
 
 --
 -- AUTO_INCREMENT for table `tip_proizvoda`
