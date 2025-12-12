@@ -207,5 +207,6 @@ document.addEventListener("DOMContentLoaded", function () {
     smoothScroll();
 });
 </script>
+
 </body>
 </html>

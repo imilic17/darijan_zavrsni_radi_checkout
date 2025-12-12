@@ -42,4 +42,41 @@
         </div>
     </div>
 </div>
+
+{{-- ✅ EMPTY SPACE USED HERE --}}
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card shadow-sm border-0">
+            <div class="card-body">
+                <div class="d-flex align-items-center justify-content-between mb-2">
+                    <h5 class="fw-bold mb-0">Google Analytics (Looker Studio)</h5>
+
+                    {{-- optional: open in new tab --}}
+                    @if(!empty($lookerUrl))
+                        <a class="btn btn-outline-secondary btn-sm" href="{{ $lookerUrl }}" target="_blank" rel="noopener">
+                            Otvori u novom tabu
+                        </a>
+                    @endif
+                </div>
+
+                @if(empty($lookerEmbedUrl))
+                    <div class="alert alert-warning mb-0">
+                        Analytics nije konfiguriran. Dodaj Looker Studio embed URL u <code>.env</code> (LOoker Studio embed).
+                    </div>
+                @else
+                    <div class="ratio ratio-16x9">
+                        <iframe
+                            src="{{ $lookerEmbedUrl }}"
+                            style="border:0;"
+                            allowfullscreen
+                        ></iframe>
+                    </div>
+                    <small class="text-muted d-block mt-2">
+                        * Looker Studio je preporučen način za ugradnju GA izvještaja preko iframe-a.
+                    </small>
+                @endif
+            </div>
+        </div>
+    </div>
+</div>
 @endsection

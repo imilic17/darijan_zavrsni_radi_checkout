@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    'looker' => [
+    'embed_url' => env('LOOKER_STUDIO_EMBED_URL'),
+    'open_url'  => env('LOOKER_STUDIO_OPEN_URL'),
+],
+
+
 ];
