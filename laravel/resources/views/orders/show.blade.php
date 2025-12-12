@@ -11,7 +11,7 @@
     <div class="card shadow-sm rounded-4 border-0">
         <div class="card-body">
             <p><strong>Status:</strong> <span class="badge bg-info">{{ $order->status }}</span></p>
-            <p><strong>Adresa dostave:</strong> {{ $order->adresa_dostave }}</p>
+            <p><strong>Adresa dostave:</strong> {{ $order->Adresa_dostave ?? '-' }}</p>
             <p><strong>Način plaćanja:</strong> {{ optional($order->nacinPlacanja)->naziv ?? 'N/A' }}</p>
             <p><strong>Datum:</strong> {{ optional($order->created_at)->format('d.m.Y H:i') ?? '-' }}</p>
         </div>
