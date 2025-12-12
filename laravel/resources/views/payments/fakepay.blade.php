@@ -19,13 +19,16 @@
             <div class="card shadow-lg border-0 rounded-4">
                 <div class="card-body p-4">
 
-                    <form method="POST" action="{{ route('payments.fakepay.process', $payment->id) }}">
+                    <form id="fakepayForm"
+                          method="POST"
+                          action="{{ route('payments.fakepay.process', $payment->id) }}">
                         @csrf
 
                         {{-- Ime i prezime na kartici --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Ime i prezime na kartici</label>
-                            <input type="text" name="card_holder"
+                            <input type="text"
+                                   name="card_holder"
                                    class="form-control @error('card_holder') is-invalid @enderror"
                                    placeholder="npr. IVAN HORVAT"
                                    value="{{ old('card_holder', strtoupper(auth()->user()->ime . ' ' . auth()->user()->prezime)) }}">
@@ -37,12 +40,13 @@
                         {{-- Broj kartice --}}
                         <div class="mb-3">
                             <label class="form-label fw-semibold">Broj kartice</label>
-                            <input type="text" name="card_number"
+                            <input type="text"
+                                   name="card_number"
                                    class="form-control @error('card_number') is-invalid @enderror"
                                    placeholder="1111 2222 3333 4444"
                                    value="{{ old('card_number') }}">
                             <div class="form-text">
-                                Za test možeš koristiti npr. <code>4111 1111 1111 1111</code> (uvijek prolazi).
+                                Test broj: <code>4111 1111 1111 1111</code>
                             </div>
                             @error('card_number')
                                 <div class="invalid-feedback">{{ $message }}</div>
@@ -54,12 +58,16 @@
                             <div class="col-6">
                                 <label class="form-label fw-semibold">Datum isteka</label>
                                 <div class="d-flex gap-2">
-                                    <input type="text" name="expiry_month"
+                                    <input type="text"
+                                           name="expiry_month"
                                            class="form-control @error('expiry_month') is-invalid @enderror"
-                                           placeholder="MM" value="{{ old('expiry_month') }}">
-                                    <input type="text" name="expiry_year"
+                                           placeholder="MM"
+                                           value="{{ old('expiry_month') }}">
+                                    <input type="text"
+                                           name="expiry_year"
                                            class="form-control @error('expiry_year') is-invalid @enderror"
-                                           placeholder="GG" value="{{ old('expiry_year') }}">
+                                           placeholder="GG"
+                                           value="{{ old('expiry_year') }}">
                                 </div>
                                 @error('expiry_month')
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
@@ -68,34 +76,23 @@
                                     <div class="invalid-feedback d-block">{{ $message }}</div>
                                 @enderror
                             </div>
+
                             <div class="col-6">
                                 <label class="form-label fw-semibold">CVV / CVC</label>
-                                <input type="password" name="cvv"
+                                <input type="password"
+                                       name="cvv"
                                        class="form-control @error('cvv') is-invalid @enderror"
-                                       placeholder="***" value="{{ old('cvv') }}">
+                                       placeholder="***">
                                 @error('cvv')
                                     <div class="invalid-feedback">{{ $message }}</div>
                                 @enderror
                             </div>
                         </div>
 
-                        {{-- Test rezultat (uspjeh / neuspjeh) 
-                        <div class="mb-3">
-                            <label class="form-label fw-semibold">Rezultat plaćanja (test)</label>
-                            <select name="result" class="form-select">
-                                <option value="success" {{ old('result') === 'failed' ? '' : 'selected' }}>
-                                    Simuliraj uspješno plaćanje
-                                </option>
-                                <option value="failed" {{ old('result') === 'failed' ? 'selected' : '' }}>
-                                    Simuliraj odbijeno plaćanje
-                                </option>
-                            </select>
-                            <div class="form-text">
-                                U pravom WSPay-u ovo ne postoji – ovdje je samo za testiranje.
-                            </div>
-                        </div>
---}}
-                        <button type="submit" class="btn btn-primary w-100 py-2 fw-semibold">
+                        {{-- PAY BUTTON --}}
+                        <button id="payBtn"
+                                type="submit"
+                                class="btn btn-primary w-100 py-2 fw-semibold">
                             Plati {{ number_format($payment->amount, 2) }} {{ $payment->currency }}
                         </button>
 
@@ -104,6 +101,7 @@
                                 Ovo je test okruženje – sredstva se stvarno ne terete.
                             </small>
                         </div>
+
                     </form>
 
                 </div>
@@ -112,4 +110,28 @@
         </div>
     </div>
 </div>
+
+{{-- DOUBLE-SUBMIT PROTECTION --}}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+    const form = document.getElementById('fakepayForm');
+    const btn  = document.getElementById('payBtn');
+
+    let submitted = false;
+
+    if (!form || !btn) return;
+
+    form.addEventListener('submit', function () {
+        if (submitted) return;
+
+        submitted = true;
+
+        // Make button unclickable only
+        btn.disabled = true;
+        btn.style.pointerEvents = 'none';
+        btn.innerText = 'Obrada...';
+    });
+});
+</script>
+
 @endsection

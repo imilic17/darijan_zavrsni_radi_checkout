@@ -22,13 +22,11 @@ use App\Http\Controllers\Admin\ProductController as AdminProductController;
 use App\Http\Controllers\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 
-
 /*
 |--------------------------------------------------------------------------
 | ADMIN AREA (prefix /admin, only for admin users)
 |--------------------------------------------------------------------------
 */
-
 Route::middleware(['auth', 'admin'])
     ->prefix('admin')
     ->name('admin.')
@@ -40,6 +38,7 @@ Route::middleware(['auth', 'admin'])
         Route::resource('products', AdminProductController::class)->except(['show']);
         Route::resource('users', AdminUserController::class)->only(['index', 'show']);
         Route::resource('orders', AdminOrderController::class)->only(['index', 'show', 'update']);
+
         Route::put('/orders/{order}/cancel', [AdminOrderController::class, 'cancel'])
             ->name('orders.cancel');
 
@@ -47,16 +46,11 @@ Route::middleware(['auth', 'admin'])
             ->name('orders.close');
     });
 
-
-
-
-
 /*
 |--------------------------------------------------------------------------
 | SPECIAL ADMIN LOGIN ROUTES
 |--------------------------------------------------------------------------
 */
-
 Route::get('/admin-login', [AdminAuthController::class, 'showLoginForm'])
     ->name('admin.login');
 
@@ -67,7 +61,6 @@ Route::post('/admin-logout', [AdminAuthController::class, 'logout'])
     ->middleware(['auth', 'admin'])
     ->name('admin.logout');
 
-
 /*
 |--------------------------------------------------------------------------
 | USER-FACING ROUTES (Public storefront)
@@ -76,7 +69,6 @@ Route::post('/admin-logout', [AdminAuthController::class, 'logout'])
 
 // Homepage
 Route::get('/', [ProizvodController::class, 'home'])->name('index.index');
-
 
 // Products & categories
 Route::get('/proizvodi', [ProizvodController::class, 'list'])->name('proizvodi.index');
@@ -87,16 +79,13 @@ Route::get('/ajax/proizvodi', [ProizvodController::class, 'ajaxSearch'])->name('
 Route::get('/countries/search', [CountryController::class, 'search'])->name('countries.search');
 Route::get('/towns/search', [CountryTownController::class, 'search'])->name('towns.search');
 
-
 // Cart
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
 Route::post('/cart/add/{id}', [CartController::class, 'add'])->name('cart.add');
 Route::delete('/cart/remove/{id}', [CartController::class, 'remove'])->name('cart.remove');
 
-
 // Single product page
 Route::get('/proizvod/{id}', [ProizvodController::class, 'show'])->name('proizvod.show');
-
 
 // User dashboard after login
 Route::get('/dashboard', function () {
@@ -104,17 +93,14 @@ Route::get('/dashboard', function () {
         return redirect()->route('admin.dashboard');
     }
 
-    return view('dashboard'); // user dashboard
+    return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-
 
 /*
 |--------------------------------------------------------------------------
 | AUTHENTICATED USER ROUTES
 |--------------------------------------------------------------------------
 */
-
 Route::middleware(['auth'])->group(function () {
 
     // User profile
@@ -139,22 +125,8 @@ Route::middleware(['auth'])->group(function () {
     // Orders
     Route::get('/orders', [OrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{id}', [OrderController::class, 'show'])->name('orders.show');
-});
 
-
-
-/*
-|--------------------------------------------------------------------------
-| USER ONBOARDING (after registration)
-|--------------------------------------------------------------------------
-*/
-
-Route::middleware(['auth'])->group(function () {
-    Route::get('/onboarding', [OnboardingController::class, 'show'])->name('onboarding.show');
-    Route::post('/onboarding', [OnboardingController::class, 'store'])->name('onboarding.store');
-});
-
-Route::middleware('auth')->group(function () {
+    // FakePay
     Route::get('/payments/fakepay/{payment}', [FakePayController::class, 'show'])
         ->name('payments.fakepay');
 
@@ -165,15 +137,17 @@ Route::middleware('auth')->group(function () {
         ->name('payments.fakepay.callback');
 });
 
+/*
+|--------------------------------------------------------------------------
+| DRIVER API ROUTES (removed duplicates)
+|--------------------------------------------------------------------------
+*/
 Route::get('/driver/orders/new', [DriverOrderController::class, 'latestNewOrder']);
-Route::get('/driver/orders', [DriverOrderController::class, 'index']);          
-Route::get('/driver/orders/{id}', [DriverOrderController::class, 'show']); 
+Route::get('/driver/orders', [DriverOrderController::class, 'index']);
 Route::get('/driver/orders/{id}', [DriverOrderController::class, 'show']);
 
 Route::post('/driver/orders/{id}/delivered', [DriverOrderController::class, 'markDelivered']);
 Route::post('/driver/orders/{id}/not-delivered', [DriverOrderController::class, 'markNotDelivered']);
 
-Route::post('/driver/orders/{id}/delivered', [DriverOrderController::class, 'markDelivered']);
-Route::post('/driver/orders/{id}/not-delivered', [DriverOrderController::class, 'markNotDelivered']);
 // Laravel Breeze / Jetstream / Fortify auth routes
 require __DIR__ . '/auth.php';
