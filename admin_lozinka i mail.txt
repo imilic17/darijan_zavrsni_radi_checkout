@@ -5,3 +5,8 @@ email (google): techshop.project.zavrsni.dv@gmail.com
 password: TlwK[(9}fQ1~g;Q7]xo-H~(J!Vz}.4PouVhrnH^ir,VK-aGqAG
 
 app password for google: hhrutuhbzjbgzlgo
+
+php artisan serve --host=0.0.0.0 --port=8000
+
+za web: http://127.0.0.1:8000
+

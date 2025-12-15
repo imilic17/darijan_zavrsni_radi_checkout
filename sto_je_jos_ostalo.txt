@@ -4,8 +4,8 @@ Ostalo je:
 2. e-mail - računi -riješeno-
 3. ono testno plaćanje -riješeno-
 4. resetiranje lozinke -riješeno-
-5. Uklanjanje prozvoda iz stanja (uzima duplo)
-6. Integracija sa Google Analytics za admin dashboard
-7. Kod maila neka blokira gumb za slanje, da se ne može dvaput poslati 
-8. Adresa dostave se ne povlači na detaljima narudžbe
+5. Uklanjanje prozvoda iz stanja (uzima duplo) -riješeno-
+6. Integracija sa Google Analytics za admin dashboard -riješeno- (lockerstudio)
+7. Kod maila neka blokira gumb za slanje, da se ne može dvaput poslati -riješeno-
+8. Adresa dostave se ne povlači na detaljima narudžbe -riješeno- 
 9. Pogledati permisione za slike - da ne mora svaki korisnik za sebe postavljati
