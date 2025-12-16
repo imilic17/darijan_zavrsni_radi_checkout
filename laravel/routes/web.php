@@ -73,6 +73,9 @@ Route::get('/', [ProizvodController::class, 'home'])->name('index.index');
 // Products & categories
 Route::get('/proizvodi', [ProizvodController::class, 'list'])->name('proizvodi.index');
 Route::get('/kategorija/{id}', [ProizvodController::class, 'kategorija'])->name('proizvodi.kategorija');
+Route::get('/proizvodi/kategorija/{id}', [ProizvodController::class, 'kategorija'])
+    ->name('proizvodi.kategorija');
+
 
 // AJAX search
 Route::get('/ajax/proizvodi', [ProizvodController::class, 'ajaxSearch'])->name('proizvodi.search');

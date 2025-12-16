@@ -36,11 +36,14 @@ class ProizvodController extends Controller
     public function kategorija(Request $request, $id)
     {
         [$proizvodi, $kategorije] = $this->queryProducts($request, (int)$id);
+        
         return view('category', [
             'proizvodi'  => $proizvodi,
             'kategorije' => $kategorije,
             'categoryId' => (int)$id,
+            
         ]);
+        
     }
 
     public function ajaxSearch(Request $request)
