@@ -207,6 +207,6 @@ document.addEventListener("DOMContentLoaded", function () {
     smoothScroll();
 });
 </script>
-
+@include('includes.footer')
 </body>
 </html>
