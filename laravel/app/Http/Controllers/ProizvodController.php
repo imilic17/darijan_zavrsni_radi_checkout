@@ -11,7 +11,6 @@ class ProizvodController extends Controller
 {
     public function home()
     {
-        // Use fallback ordering (no created_at)
         $orderColumn = Schema::hasColumn('proizvod', 'created_at') ? 'created_at' : 'Proizvod_ID';
 
         $proizvodi   = Proizvod::orderByDesc($orderColumn)->take(12)->get();
