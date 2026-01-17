@@ -217,6 +217,6 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
-@include('includes.footer')
+{{-- @include('includes.footer')--}}
 </body>
 </html>

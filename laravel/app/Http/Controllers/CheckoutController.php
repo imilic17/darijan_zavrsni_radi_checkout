@@ -19,11 +19,7 @@ use App\Models\Payment;
 use App\Mail\OrderReceiptMail;
 
 class CheckoutController extends Controller
-{
-    /**
-     * Show checkout page.
-     */
-    public function index()
+{    public function index()
     {
         $user = Auth::user();
 
@@ -45,16 +41,13 @@ class CheckoutController extends Controller
         return view('checkout', compact('addresses', 'paymentMethods', 'cartItems', 'total'));
     }
 
-    /**
-     * Handle order submission.
-     */
+
     public function store(Request $request)
     {
         $user = Auth::user();
 
         Log::info('CheckoutController@store called', ['user_id' => $user->id ?? null]);
 
-        // ✅ Validacija
         $validator = Validator::make($request->all(), [
             'adresa_dostave'    => 'required|string|max:255',
             'nacin_placanja_id' => 'required|exists:nacin_placanja,NacinPlacanja_ID',
@@ -71,12 +64,9 @@ class CheckoutController extends Controller
 
         $validated = $validator->validated();
 
-        // Dohvati nacin placanja
         $paymentMethod = NacinPlacanja::findOrFail($validated['nacin_placanja_id']);
-        // Kartično plaćanje je ID 7 (po tvojoj slici)
         $isCardPayment = ((int) $paymentMethod->NacinPlacanja_ID === 7);
 
-        // 🛒 Košarica
         $cartItems = Kosarica::where('korisnik_id', $user->id)
             ->with('proizvod')
             ->get();
@@ -84,8 +74,6 @@ class CheckoutController extends Controller
         if ($cartItems->isEmpty()) {
             return redirect()->route('cart.index')->with('error', 'Vaša košarica je prazna.');
         }
-
-        // 💰 Ukupno
         $total = $cartItems->sum(function ($item) {
             return $item->proizvod->Cijena * $item->kolicina;
         });
@@ -97,8 +85,6 @@ class CheckoutController extends Controller
                 'user'  => $user->id ?? null,
                 'total' => $total,
             ]);
-
-            // 🧾 Narudžba
             $order = Narudzba::create([
                 'Kupac_ID'          => $user->id,
                 'NacinPlacanja_ID'  => $paymentMethod->NacinPlacanja_ID,
@@ -110,24 +96,19 @@ class CheckoutController extends Controller
 
             Log::info('Order created', ['Narudzba_ID' => $order->Narudzba_ID ?? null]);
 
-            // 📦 Detalji narudžbe
             foreach ($cartItems as $item) {
                 DetaljiNarudzbe::create([
                     'Narudzba_ID' => $order->Narudzba_ID,
                     'Proizvod_ID' => $item->proizvod_id,
                     'Kolicina'    => $item->kolicina,
-                    // ako imaš stupac 'cijena' u detaljima:
-                    // 'cijena'      => $item->proizvod->Cijena,
                 ]);
 
                 $item->proizvod->decrement('StanjeNaSkladistu', $item->kolicina);
             }
 
-            // 🧺 Očisti košaricu
             Kosarica::where('korisnik_id', $user->id)->delete();
 
             if ($isCardPayment) {
-                // 💳 KARTIČNO PLAĆANJE → ide na FakePay
                 $payment = Payment::create([
                     'narudzba_id' => $order->Narudzba_ID,
                     'provider'    => 'fakepay',
@@ -147,13 +128,11 @@ class CheckoutController extends Controller
 
                 return redirect()->route('payments.fakepay', $payment->id);
             } else {
-                // 💵 POUZEĆE / OFFLINE → nema FakePay
                 $order->Status = 'Čeka plaćanje pouzećem';
                 $order->save();
 
                 DB::commit();
 
-                // pošalji račun odmah
                 $email = optional($order->user)->email;
                 if ($email) {
                     Mail::to($email)->send(new OrderReceiptMail($order));

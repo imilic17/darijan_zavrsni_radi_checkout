@@ -99,6 +99,12 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+Route::get('/onboarding', [OnboardingController::class, 'show'])
+    ->name('onboarding.show');
+
+    Route::post('/onboarding', [OnboardingController::class, 'store'])
+    ->name('onboarding.store');
+
 /*
 |--------------------------------------------------------------------------
 | AUTHENTICATED USER ROUTES
