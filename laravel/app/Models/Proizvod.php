@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Proizvod extends Model
 {
-    use HasFactory; // ✅ This line enables Proizvod::factory()
+    use HasFactory;
 
     protected $table = 'proizvod';
     protected $primaryKey = 'Proizvod_ID';
@@ -40,19 +40,16 @@ class Proizvod extends Model
 
     public function getSlikaUrlAttribute()
 {
-    // ako nema slike → fallback
+
     if (!$this->Slika) {
-        return asset('img/no-image.png'); // stavi svoju placeholder sliku
+        return asset('img/no-image.png');
     }
 
-    // ako je već full URL (npr. http://... ili https://...), samo je vrati
+
     if (str_starts_with($this->Slika, 'http://') || str_starts_with($this->Slika, 'https://')) {
         return $this->Slika;
     }
 
-    // default: DB čuva npr. "uploads/products/xxx.jpg"
-    // fizički se nalazi u storage/app/public/uploads/products
-    // javni URL ide preko /storage/...
     return asset('storage/' . $this->Slika);
 }
 
