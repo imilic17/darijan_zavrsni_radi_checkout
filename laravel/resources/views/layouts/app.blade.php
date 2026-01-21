@@ -169,6 +169,7 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!kat || window.innerWidth < 992) return;
 
     const menu = kat.querySelector(".dropdown-menu");
+    if (!menu) return; // ✅ prevents crash if markup is different on some pages
 
     kat.addEventListener("mouseenter", () => {
         kat.classList.add("show");
@@ -181,6 +182,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 });
 </script>
+
 
 <script>
 document.addEventListener("DOMContentLoaded", function () {
@@ -217,6 +219,6 @@ document.addEventListener("DOMContentLoaded", () => {
 </script>
 
 
-{{-- @include('includes.footer')--}}
+ @include('partials.footer')
 </body>
 </html>

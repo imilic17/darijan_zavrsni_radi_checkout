@@ -14,6 +14,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\CountryTownController;
 use App\Http\Controllers\FakePayController;
+use App\Http\Controllers\PostCodeController;
 
 // Admin controllers
 use App\Http\Controllers\Admin\DashboardController;
@@ -157,6 +158,9 @@ Route::get('/driver/orders/{id}', [DriverOrderController::class, 'show']);
 
 Route::post('/driver/orders/{id}/delivered', [DriverOrderController::class, 'markDelivered']);
 Route::post('/driver/orders/{id}/not-delivered', [DriverOrderController::class, 'markNotDelivered']);
+
+Route::get('/post-codes/lookup', [PostCodeController::class, 'lookup'])
+    ->name('postcodes.lookup');
 
 // Laravel Breeze / Jetstream / Fortify auth routes
 require __DIR__ . '/auth.php';

@@ -8,7 +8,7 @@ use App\Models\Narudzba;
 
 class DriverOrderController extends Controller
 {
-    // GET /api/driver/orders
+
     public function index(Request $request)
 {
     $orders = Narudzba::query()
@@ -21,7 +21,7 @@ class DriverOrderController extends Controller
     return response()->json(['data' => $orders]);
 }
 
-    // GET /api/driver/orders/{id}
+
     public function show($id)
 {
     $order = Narudzba::with(['detalji.proizvod'])
@@ -50,7 +50,7 @@ public function markDelivered($id)
 {
     $order = Narudzba::where('Narudzba_ID', $id)->firstOrFail();
 
-    $order->Status = 'Dostavljeno'; // choose your exact label
+    $order->Status = 'Dostavljeno'; 
     $order->save();
 
     return response()->json([
@@ -64,7 +64,7 @@ public function markNotDelivered($id)
 {
     $order = Narudzba::where('Narudzba_ID', $id)->firstOrFail();
 
-    $order->Status = 'Neuspjela dostava'; // choose your exact label
+    $order->Status = 'Neuspjela dostava'; 
     $order->save();
 
     return response()->json([
