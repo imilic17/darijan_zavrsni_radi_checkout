@@ -14,9 +14,7 @@
 
     <!-- Custom Styles -->
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
+        body { background-color: #f8f9fa; }
 
         .toast-top-center {
             position: fixed;
@@ -34,13 +32,9 @@
             overflow: hidden;
         }
 
-        .toast-header {
-            border-bottom: none;
-        }
+        .toast-header { border-bottom: none; }
 
-        .toast.fade {
-            transition: opacity .25s ease, transform .25s ease;
-        }
+        .toast.fade { transition: opacity .25s ease, transform .25s ease; }
 
         .toast.hiding {
             opacity: 0;
@@ -50,8 +44,6 @@
 </head>
 <body>
     <div id="app">
-        
-
         <main class="py-4">
             @yield('content')
         </main>
@@ -76,7 +68,7 @@
     <!-- AJAX Add to Cart Script -->
     <script>
         (function () {
-            const csrf = document.querySelector('meta[name="csrf-token"]').content;
+            const csrf = document.querySelector('meta[name="csrf-token"]')?.content;
             let inFlight = new WeakSet();
 
             function updateCartBadge(count) {
@@ -89,6 +81,7 @@
             function showToast(message, type = 'info') {
                 const toastEl = document.getElementById('globalToast');
                 if (!toastEl) return;
+
                 const body = toastEl.querySelector('.toast-body');
                 const icon = toastEl.querySelector('.toast-header i');
 
@@ -153,59 +146,69 @@
             });
         })();
     </script>
+
+    {{-- ✅ FIXED: dropdown hover script is now null-safe --}}
     <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const dropdown = document.querySelector(".nav-item.dropdown");
-    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+    document.addEventListener("DOMContentLoaded", function () {
+        const dropdown = document.querySelector(".nav-item.dropdown");
+        if (!dropdown) return;
 
-    if (window.innerWidth > 992) { // Desktop only
-        dropdown.addEventListener("mouseenter", () => {
-            dropdown.classList.add("show");
-            dropdownMenu.classList.add("show");
-        });
-        dropdown.addEventListener("mouseleave", () => {
-            dropdown.classList.remove("show");
-            dropdownMenu.classList.remove("show");
-        });
-    }
-});
-</script>
-<!-- ⚙️ Adaptive smooth scroll -->
-<script>
-document.addEventListener("DOMContentLoaded", function () {
-    const container = document.getElementById("product-row");
-    if (!container) return;
+        const dropdownMenu = dropdown.querySelector(".dropdown-menu");
+        if (!dropdownMenu) return;
 
-    // Clone content for seamless infinite scroll
-    container.innerHTML += container.innerHTML;
-
-    // 🧠 Adaptive speed based on screen size
-    const getSpeed = () => window.innerWidth < 768 ? 0.6 : 0.3;
-
-    let scrollSpeed = getSpeed();
-    let isPaused = false;
-
-    function smoothScroll() {
-        if (!isPaused) {
-            container.scrollLeft += scrollSpeed;
-            if (container.scrollLeft >= container.scrollWidth / 2) {
-                container.scrollLeft = 0;
-            }
+        if (window.innerWidth > 992) { // Desktop only
+            dropdown.addEventListener("mouseenter", () => {
+                dropdown.classList.add("show");
+                dropdownMenu.classList.add("show");
+            });
+            dropdown.addEventListener("mouseleave", () => {
+                dropdown.classList.remove("show");
+                dropdownMenu.classList.remove("show");
+            });
         }
-        requestAnimationFrame(smoothScroll);
-    }
-
-    // Pause on hover
-    container.addEventListener("mouseenter", () => isPaused = true);
-    container.addEventListener("mouseleave", () => isPaused = false);
-
-    // Update scroll speed on resize
-    window.addEventListener("resize", () => {
-        scrollSpeed = getSpeed();
     });
+    </script>
 
-    smoothScroll();
-});
-</script>
+    <!-- ⚙️ Adaptive smooth scroll -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const container = document.getElementById("product-row");
+        if (!container) return;
+
+        // Clone content for seamless infinite scroll
+        container.innerHTML += container.innerHTML;
+
+        // 🧠 Adaptive speed based on screen size
+        const getSpeed = () => window.innerWidth < 768 ? 0.6 : 0.3;
+
+        let scrollSpeed = getSpeed();
+        let isPaused = false;
+
+        function smoothScroll() {
+            if (!isPaused) {
+                container.scrollLeft += scrollSpeed;
+                if (container.scrollLeft >= container.scrollWidth / 2) {
+                    container.scrollLeft = 0;
+                }
+            }
+            requestAnimationFrame(smoothScroll);
+        }
+
+        // Pause on hover
+        container.addEventListener("mouseenter", () => isPaused = true);
+        container.addEventListener("mouseleave", () => isPaused = false);
+
+        // Update scroll speed on resize
+        window.addEventListener("resize", () => {
+            scrollSpeed = getSpeed();
+        });
+
+        smoothScroll();
+    });
+    </script>
+
+    {{-- ✅ REQUIRED so onboarding @push('scripts') works --}}
+    @stack('scripts')
+
 </body>
 </html>

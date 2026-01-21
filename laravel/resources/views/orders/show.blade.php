@@ -41,5 +41,11 @@
     <div class="text-end mt-4">
         <h4>Ukupno: <span class="text-primary">{{ number_format($order->ukupna_cijena, 2) }} €</span></h4>
     </div>
+
+    <div class="text-center mt-5">
+    <a href="{{ route('index.index') }}" class="btn btn-lg btn-primary rounded-pill px-5">
+        <i class="bi bi-cart-fill me-2"></i> Nastavite s kupovinom
+    </a>
+</div>
 </div>
 @endsection

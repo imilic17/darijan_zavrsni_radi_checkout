@@ -41,16 +41,16 @@
                            for="placanje_{{ $method->NacinPlacanja_ID }}">
                         @switch($method->Opis)
                             @case('Revolut Pay')
-                                <img src="{{ asset('uploads/icons/revolut.png') }}" alt="Revolut" style="height:20px;">
+                                <img src="{{ asset('uploads/icons/revoult.webp') }}" alt="Revolut" style="height:20px;">
                                 @break
                             @case('KeksPay')
-                                <img src="{{ asset('uploads/icons/kekspay.png') }}" alt="KeksPay" style="height:20px;">
+                                <img src="{{ asset('uploads/icons/kekspay.webp') }}" alt="KeksPay" style="height:20px;">
                                 @break
                             @case('Skrill')
-                                <img src="{{ asset('uploads/icons/skrill.png') }}" alt="Skrill" style="height:20px;">
+                                <img src="{{ asset('uploads/icons/skrill.webp') }}" alt="Skrill" style="height:20px;">
                                 @break
                             @case('PayPal')
-                                <img src="{{ asset('uploads/icons/paypal.png') }}" alt="PayPal" style="height:20px;">
+                                <img src="{{ asset('uploads/icons/paypal.webp') }}" alt="PayPal" style="height:20px;">
                                 @break
                             @case('Kartično plaćanje')
                                 <i class="bi bi-credit-card text-primary fs-5"></i>
@@ -59,10 +59,10 @@
                                 <i class="bi bi-cash-stack text-success fs-5"></i>
                                 @break
                             @case('Google Pay')
-                                <img src="{{ asset('uploads/icons/googlepay.png') }}" alt="Google Pay" style="height:20px;">
+                                <img src="{{ asset('uploads/icons/googlepay.webp') }}" alt="Google Pay" style="height:20px;">
                                 @break
                             @case('Apple Pay')
-                                <img src="{{ asset('uploads/icons/applepay.png') }}" alt="Apple Pay" style="height:20px;">
+                                <img src="{{ asset('uploads/icons/applepay.webp') }}" alt="Apple Pay" style="height:20px;">
                                 @break
                             @case('Bankovni prijenos')
                                 <i class="bi bi-bank fs-5 text-primary"></i>

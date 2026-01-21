@@ -114,13 +114,15 @@
                                                     placeholder="Adresa" required>
                                             </div>
                                             <div class="col-md-6">
-                                                <input type="text" name="grad" class="form-control rounded-pill"
-                                                    placeholder="Grad" required>
-                                            </div>
-                                            <div class="col-md-6">
-                                                <input type="text" name="postanski_broj" class="form-control rounded-pill"
-                                                    placeholder="Poštanski broj" required>
-                                            </div>
+    <input type="text" name="grad" id="grad" class="form-control rounded-pill"
+        placeholder="Grad" required>
+</div>
+
+<div class="col-md-6">
+    <input type="text" name="postanski_broj" id="postanski_broj" class="form-control rounded-pill"
+        placeholder="Poštanski broj" required>
+</div>
+
                                             <div class="col-md-6 position-relative">
                                                 <input type="text" name="drzava" id="drzava"
                                                     class="form-control rounded-pill"
@@ -386,6 +388,53 @@ document.addEventListener('DOMContentLoaded', () => {
         if (!suggestions.contains(e.target) && e.target !== input) {
             suggestions.classList.add('d-none');
         }
+    });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const cityInput = document.getElementById('grad');
+    const postalInput = document.getElementById('postanski_broj');
+
+    let t = null;
+
+    async function lookupPostal(city) {
+        const res = await fetch(`/post-codes/lookup?city=${encodeURIComponent(city)}&country=HR`, {
+            headers: { 'Accept': 'application/json' }
+        });
+        return await res.json();
+    }
+
+    cityInput.addEventListener('input', () => {
+        clearTimeout(t);
+        const city = cityInput.value.trim();
+
+        if (city.length < 2) return;
+
+        t = setTimeout(async () => {
+            try {
+                const data = await lookupPostal(city);
+                if (data.postal_code) {
+                    postalInput.value = data.postal_code;
+                }
+            } catch (e) {
+                // silent fail (no blocking UX)
+            }
+        }, 350);
+    });
+
+    // Optional: on blur, do one final strict lookup
+    cityInput.addEventListener('blur', async () => {
+        const city = cityInput.value.trim();
+        if (!city) return;
+
+        try {
+            const data = await lookupPostal(city);
+            if (data.postal_code) {
+                postalInput.value = data.postal_code;
+            }
+        } catch (e) {}
     });
 });
 </script>
