@@ -21,5 +21,11 @@ class DatabaseSeeder extends Seeder
                 'is_admin'  => true,
             ]
         );
+
+        // PC Builder seeders
+        $this->call([
+            PcComponentTypeSeeder::class,
+            PcComponentsSeeder::class,
+        ]);
     }
 }

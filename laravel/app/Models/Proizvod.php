@@ -38,6 +38,11 @@ class Proizvod extends Model
         return $this->hasMany(DetaljiNarudzbe::class, 'Proizvod_ID', 'Proizvod_ID');
     }
 
+    public function pcSpec()
+    {
+        return $this->hasOne(PcComponentSpec::class, 'proizvod_id', 'Proizvod_ID');
+    }
+
     public function getSlikaUrlAttribute()
 {
     // ako nema slike → fallback

@@ -20,6 +20,12 @@
                     </a>
                 </li>
 
+                <li class="nav-item">
+                    <a class="nav-link text-white fw-semibold" href="{{ route('pc-builder.index') }}">
+                        <i class="bi bi-pc-display-horizontal me-1"></i> Konfiguriraj PC
+                    </a>
+                </li>
+
                 <!-- Mega Dropdown: Kategorije -->
       <li class="nav-item dropdown position-static kategorije-dropdown">
     <a href="{{ route('proizvodi.index') }}" 

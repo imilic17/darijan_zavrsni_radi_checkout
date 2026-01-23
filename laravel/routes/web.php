@@ -13,6 +13,7 @@ use App\Http\Controllers\CountryController;
 use App\Http\Controllers\OnboardingController;
 use App\Http\Controllers\CountryTownController;
 use App\Http\Controllers\FakePayController;
+use App\Http\Controllers\PcBuilderController;
 
 // Admin controllers
 use App\Http\Controllers\Admin\DashboardController;
@@ -162,6 +163,34 @@ Route::middleware('auth')->group(function () {
 
     Route::get('/payments/fakepay/{payment}/callback', [FakePayController::class, 'callback'])
         ->name('payments.fakepay.callback');
+});
+
+
+/*
+|--------------------------------------------------------------------------
+| PC BUILDER ROUTES
+|--------------------------------------------------------------------------
+*/
+
+Route::prefix('pc-builder')->name('pc-builder.')->group(function () {
+    Route::get('/', [PcBuilderController::class, 'index'])->name('index');
+    Route::get('/step/{step}', [PcBuilderController::class, 'getStep'])->name('step');
+
+    // AJAX routes
+    Route::post('/add-component', [PcBuilderController::class, 'addComponent'])->name('add-component');
+    Route::delete('/remove-component/{typeId}', [PcBuilderController::class, 'removeComponent'])->name('remove-component');
+    Route::get('/configuration', [PcBuilderController::class, 'getConfiguration'])->name('configuration');
+    Route::get('/compatible-products/{typeId}', [PcBuilderController::class, 'getCompatibleProducts'])->name('compatible');
+
+    // Cart integration
+    Route::post('/add-to-cart', [PcBuilderController::class, 'addAllToCart'])->name('add-to-cart');
+
+    // Saved configurations (auth required)
+    Route::middleware('auth')->group(function () {
+        Route::post('/save', [PcBuilderController::class, 'saveConfiguration'])->name('save');
+        Route::get('/saved', [PcBuilderController::class, 'savedConfigurations'])->name('saved');
+        Route::get('/load/{id}', [PcBuilderController::class, 'loadConfiguration'])->name('load');
+    });
 });
 
 

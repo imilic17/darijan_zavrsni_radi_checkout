@@ -10,7 +10,7 @@ class Kategorija extends Model
     protected $primaryKey = 'id_kategorija';
     public $timestamps = false;
 
-    protected $fillable = ['Naziv'];
+    protected $fillable = ['ImeKategorija'];
 
     public function proizvodi()
     {
