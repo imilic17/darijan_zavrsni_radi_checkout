@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('narudzba', function (Blueprint $table) {
-            // Avoid using ->after('created_at') because some installs don't have created_at.
+            
             if (!Schema::hasColumn('narudzba', 'created_at')) {
                 $table->timestamp('created_at')->nullable();
             }
@@ -35,3 +35,4 @@ return new class extends Migration
         });
     }
 };
+

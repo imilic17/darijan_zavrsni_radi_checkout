@@ -11,7 +11,6 @@ class ProizvodController extends Controller
 {
     public function home()
     {
-        // Use fallback ordering (no created_at)
         $orderColumn = Schema::hasColumn('proizvod', 'created_at') ? 'created_at' : 'Proizvod_ID';
 
         $proizvodi   = Proizvod::orderByDesc($orderColumn)->take(12)->get();
@@ -36,11 +35,14 @@ class ProizvodController extends Controller
     public function kategorija(Request $request, $id)
     {
         [$proizvodi, $kategorije] = $this->queryProducts($request, (int)$id);
+        
         return view('category', [
             'proizvodi'  => $proizvodi,
             'kategorije' => $kategorije,
             'categoryId' => (int)$id,
+            
         ]);
+        
     }
 
     public function ajaxSearch(Request $request)

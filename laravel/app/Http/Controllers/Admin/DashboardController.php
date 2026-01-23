@@ -11,15 +11,20 @@ class DashboardController extends Controller
 {
     public function index()
     {
-        // Direct counts from DB
         $productsCount = Proizvod::count();
         $ordersCount   = Narudzba::count();
         $usersCount    = User::count();
 
+        // ✅ CONFIG VALUES MUST BE INSIDE A METHOD
+        $lookerEmbedUrl = config('services.looker.embed_url');
+        $lookerUrl      = config('services.looker.open_url');
+
         return view('admin.dashboard', compact(
             'productsCount',
             'ordersCount',
-            'usersCount'
+            'usersCount',
+            'lookerEmbedUrl',
+            'lookerUrl'
         ));
     }
 }

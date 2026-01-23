@@ -9,11 +9,11 @@
                 <div class="card shadow-lg border-0 rounded-4">
                     <div class="card-body p-5 text-center">
                         <h2 class="fw-bold text-primary mb-3">
-                            <i class="bi bi-hand-thumbs-up-fill me-2"></i> Dobrodošli natrag, {{ Auth::user()->name }}!
+                            <i class="bi bi-hand-thumbs-up-fill me-2"></i> Dobrodošli, {{ Auth::user()->name }}!
                         </h2>
 
                         <p class="lead text-muted mb-4">
-                            Drago nam je što ste ponovno s nama u <span class="fw-semibold text-primary">TechShopu</span>.
+                            Drago nam je što ste odabrali nas u <span class="fw-semibold text-primary">TechShopu</span>.
                             Istražite najnovije proizvode, pratite svoje narudžbe i uživajte u kupnji najmodernije
                             tehnologije!
                         </p>

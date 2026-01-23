@@ -4,8 +4,16 @@ Ostalo je:
 2. e-mail - računi -riješeno-
 3. ono testno plaćanje -riješeno-
 4. resetiranje lozinke -riješeno-
-5. Uklanjanje prozvoda iz stanja (uzima duplo)
-6. Integracija sa Google Analytics za admin dashboard
-7. Kod maila neka blokira gumb za slanje, da se ne može dvaput poslati 
-8. Adresa dostave se ne povlači na detaljima narudžbe
+5. Uklanjanje prozvoda iz stanja (uzima duplo) -riješeno-
+6. Integracija sa Google Analytics za admin dashboard -riješeno- (lockerstudio)
+7. Kod maila neka blokira gumb za slanje, da se ne može dvaput poslati -riješeno-
+8. Adresa dostave se ne povlači na detaljima narudžbe -riješeno- 
 9. Pogledati permisione za slike - da ne mora svaki korisnik za sebe postavljati
+
+10. Reset password - jednokratni kod
+11. CTA (call to action) button na thank you page (za povratak na strancu, nastavak kupnje…)
+12. kad se izabere grad da odmah i povuče poštanski broj
+13. Dobro došli natrag (a prvi put se registrira)
+14. Komentar uz narudžbu (napomena za kurira)
+15. konfigurator
+16. popusti, bodovi uz popuste…

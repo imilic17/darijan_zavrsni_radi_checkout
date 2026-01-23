@@ -5,19 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>@yield('title', 'TechShop')</title>
 
-    <!-- CSRF token for AJAX -->
+    <!-- CSRF -->
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
-    <!-- Bootstrap CSS & Icons -->
+    <!-- Bootstrap CSS + Icons -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.css" rel="stylesheet">
 
-    <!-- Custom Styles -->
     <style>
-        body {
-            background-color: #f8f9fa;
-        }
+        body { background-color: #f8f9fa; }
 
+        /* Toast */
         .toast-top-center {
             position: fixed;
             top: 70px;
@@ -26,186 +24,201 @@
             z-index: 1080;
             pointer-events: none;
         }
-
         .toast {
             pointer-events: auto;
             border-radius: 1rem;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,.2);
         }
 
-        .toast-header {
-            border-bottom: none;
+        /* Navbar */
+        .navbar .container-fluid { max-width: 1300px; }
+
+        .mega-dropdown {
+            left: 0;
+            right: 0;
+            border-top: 3px solid #0d6efd;
+            animation: fadeIn .15s ease-in-out;
         }
 
-        .toast.fade {
-            transition: opacity .25s ease, transform .25s ease;
+        .hover-card {
+            transition: .2s;
+        }
+        .hover-card:hover {
+            background: #f0f7ff;
+            transform: translateY(-3px);
         }
 
-        .toast.hiding {
-            opacity: 0;
-            transform: translateY(-6px);
+        .icon-wrapper {
+            width: 40px;
+            height: 40px;
+            background: rgba(13,110,253,.1);
+            color: #0d6efd;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(5px); }
+            to { opacity: 1; transform: none; }
         }
     </style>
 </head>
+
 <body>
-    <div id="app">
-        @include('partials.navbar')
+<div id="app">
 
-        <main class="py-4">
-            @yield('content')
-        </main>
-    </div>
+    {{-- NAVBAR --}}
+    @include('partials.navbar')
 
-    <!-- Toast container (center-top) -->
-    <div class="toast-top-center">
-        <div id="globalToast" class="toast align-items-center text-white bg-primary fade" role="alert" aria-live="assertive" aria-atomic="true">
-            <div class="toast-header bg-dark text-white">
-                <i class="bi bi-info-circle me-2"></i>
-                <strong class="me-auto">TechShop</strong>
-                <small class="text-white-50">sad</small>
-                <button type="button" class="btn-close btn-close-white ms-2 mb-1" data-bs-dismiss="toast" aria-label="Close"></button>
-            </div>
-            <div class="toast-body">Info poruka.</div>
+    <main class="py-4">
+        @yield('content')
+    </main>
+</div>
+
+{{-- TOAST --}}
+<div class="toast-top-center">
+    <div id="globalToast"
+         class="toast align-items-center text-white bg-primary fade"
+         role="alert" aria-live="assertive" aria-atomic="true">
+
+        <div class="toast-header bg-dark text-white">
+            <i class="bi bi-info-circle me-2"></i>
+            <strong class="me-auto">TechShop</strong>
+            <button type="button" class="btn-close btn-close-white"
+                    data-bs-dismiss="toast"></button>
         </div>
+
+        <div class="toast-body">Info poruka</div>
     </div>
+</div>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+{{-- BOOTSTRAP JS (REQUIRED) --}}
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-    <!-- AJAX Add to Cart Script -->
-    <script>
-        (function () {
-            const csrf = document.querySelector('meta[name="csrf-token"]').content;
-            let inFlight = new WeakSet();
-
-            function updateCartBadge(count) {
-                const badge = document.getElementById('cart-count');
-                if (!badge) return;
-                badge.textContent = count;
-                badge.classList.toggle('d-none', count <= 0);
-            }
-
-            function showToast(message, type = 'info') {
-                const toastEl = document.getElementById('globalToast');
-                if (!toastEl) return;
-                const body = toastEl.querySelector('.toast-body');
-                const icon = toastEl.querySelector('.toast-header i');
-
-                const map = {
-                    success: { color: 'bg-success', icon: 'bi-check-circle' },
-                    error: { color: 'bg-danger', icon: 'bi-exclamation-triangle' },
-                    info: { color: 'bg-primary', icon: 'bi-info-circle' }
-                };
-
-                toastEl.classList.remove('bg-success', 'bg-danger', 'bg-primary');
-                toastEl.classList.add(map[type].color);
-                icon.className = `bi ${map[type].icon} me-2`;
-                body.textContent = message;
-
-                const toast = new bootstrap.Toast(toastEl, { delay: 3500 });
-                toast.show();
-            }
-
-            document.addEventListener('submit', async (e) => {
-                const form = e.target;
-                if (!form.classList.contains('js-add-to-cart')) return;
-                e.preventDefault();
-
-                if (inFlight.has(form)) return;
-                inFlight.add(form);
-
-                const fd = new FormData(form);
-                if (!fd.has('quantity')) fd.set('quantity', '1');
-
-                const button = form.querySelector('.js-add-to-cart-btn');
-                const originalHTML = button ? button.innerHTML : '';
-                if (button) {
-                    button.disabled = true;
-                    button.innerHTML = '<span class="spinner-border spinner-border-sm me-2"></span>Dodavanje...';
-                }
-
-                try {
-                    const res = await fetch(form.action, {
-                        method: 'POST',
-                        headers: {
-                            'X-CSRF-TOKEN': csrf,
-                            'Accept': 'application/json',
-                            'X-Requested-With': 'XMLHttpRequest'
-                        },
-                        body: fd
-                    });
-                    const data = await res.json();
-
-                    if (!res.ok) throw new Error(data.message || 'Greška');
-
-                    updateCartBadge(data.count ?? 0);
-                    showToast(data.message || 'Proizvod dodan u košaricu!', 'success');
-                } catch (err) {
-                    showToast('Nešto je pošlo po zlu.', 'error');
-                } finally {
-                    if (button) {
-                        button.disabled = false;
-                        button.innerHTML = originalHTML;
-                    }
-                    setTimeout(() => inFlight.delete(form), 250);
-                }
-            });
-        })();
-    </script>
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const dropdown = document.querySelector(".nav-item.dropdown");
-    const dropdownMenu = dropdown.querySelector(".dropdown-menu");
-
-    if (window.innerWidth > 992) { // Desktop only
-        dropdown.addEventListener("mouseenter", () => {
-            dropdown.classList.add("show");
-            dropdownMenu.classList.add("show");
-        });
-        dropdown.addEventListener("mouseleave", () => {
-            dropdown.classList.remove("show");
-            dropdownMenu.classList.remove("show");
-        });
-    }
-});
-</script>
-<!-- ⚙️ Adaptive smooth scroll -->
+{{-- AJAX ADD TO CART + TOAST --}}
 <script>
-document.addEventListener("DOMContentLoaded", function () {
-    const container = document.getElementById("product-row");
-    if (!container) return;
+(() => {
+    const csrf = document.querySelector('meta[name="csrf-token"]').content;
 
-    // Clone content for seamless infinite scroll
-    container.innerHTML += container.innerHTML;
-
-    // 🧠 Adaptive speed based on screen size
-    const getSpeed = () => window.innerWidth < 768 ? 0.6 : 0.3;
-
-    let scrollSpeed = getSpeed();
-    let isPaused = false;
-
-    function smoothScroll() {
-        if (!isPaused) {
-            container.scrollLeft += scrollSpeed;
-            if (container.scrollLeft >= container.scrollWidth / 2) {
-                container.scrollLeft = 0;
-            }
-        }
-        requestAnimationFrame(smoothScroll);
+    function updateCartBadge(count) {
+        const badge = document.getElementById('cart-count');
+        if (!badge) return;
+        badge.textContent = count;
+        badge.classList.toggle('d-none', count <= 0);
     }
 
-    // Pause on hover
-    container.addEventListener("mouseenter", () => isPaused = true);
-    container.addEventListener("mouseleave", () => isPaused = false);
+    function showToast(message, type = 'info') {
+        const toastEl = document.getElementById('globalToast');
+        if (!toastEl) return;
 
-    // Update scroll speed on resize
-    window.addEventListener("resize", () => {
-        scrollSpeed = getSpeed();
+        const body = toastEl.querySelector('.toast-body');
+        const icon = toastEl.querySelector('.toast-header i');
+
+        const map = {
+            success: ['bg-success', 'bi-check-circle'],
+            error: ['bg-danger', 'bi-exclamation-triangle'],
+            info: ['bg-primary', 'bi-info-circle']
+        };
+
+        toastEl.classList.remove('bg-success','bg-danger','bg-primary');
+        toastEl.classList.add(map[type][0]);
+        icon.className = `bi ${map[type][1]} me-2`;
+        body.textContent = message;
+
+        new bootstrap.Toast(toastEl, { delay: 3500 }).show();
+    }
+
+    document.addEventListener('submit', async e => {
+        const form = e.target;
+        if (!form.classList.contains('js-add-to-cart')) return;
+
+        e.preventDefault();
+
+        const fd = new FormData(form);
+        if (!fd.has('quantity')) fd.set('quantity', 1);
+
+        try {
+            const res = await fetch(form.action, {
+                method: 'POST',
+                headers: {
+                    'X-CSRF-TOKEN': csrf,
+                    'Accept': 'application/json'
+                },
+                body: fd
+            });
+
+            const data = await res.json();
+            if (!res.ok) throw new Error();
+
+            updateCartBadge(data.count || 0);
+            showToast(data.message || 'Dodano u košaricu', 'success');
+
+        } catch {
+            showToast('Greška prilikom dodavanja', 'error');
+        }
+    });
+})();
+</script>
+
+{{-- KATEGORIJE HOVER (DESKTOP ONLY, SAFE) --}}
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const kat = document.querySelector(".kategorije-dropdown");
+    if (!kat || window.innerWidth < 992) return;
+
+    const menu = kat.querySelector(".dropdown-menu");
+    if (!menu) return; // ✅ prevents crash if markup is different on some pages
+
+    kat.addEventListener("mouseenter", () => {
+        kat.classList.add("show");
+        menu.classList.add("show");
     });
 
-    smoothScroll();
+    kat.addEventListener("mouseleave", () => {
+        kat.classList.remove("show");
+        menu.classList.remove("show");
+    });
 });
 </script>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const profileToggle = document.querySelector('#userMenu');
+
+    if (!profileToggle) return;
+
+    // Force Bootstrap dropdown initialization
+    new bootstrap.Dropdown(profileToggle);
+
+    // Debug proof (optional)
+    profileToggle.addEventListener('click', () => {
+        console.log('Profile dropdown clicked');
+    });
+});
+</script>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    const toggle = document.getElementById("profileToggle");
+    const menu = document.getElementById("profileMenu");
+
+    if (!toggle || !menu) return;
+
+    toggle.addEventListener("click", (e) => {
+        e.stopPropagation();
+        menu.style.display =
+            menu.style.display === "block" ? "none" : "block";
+    });
+
+    document.addEventListener("click", () => {
+        menu.style.display = "none";
+    });
+});
+</script>
+
+
+ @include('partials.footer')
 </body>
 </html>

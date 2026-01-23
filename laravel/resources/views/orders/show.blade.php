@@ -11,7 +11,7 @@
     <div class="card shadow-sm rounded-4 border-0">
         <div class="card-body">
             <p><strong>Status:</strong> <span class="badge bg-info">{{ $order->status }}</span></p>
-            <p><strong>Adresa dostave:</strong> {{ $order->adresa_dostave }}</p>
+            <p><strong>Adresa dostave:</strong> {{ $order->Adresa_dostave ?? '-' }}</p>
             <p><strong>Način plaćanja:</strong> {{ optional($order->nacinPlacanja)->naziv ?? 'N/A' }}</p>
             <p><strong>Datum:</strong> {{ optional($order->created_at)->format('d.m.Y H:i') ?? '-' }}</p>
         </div>
@@ -41,5 +41,11 @@
     <div class="text-end mt-4">
         <h4>Ukupno: <span class="text-primary">{{ number_format($order->ukupna_cijena, 2) }} €</span></h4>
     </div>
+
+    <div class="text-center mt-5">
+    <a href="{{ route('index.index') }}" class="btn btn-lg btn-primary rounded-pill px-5">
+        <i class="bi bi-cart-fill me-2"></i> Nastavite s kupovinom
+    </a>
+</div>
 </div>
 @endsection

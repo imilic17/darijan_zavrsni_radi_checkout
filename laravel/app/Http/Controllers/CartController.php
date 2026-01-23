@@ -11,16 +11,13 @@ use Illuminate\Support\Facades\DB;
 
 class CartController extends Controller
 {
-    // 🧺 Show cart contents
     public function index()
     {
         if (Auth::check()) {
-            // Logged in → load from DB
             $cartItems = Kosarica::where('korisnik_id', Auth::id())
                 ->with('proizvod')
                 ->get();
 
-            // Format to match session-style array
             $cart = [];
             foreach ($cartItems as $item) {
                 $cart[$item->proizvod_id] = [
@@ -31,21 +28,18 @@ class CartController extends Controller
                 ];
             }
         } else {
-            // Guest → load from session
             $cart = session('cart', []);
         }
 
         return view('cart', compact('cart'));
     }
 
-    // ➕ Add item to cart
     public function add(Request $request, $id)
 {
     $product = Proizvod::findOrFail($id);
     $quantity = $request->input('quantity', 1);
 
     if (Auth::check()) {
-        // Logged in user
         $cartItem = DB::table('kosarica')
             ->where('korisnik_id', Auth::id())
             ->where('proizvod_id', $id)
@@ -65,7 +59,6 @@ class CartController extends Controller
 
         $cartCount = DB::table('kosarica')->where('korisnik_id', Auth::id())->sum('kolicina');
     } else {
-        // Guest cart via session
         $cart = session('cart', []);
         if (isset($cart[$id])) {
             $cart[$id]['quantity'] += $quantity;
@@ -79,7 +72,6 @@ class CartController extends Controller
         $cartCount = collect($cart)->sum('quantity');
     }
 
-    // ✅ Return AJAX response
     if ($request->expectsJson()) {
         return response()->json([
             'success' => true,
@@ -92,23 +84,19 @@ class CartController extends Controller
     return redirect()->back()->with('success', 'Proizvod dodan u košaricu!');
 }
 
-    // ❌ Remove item from cart
     public function remove($id)
 {
     if (Auth::check()) {
-        // Remove from DB
         Kosarica::where('korisnik_id', Auth::id())
             ->where('proizvod_id', $id)
             ->delete();
 
-        // Also remove from session (if any)
         $cart = session('cart', []);
         if (isset($cart[$id])) {
             unset($cart[$id]);
             session(['cart' => $cart]);
         }
     } else {
-        // Guest only
         $cart = session('cart', []);
         unset($cart[$id]);
         session(['cart' => $cart]);
@@ -118,7 +106,6 @@ class CartController extends Controller
 }
 
 
-    // 🔄 Clear all items
     public function clear()
     {
         if (Auth::check()) {
