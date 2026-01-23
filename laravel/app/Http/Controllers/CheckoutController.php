@@ -16,6 +16,7 @@ use App\Models\NacinPlacanja;
 use App\Models\Narudzba;
 use App\Models\DetaljiNarudzbe;
 use App\Models\Payment;
+use App\Models\PcConfiguration;
 use App\Mail\OrderReceiptMail;
 
 class CheckoutController extends Controller
@@ -138,6 +139,9 @@ class CheckoutController extends Controller
                     Mail::to($email)->send(new OrderReceiptMail($order));
                 }
 
+                // Resetiraj PC konfigurator nakon uspješne narudžbe
+                $this->clearPcConfiguration($user->id);
+
                 Log::info('Checkout completed (COD), redirecting to orders.show', [
                     'user'        => $user->id ?? null,
                     'Narudzba_ID' => $order->Narudzba_ID ?? null,
@@ -153,5 +157,19 @@ class CheckoutController extends Controller
             Log::error('Checkout failed', ['exception' => $e->getMessage()]);
             return redirect()->back()->with('error', 'Došlo je do pogreške: ' . $e->getMessage());
         }
+    }
+
+    /**
+     * Obriši aktivnu PC konfiguraciju nakon uspješne narudžbe
+     */
+    protected function clearPcConfiguration(int $userId): void
+    {
+        // Obriši aktivnu konfiguraciju (bez naziva) iz baze
+        PcConfiguration::where('user_id', $userId)
+            ->whereNull('naziv')
+            ->delete();
+
+        // Obriši session ID
+        session()->forget('pc_configuration_id');
     }
 }

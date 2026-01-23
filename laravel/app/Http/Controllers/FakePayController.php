@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Payment;
+use App\Models\PcConfiguration;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
@@ -85,6 +86,9 @@ class FakePayController extends Controller
                 Mail::to($email)->send(new OrderReceiptMail($order));
             }
 
+            // Resetiraj PC konfigurator nakon uspješnog plaćanja
+            $this->clearPcConfiguration(Auth::id());
+
             return redirect()
                 ->route('orders.show', $order->Narudzba_ID)
                 ->with('success', 'Plaćanje je uspješno provedeno (test). Račun je poslan na e-mail.');
@@ -100,5 +104,19 @@ class FakePayController extends Controller
         return redirect()
             ->route('orders.show', $order->Narudzba_ID)
             ->with('error', 'Plaćanje nije uspjelo (test). Pokušajte ponovno ili odaberite drugi način plaćanja.');
+    }
+
+    /**
+     * Obriši aktivnu PC konfiguraciju nakon uspješnog plaćanja
+     */
+    protected function clearPcConfiguration(int $userId): void
+    {
+        // Obriši aktivnu konfiguraciju (bez naziva) iz baze
+        PcConfiguration::where('user_id', $userId)
+            ->whereNull('naziv')
+            ->delete();
+
+        // Obriši session ID
+        session()->forget('pc_configuration_id');
     }
 }

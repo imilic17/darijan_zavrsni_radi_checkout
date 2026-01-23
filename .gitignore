@@ -1,0 +1,6 @@
+# Windows reserved name artifacts
+nul
+null
+
+# Claude Code settings
+.claude/
