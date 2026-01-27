@@ -3,4 +3,5 @@
 !public/
 !public/uploads/
 !public/uploads/products/
+!public/uploads/products/pc-components
 !.gitignore
