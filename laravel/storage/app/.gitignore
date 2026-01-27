@@ -1,8 +1,14 @@
 *
-!private/
+!.gitignore
+
 !public/
 !public/uploads/
 !public/uploads/products/
 !public/uploads/products/pc-components/
 !public/uploads/products/pc-components/case/
-!.gitignore
+!public/uploads/products/cpu/
+!public/uploads/products/gpu/
+!public/uploads/products/motherboard/
+!public/uploads/products/psu/
+!public/uploads/products/ram/
+!public/uploads/products/storage/
