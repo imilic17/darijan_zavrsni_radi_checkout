@@ -3,5 +3,6 @@
 !public/
 !public/uploads/
 !public/uploads/products/
-!public/uploads/products/pc-components
+!public/uploads/products/pc-components/
+!public/uploads/products/pc-components/case/
 !.gitignore
